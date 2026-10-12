@@ -10,6 +10,8 @@
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
+		1CC3761F307D05B700173B34 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761E307D05B300173B34 /* FontManager.swift */; };
+		1CC37621307D05FD00173B34 /* CormorantGaramond.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CC37620307D05FD00173B34 /* CormorantGaramond.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +19,9 @@
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
 		1CC3761A307AE6C800173B34 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		1CC3761E307D05B300173B34 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
+		1CC37620307D05FD00173B34 /* CormorantGaramond.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CormorantGaramond.ttf; sourceTree = "<group>"; };
+		1CC37622307D061C00173B34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,9 +54,11 @@
 		1CC37611307AE68900173B34 /* pocketful-ios */ = {
 			isa = PBXGroup;
 			children = (
+				1CC37622307D061C00173B34 /* Info.plist */,
+				1CC3761C307AF11400173B34 /* Utilites */,
+				1CC3760E307AE68900173B34 /* Assets.xcassets */,
 				1CC37616307AE69200173B34 /* Application */,
 				1CC37615307AE68C00173B34 /* Auth */,
-				1CC3760E307AE68900173B34 /* Assets.xcassets */,
 			);
 			path = "pocketful-ios";
 			sourceTree = "<group>";
@@ -78,6 +85,23 @@
 				1CC3761A307AE6C800173B34 /* LoginView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		1CC3761C307AF11400173B34 /* Utilites */ = {
+			isa = PBXGroup;
+			children = (
+				1CC3761D307AF11B00173B34 /* Fonts */,
+			);
+			path = Utilites;
+			sourceTree = "<group>";
+		};
+		1CC3761D307AF11B00173B34 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1CC3761E307D05B300173B34 /* FontManager.swift */,
+				1CC37620307D05FD00173B34 /* CormorantGaramond.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC37614307AE68900173B34 /* Assets.xcassets in Resources */,
+				1CC37621307D05FD00173B34 /* CormorantGaramond.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */,
+				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +317,7 @@
 				DEVELOPMENT_TEAM = GAQT8HYM7F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "pocketful-ios/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -323,6 +350,7 @@
 				DEVELOPMENT_TEAM = GAQT8HYM7F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "pocketful-ios/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

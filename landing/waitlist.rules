@@ -1,0 +1,27 @@
+// Firestore security rules for the landing page waitlist.
+//
+// Paste the `match /waitlist/{entryId}` block inside the `match /databases/{database}/documents`
+// block of your existing rules (Firebase console → Firestore Database → Rules), then Publish.
+// Don't replace your whole rules file with this one, or the iOS app's rules will be lost.
+//
+// Visitors can add one entry with a valid email. Nobody can read, change, or delete entries
+// from the client; view and export them from the Firebase console.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /waitlist/{entryId} {
+      allow create: if request.resource.data.keys().hasOnly(['email', 'source', 'createdAt'])
+                    && request.resource.data.keys().hasAll(['email', 'createdAt'])
+                    && request.resource.data.email is string
+                    && request.resource.data.email.size() <= 254
+                    && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$')
+                    && (!('source' in request.resource.data)
+                        || (request.resource.data.source is string && request.resource.data.source.size() <= 40))
+                    && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
+    }
+
+  }
+}

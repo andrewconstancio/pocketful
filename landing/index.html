@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pocketful uses AI to get to know what matters to you, then checks in throughout the day with thoughts, check-ins, and insights made for you. Join the waitlist.">
+<title>Pocketful</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..400&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: split hero (copy + live app screens), then single-column sections on the app's own cream ground */
+:root {
+  --bg: #F9F2E7;
+  --surface: #F1E8D8;
+  --fg: #2C382D;
+  --muted: #677164;
+  --accent: #3C513E;
+  --accent-fg: #F9F2E7;
+  --line: #E2D7C3;
+  --field: #FFFCF6;
+  --error: #9B4433;
+  --leaf: #8BA07C;
+  --leaf-dark: #556F4F;
+  --bloom: #F0E2C2;
+  --pollen: #C6A158;
+
+  /* The phone screens always show the app's light UI */
+  --bezel: #1E201D;
+  --app-bg: #FAF4EA;
+  --app-card: #FFFDF8;
+  --app-fg: #2C382D;
+  --app-muted: #7A8276;
+  --app-accent: #3C513E;
+  --app-accent-fg: #FAF4EA;
+  --app-line: #ECE3D3;
+  --app-ring: #DCE3D3;
+  --lock-top: #6E8364;
+  --lock-bottom: #2C3A2B;
+  --lock-fg: #F7F1E6;
+  --note-bg: rgba(250, 244, 234, .9);
+
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-body: "Figtree", -apple-system, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161C17; --surface: #1E2620; --fg: #EDE6D8; --muted: #A7AFA0;
+    --accent: #B4CBA4; --accent-fg: #142016; --line: #2D372E; --field: #1B221C;
+    --error: #E8A08D; --leaf: #8FA67F; --leaf-dark: #6F8B66; --bloom: #DCCBA3; --pollen: #C9A45C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161C17; --surface: #1E2620; --fg: #EDE6D8; --muted: #A7AFA0;
+  --accent: #B4CBA4; --accent-fg: #142016; --line: #2D372E; --field: #1B221C;
+  --error: #E8A08D; --leaf: #8FA67F; --leaf-dark: #6F8B66; --bloom: #DCCBA3; --pollen: #C9A45C;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 72rem; margin-inline: auto; padding-inline: max(16px, 4vw); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.eyebrow {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.lead { color: var(--muted); font-size: 1.15rem; max-width: 34rem; }
+svg.sprig, svg.sprout { display: block; overflow: visible; }
+
+/* Nav */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 1.5rem; text-decoration: none; }
+.brand svg { width: 22px; height: 22px; color: var(--leaf-dark); }
+.nav-link {
+  font-size: 0.95rem; font-weight: 500; text-decoration: none; padding: 8px 16px; white-space: nowrap;
+  border: 1px solid var(--line); border-radius: 999px;
+}
+.nav-link:hover { border-color: var(--accent); }
+
+/* Hero */
+.hero {
+  display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 48px;
+  padding-block: 32px 72px;
+}
+.hero-copy { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.hero h1 { font-size: clamp(2.7rem, 6.2vw, 4.6rem); line-height: 1.02; font-weight: 300; }
+.hero h1 em { font-style: italic; color: var(--leaf-dark); }
+.fine { font-size: 0.88rem; color: var(--muted); }
+
+.hero-art { position: relative; display: flex; justify-content: center; align-items: flex-start; padding-block: 8px 40px; min-width: 0; }
+.hero-art > .sprig { position: absolute; width: 190px; height: 340px; left: -40px; bottom: -6px; opacity: 0.9; }
+.hero-art .phone + .phone { margin-left: -64px; margin-top: 56px; }
+
+/* Waitlist form */
+.waitlist { display: flex; flex-wrap: wrap; gap: 10px; max-width: 30rem; }
+.waitlist input {
+  flex: 1 1 15rem; min-width: 0; height: 52px; padding: 0 20px;
+  font: inherit; font-size: 1rem; color: var(--fg); background: var(--field);
+  border: 1px solid var(--line); border-radius: 999px;
+}
+.waitlist input::placeholder { color: var(--muted); }
+.waitlist input[aria-invalid="true"] { border-color: var(--error); }
+.waitlist button {
+  flex: 0 0 auto; height: 52px; padding: 0 26px; font: inherit; font-weight: 600; font-size: 1rem;
+  color: var(--accent-fg); background: var(--accent); border: 0; border-radius: 999px; cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.waitlist button:hover { transform: translateY(-1px); }
+.waitlist button:disabled { opacity: .6; cursor: progress; transform: none; }
+.form-msg { min-height: 1.5em; font-size: 0.92rem; color: var(--muted); }
+.form-msg[data-state="error"] { color: var(--error); }
+.form-msg[data-state="done"] { color: var(--fg); font-weight: 500; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Phone mockups */
+.phone {
+  position: relative; flex: 0 0 auto;
+  width: min(262px, 64vw); max-width: 100%; aspect-ratio: 9 / 19.3;
+  padding: 9px; border-radius: 44px; background: var(--bezel);
+  box-shadow: 0 40px 70px -40px rgba(20, 30, 20, .55), 0 2px 0 rgba(255,255,255,.06) inset;
+}
+.screen {
+  position: relative; height: 100%; overflow: hidden; border-radius: 36px;
+  background: var(--app-bg); color: var(--app-fg);
+  display: flex; flex-direction: column; font-size: 10.5px; line-height: 1.4;
+}
+.island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 76px; height: 22px; border-radius: 12px; background: var(--bezel); }
+.status { display: flex; justify-content: space-between; align-items: center; padding: 13px 24px 0; font-weight: 600; font-size: 10.5px; }
+.status svg { width: 22px; height: 10px; }
+.app { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 0; min-height: 0; }
+.app-brand { display: flex; justify-content: center; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 16px; }
+.app-brand svg { width: 13px; height: 13px; color: var(--app-accent); }
+.greet { font-family: var(--font-display); font-size: 17px; line-height: 1.1; }
+.greet small { display: block; font-family: var(--font-body); font-size: 9px; color: var(--app-muted); margin-top: 3px; }
+.thought { position: relative; overflow: hidden; background: var(--app-card); border-radius: 16px; padding: 13px 13px 10px; display: flex; flex-direction: column; gap: 7px; box-shadow: 0 1px 0 var(--app-line); }
+.thought .label { font-size: 8.5px; color: var(--app-muted); }
+.thought .quote { font-family: var(--font-display); font-size: 21px; line-height: 1.08; max-width: 70%; }
+.thought .body { font-size: 8.5px; color: var(--app-muted); max-width: 66%; }
+.thought .sprig { position: absolute; right: -8px; top: 18px; width: 64px; height: 120px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; padding: 7px 13px; border-radius: 999px; background: var(--app-accent); color: var(--app-accent-fg); font-size: 9px; font-weight: 600; }
+.pill svg { width: 7px; height: 8px; }
+.thought .row { display: flex; justify-content: space-around; padding-top: 7px; border-top: 1px solid var(--app-line); font-size: 8.5px; color: var(--app-muted); }
+.growth-row { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 14px; background: var(--app-card); }
+.growth-row .sprout { width: 24px; height: 34px; }
+.growth-row b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 15px; line-height: 1; }
+.growth-row span { font-size: 8px; color: var(--app-muted); }
+.tabs { margin-top: auto; display: grid; grid-template-columns: repeat(4, 1fr); padding: 9px 8px 18px; border-top: 1px solid var(--app-line); }
+.tabs div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 7.5px; color: var(--app-muted); }
+.tabs div.on { color: var(--app-accent); font-weight: 600; }
+.tabs svg { width: 15px; height: 15px; }
+
+.lock .screen { background: linear-gradient(180deg, var(--lock-top), var(--lock-bottom)); color: var(--lock-fg); }
+.lock .app { align-items: center; text-align: center; gap: 2px; padding-top: 22px; position: relative; }
+.lock .sprig { position: absolute; right: -14px; bottom: -18px; width: 120px; height: 220px; opacity: .45; }
+.lock-date { font-size: 11px; font-weight: 500; opacity: .85; }
+.lock-time { font-family: var(--font-display); font-size: 62px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.notes { position: relative; width: 100%; margin-top: 26px; display: flex; flex-direction: column; gap: 7px; }
+.note { display: grid; grid-template-columns: 26px 1fr; gap: 9px; align-items: start; padding: 9px 10px; border-radius: 15px; background: var(--note-bg); color: var(--app-fg); text-align: left; }
+.note .icon { width: 26px; height: 26px; border-radius: 7px; background: var(--app-accent); color: var(--app-accent-fg); display: grid; place-items: center; }
+.note .icon svg { width: 14px; height: 14px; }
+.note .top { display: flex; justify-content: space-between; gap: 6px; font-size: 8.5px; color: var(--app-muted); }
+.note .top b { color: var(--app-fg); font-weight: 600; }
+.note p { font-size: 9.5px; line-height: 1.3; }
+.note p strong { display: block; font-weight: 600; }
+.note.earlier { opacity: .85; }
+
+/* Sections */
+section { padding-block: 72px; }
+.section-head { display: flex; flex-direction: column; gap: 14px; max-width: 40rem; margin-bottom: 44px; }
+h2 { font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.08; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.steps li { display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); min-width: 0; }
+.steps .when { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--leaf-dark); font-variant-numeric: tabular-nums; }
+.steps h3 { font-size: 1.55rem; line-height: 1.15; }
+.steps p { color: var(--muted); }
+
+.personal { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.personal .section-head { margin-bottom: 0; }
+.ai-list svg, .ai-badge svg { color: var(--pollen); flex: 0 0 auto; }
+.ai-list { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.ai-list li { display: grid; grid-template-columns: 20px 1fr; gap: 12px; }
+.ai-list svg { width: 18px; height: 18px; margin-top: 4px; }
+.ai-list b { display: block; font-weight: 600; }
+.ai-list span { color: var(--muted); }
+.ai-badge { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px 4px 8px; border-radius: 999px; background: var(--bg); font-size: 0.8rem; font-weight: 600; }
+.ai-badge svg { width: 13px; height: 13px; }
+
+.insights { background: var(--surface); border-radius: 24px; padding: clamp(22px, 4vw, 36px); display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.insights h3 { font-size: 1.7rem; line-height: 1.1; }
+.insights > p { color: var(--muted); font-size: 0.95rem; margin-top: -10px; }
+.insights ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.insights li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; }
+.insights li svg { width: 34px; height: 34px; }
+.insights b { display: block; font-weight: 600; font-size: 1rem; }
+.insights li span { color: var(--muted); font-size: 0.93rem; }
+
+.garden { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: end; border-bottom: 2px solid var(--line); }
+.garden li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding-bottom: 18px; min-width: 0; }
+.garden svg { width: 100%; max-width: 110px; margin-bottom: 10px; }
+.garden b { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.garden span { color: var(--muted); font-size: 0.88rem; }
+
+.cta { padding-block: 24px 96px; }
+.cta-card { position: relative; overflow: hidden; background: var(--surface); border-radius: 32px; padding: clamp(28px, 6vw, 64px); display: flex; flex-direction: column; gap: 18px; }
+.cta-card > * { position: relative; max-width: 34rem; }
+.cta-card .sprig { position: absolute; right: clamp(-40px, 2vw, 40px); bottom: -20px; width: 200px; height: 360px; max-width: none; opacity: .9; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-block: 28px; font-size: 0.9rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 16px 40px; }
+  .personal { grid-template-columns: 1fr; gap: 36px; }
+  .cta-card .sprig { opacity: .25; }
+}
+@media (max-width: 760px) {
+  .steps { grid-template-columns: 1fr; gap: 24px; }
+  section { padding-block: 52px; }
+}
+@media (max-width: 560px) {
+  .hero-art .phone + .phone { display: none; }
+  .garden { gap: 4px; }
+  .garden b { font-size: 1.05rem; }
+  .garden span { font-size: 0.76rem; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bloom" viewBox="-12 -12 24 24">
+      <circle cx="0" cy="-5.6" r="5" fill="var(--bloom)"/>
+      <circle cx="5.3" cy="-1.7" r="5" fill="var(--bloom)"/>
+      <circle cx="3.3" cy="4.5" r="5" fill="var(--bloom)"/>
+      <circle cx="-3.3" cy="4.5" r="5" fill="var(--bloom)"/>
+      <circle cx="-5.3" cy="-1.7" r="5" fill="var(--bloom)"/>
+      <circle cx="0" cy="0" r="2.8" fill="var(--pollen)"/>
+    </symbol>
+    <symbol id="sprig" viewBox="0 0 120 220">
+      <g fill="none" stroke="var(--leaf-dark)" stroke-width="1.6" stroke-linecap="round">
+        <path d="M62 220 C60 170 64 120 56 58"/>
+        <path d="M61 150 C74 138 88 132 100 130"/>
+        <path d="M59 112 C46 100 34 94 22 94"/>
+      </g>
+      <ellipse cx="80" cy="176" rx="19" ry="7" transform="rotate(-32 80 176)" fill="var(--leaf)"/>
+      <ellipse cx="42" cy="186" rx="18" ry="6.5" transform="rotate(32 42 186)" fill="var(--leaf-dark)"/>
+      <ellipse cx="84" cy="146" rx="15" ry="5.5" transform="rotate(-18 84 146)" fill="var(--leaf-dark)"/>
+      <ellipse cx="38" cy="110" rx="14" ry="5" transform="rotate(24 38 110)" fill="var(--leaf)"/>
+      <ellipse cx="72" cy="88" rx="13" ry="4.6" transform="rotate(-48 72 88)" fill="var(--leaf)"/>
+      <ellipse cx="46" cy="72" rx="11" ry="4" transform="rotate(40 46 72)" fill="var(--leaf-dark)"/>
+      <use href="#bloom" x="42" y="40" width="28" height="28"/>
+      <use href="#bloom" x="90" y="120" width="20" height="20"/>
+      <use href="#bloom" x="12" y="84" width="20" height="20"/>
+    </symbol>
+    <symbol id="sprout" viewBox="0 0 120 220">
+      <path d="M60 220 C59 196 61 178 58 160" fill="none" stroke="var(--leaf-dark)" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="72" cy="168" rx="14" ry="5.5" transform="rotate(-35 72 168)" fill="var(--leaf)"/>
+      <ellipse cx="46" cy="176" rx="13" ry="5" transform="rotate(35 46 176)" fill="var(--leaf-dark)"/>
+    </symbol>
+    <symbol id="sparkle" viewBox="0 0 24 24">
+      <path d="M12 2 C12.8 8 16 11.2 22 12 C16 12.8 12.8 16 12 22 C11.2 16 8 12.8 2 12 C8 11.2 11.2 8 12 2 Z" fill="currentColor"/>
+      <path d="M19.5 2.5 C19.8 4.4 20.6 5.2 22.5 5.5 C20.6 5.8 19.8 6.6 19.5 8.5 C19.2 6.6 18.4 5.8 16.5 5.5 C18.4 5.2 19.2 4.4 19.5 2.5 Z" fill="currentColor" opacity=".7"/>
+    </symbol>
+    <symbol id="leaf" viewBox="0 0 24 24">
+      <path d="M5 19 C5 10 11 5 20 4 C20 13 14 19 5 19 Z M5 19 L13 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="nav wrap">
+  <a class="brand" href="#top" id="top"><svg aria-hidden="true"><use href="#leaf"/></svg>Pocketful</a>
+  <a class="nav-link" href="#join">Join the waitlist</a>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Coming soon to iPhone</span>
+      <h1>A little more of <em>what matters.</em></h1>
+      <p class="lead">Pocketful uses AI to learn what matters to you, then checks in throughout the day. Reflections curated for you help you stay on track throughout the day.</p>
+      <form class="waitlist" id="waitlist-hero" novalidate>
+        <label class="sr-only" for="email-hero">Email address</label>
+        <input id="email-hero" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+        <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Join the waitlist</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="fine">One email when we launch. No spam.</p>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <svg class="sprig"><use href="#sprig"/></svg>
+
+      <div class="phone">
+        <div class="screen">
+          <div class="island"></div>
+          <div class="status"><span>9:41</span><svg viewBox="0 0 22 10"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="14" height="6" rx="1.2" fill="currentColor"/><rect x="19.5" y="3.5" width="1.5" height="3" rx=".7" fill="currentColor"/></svg></div>
+          <div class="app">
+            <div class="app-brand"><svg><use href="#leaf"/></svg>Pocketful</div>
+            <div class="greet">Good morning<small>Thursday, April 24</small></div>
+            <div class="thought">
+              <svg class="sprig"><use href="#sprig"/></svg>
+              <span class="label">Today's thought</span>
+              <span class="quote">Be present where you are.</span>
+              <span class="body">You don't have to be everywhere or do everything. What's in front of you is enough.</span>
+              <span class="pill"><svg viewBox="0 0 7 8"><path d="M0 0 L7 4 L0 8 Z" fill="currentColor"/></svg>Say It Aloud</span>
+              <div class="row"><span>Save</span><span>Skip</span></div>
+            </div>
+            <div class="growth-row">
+              <svg class="sprout" viewBox="30 140 60 80"><use href="#sprout"/></svg>
+              <div><span>Your growth</span><b>12</b><span>thoughts collected</span></div>
+            </div>
+            <div class="tabs">
+              <div class="on"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 11 L12 4 L20 11 V20 H14 V14 H10 V20 H4 Z"/></svg>Today</div>
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="4" width="14" height="16" rx="3"/><path d="M9 10 H15 M9 14 H13"/></svg>Reflect</div>
+              <div><svg><use href="#leaf"/></svg>Growth</div>
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 20 C5 15 19 15 20 20"/></svg>Profile</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone lock">
+        <div class="screen">
+          <div class="island"></div>
+          <div class="status"><span></span><svg viewBox="0 0 22 10"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="14" height="6" rx="1.2" fill="currentColor"/><rect x="19.5" y="3.5" width="1.5" height="3" rx=".7" fill="currentColor"/></svg></div>
+          <div class="app">
+            <svg class="sprig"><use href="#sprig"/></svg>
+            <span class="lock-date">Thursday, April 24</span>
+            <span class="lock-time">2:30</span>
+            <div class="notes">
+              <div class="note">
+                <span class="icon"><svg><use href="#leaf"/></svg></span>
+                <div><div class="top"><b>Pocketful</b><span>now</span></div><p><strong>Afternoon check-in</strong>How are you feeling right now?</p></div>
+              </div>
+              <div class="note earlier">
+                <span class="icon"><svg><use href="#leaf"/></svg></span>
+                <div><div class="top"><b>Pocketful</b><span>12:15 PM</span></div><p><strong>Pause for a moment</strong>Still carrying today's thought?</p></div>
+              </div>
+              <div class="note earlier">
+                <span class="icon"><svg><use href="#leaf"/></svg></span>
+                <div><div class="top"><b>Pocketful</b><span>9:00 AM</span></div><p><strong>Your thought for today</strong>Be present where you are.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="personal wrap" id="ai">
+    <div class="section-head">
+      <span class="eyebrow">Powered by AI</span>
+      <h2>An app that gets to know you.</h2>
+      <p class="lead">Answer eight short questions about your goals, your stress, and what helps you feel your best. Pocketful's AI turns your answers into a plan made for you.</p>
+      <ul class="ai-list">
+        <li><svg aria-hidden="true"><use href="#sparkle"/></svg><div><b>Thoughts chosen for you</b><span>Each morning's thought fits what you're working on right now.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#sparkle"/></svg><div><b>Check-ins that fit your day</b><span>The AI times its check-ins around when you need them most.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#sparkle"/></svg><div><b>Insights that grow with you</b><span>As you check in and reflect, it notices patterns and helps you see them.</span></div></li>
+      </ul>
+    </div>
+
+    <div class="insights">
+      <span class="ai-badge"><svg aria-hidden="true"><use href="#sparkle"/></svg>Written by Pocketful AI</span>
+      <h3>Your personalized insights</h3>
+      <p>An example, for someone who wants less stress, better relationships, and more time for hobbies.</p>
+      <ul>
+        <li>
+          <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="var(--bg)"/><g transform="translate(7 7) scale(.83)" color="var(--leaf-dark)"><use href="#leaf"/></g></svg>
+          <div><b>You value balance.</b><span>You want to do well at work while making time for the things that bring you joy.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="var(--bg)"/><use href="#bloom" x="7" y="7" width="20" height="20"/></svg>
+          <div><b>Meaningful connection matters.</b><span>You want to be more intentional about time with friends and family.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="var(--bg)"/><path d="M8 24 L15 13 L19 19 L21 16 L26 24 Z" fill="var(--leaf)"/></svg>
+          <div><b>You're working toward a calmer mind.</b><span>You want to overthink less and feel more present each day.</span></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap" id="how">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>With you from morning to night.</h2>
+      <p class="lead">Pocketful checks in a few times a day, at times that fit your schedule. Each check-in takes seconds. No streak pressure and no endless feed.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="when">Morning</span>
+        <h3>Start with a thought</h3>
+        <p>A short line the AI picks for what you're working on, like “Be present where you are.” Read it, or say it out loud to help it stick.</p>
+      </li>
+      <li>
+        <span class="when">Through the day</span>
+        <h3>Check in with yourself</h3>
+        <p>Gentle nudges ask how you're doing and bring your thought back when you need it. Log how you feel in a tap, or add a quick note.</p>
+      </li>
+      <li>
+        <span class="when">Evening</span>
+        <h3>Reflect on your day</h3>
+        <p>See how your day went, from your morning thought to each check-in, and jot down whatever's on your mind.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Your garden</span>
+      <h2>Every thought helps your garden grow.</h2>
+      <p class="lead">Each thought you carry and each check-in you make helps a small garden grow. It's a quiet record of showing up for yourself.</p>
+    </div>
+    <ul class="garden">
+      <li><svg viewBox="30 150 60 70" style="max-width:44px"><use href="#sprout"/></svg><b>1</b><span>Your first seed</span></li>
+      <li><svg viewBox="20 130 80 90" style="max-width:60px"><use href="#sprout"/></svg><b>5</b><span>A new leaf</span></li>
+      <li><svg viewBox="0 30 120 190" style="max-width:62px"><use href="#sprig"/></svg><b>10</b><span>Your first flower</span></li>
+      <li><svg viewBox="0 30 120 190" style="max-width:80px"><use href="#sprig"/></svg><b>25</b><span>A bigger bloom</span></li>
+      <li><svg viewBox="0 30 120 190" style="max-width:100px"><use href="#sprig"/></svg><b>50</b><span>A fuller garden</span></li>
+    </ul>
+  </section>
+
+  <section class="cta wrap" id="join">
+    <div class="cta-card">
+      <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
+      <span class="eyebrow">Waitlist</span>
+      <h2>Be one of the first to try Pocketful.</h2>
+      <p class="lead">Leave your email and we'll let you know when it's ready on the App Store.</p>
+      <form class="waitlist" id="waitlist-cta" novalidate>
+        <label class="sr-only" for="email-cta">Email address</label>
+        <input id="email-cta" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+        <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Join the waitlist</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Pocketful</span>
+    <span>A little more of what matters.</span>
+  </div>
+</footer>
+
+<script>
+  // Firebase web app config: Firebase console → Project settings → Your apps → Web app.
+  // These values identify the project and are safe to ship in client code; the Firestore
+  // security rules for the `waitlist` collection are what protect the data.
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-XM3MCmk_qJzks9-OQKTo8F3EcIV0gZE",
+    authDomain: "pocketful-dd4e1.firebaseapp.com",
+    projectId: "pocketful-dd4e1",
+    storageBucket: "pocketful-dd4e1.firebasestorage.app",
+    messagingSenderId: "25263191510",
+    appId: "1:25263191510:web:2fd0b4dd54c2a0105c2077",
+    measurementId: "G-KFKCBQDM2X"
+  };
+
+  const FIREBASE_VERSION = "10.12.2";
+  const WAITLIST_COLLECTION = "waitlist";
+  const firebaseConfigured = !firebaseConfig.projectId.startsWith("YOUR_");
+
+  // Loads Firebase once, the first time it's needed, and resolves a function that saves an email.
+  let saveEmailPromise = null;
+  function loadSaveEmail() {
+    if (!saveEmailPromise) {
+      const base = "https://www.gstatic.com/firebasejs/" + FIREBASE_VERSION + "/";
+      saveEmailPromise = Promise.all([
+        import(base + "firebase-app.js"),
+        import(base + "firebase-firestore.js")
+      ]).then(function ([appSdk, fs]) {
+        const db = fs.getFirestore(appSdk.initializeApp(firebaseConfig));
+        return function saveEmail(email, source) {
+          return fs.addDoc(fs.collection(db, WAITLIST_COLLECTION), {
+            email: email,
+            source: source,
+            createdAt: fs.serverTimestamp()
+          });
+        };
+      }).catch(function (err) {
+        saveEmailPromise = null; // let the next submit try again
+        throw err;
+      });
+    }
+    return saveEmailPromise;
+  }
+  // Warm up the SDK so the first sign-up doesn't wait on the download.
+  if (firebaseConfigured) window.addEventListener("load", function () { loadSaveEmail().catch(function () {}); });
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  document.querySelectorAll("form.waitlist").forEach(function (form) {
+    const input = form.querySelector('input[type="email"]');
+    const button = form.querySelector("button");
+    const msg = form.querySelector(".form-msg");
+
+    function say(text, state) {
+      msg.textContent = text;
+      if (state) msg.dataset.state = state; else delete msg.dataset.state;
+    }
+
+    input.addEventListener("input", function () {
+      if (input.getAttribute("aria-invalid") === "true") {
+        input.removeAttribute("aria-invalid");
+        say("");
+      }
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const email = input.value.trim().toLowerCase();
+
+      if (!EMAIL_RE.test(email)) {
+        input.setAttribute("aria-invalid", "true");
+        say("Enter an email address like name@example.com.", "error");
+        input.focus();
+        return;
+      }
+      // Bots fill the hidden field; quietly ignore them.
+      if (form.elements.company.value) return;
+
+      if (!firebaseConfigured) {
+        say("Preview only: this email wasn't saved. Add your Firebase config to start collecting sign-ups.", "error");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Joining…";
+      try {
+        const saveEmail = await loadSaveEmail();
+        await saveEmail(email, form.id);
+        input.value = "";
+        input.disabled = true;
+        button.textContent = "You're on the list";
+        say("Thanks! We'll email " + email + " when Pocketful launches.", "done");
+      } catch (err) {
+        console.error("Waitlist sign-up failed:", err);
+        button.disabled = false;
+        button.textContent = "Join the waitlist";
+        say("We couldn't add you just now. Check your connection and try again.", "error");
+      }
+    });
+  });
+</script>
+</body>
+</html>
