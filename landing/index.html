@@ -478,16 +478,53 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   const WAITLIST_COLLECTION = "waitlist";
   const firebaseConfigured = !firebaseConfig.projectId.startsWith("YOUR_");
 
-  // Loads Firebase once, the first time it's needed, and resolves a function that saves an email.
+  const FIREBASE_SDK = "https://www.gstatic.com/firebasejs/" + FIREBASE_VERSION + "/";
+
+  // Starts Firebase once and shares it between the waitlist and analytics.
+  let appPromise = null;
+  function loadApp() {
+    if (!appPromise) {
+      appPromise = import(FIREBASE_SDK + "firebase-app.js")
+        .then(function (sdk) { return sdk.initializeApp(firebaseConfig); })
+        .catch(function (err) {
+          appPromise = null; // let the next attempt try again
+          throw err;
+        });
+    }
+    return appPromise;
+  }
+
+  // Google Analytics. Once it starts, it records a page view for this visit by itself.
+  // Ad blockers often block it; the page and the waitlist work the same either way.
+  let analyticsPromise = null;
+  function loadAnalytics() {
+    if (!analyticsPromise) {
+      analyticsPromise = Promise.all([loadApp(), import(FIREBASE_SDK + "firebase-analytics.js")])
+        .then(async function ([app, ga]) {
+          if (!(await ga.isSupported())) return null;
+          const analytics = ga.getAnalytics(app);
+          return function logEvent(name, params) { ga.logEvent(analytics, name, params); };
+        })
+        .catch(function () { return null; });
+    }
+    return analyticsPromise;
+  }
+
+  // Records a custom event, like a waitlist sign-up, if analytics is running.
+  function track(name, params) {
+    if (!firebaseConfigured) return;
+    loadAnalytics().then(function (logEvent) { if (logEvent) logEvent(name, params); });
+  }
+
+  // Loads Firestore once, the first time it's needed, and resolves a function that saves an email.
   let saveEmailPromise = null;
   function loadSaveEmail() {
     if (!saveEmailPromise) {
-      const base = "https://www.gstatic.com/firebasejs/" + FIREBASE_VERSION + "/";
       saveEmailPromise = Promise.all([
-        import(base + "firebase-app.js"),
-        import(base + "firebase-firestore.js")
-      ]).then(function ([appSdk, fs]) {
-        const db = fs.getFirestore(appSdk.initializeApp(firebaseConfig));
+        loadApp(),
+        import(FIREBASE_SDK + "firebase-firestore.js")
+      ]).then(function ([app, fs]) {
+        const db = fs.getFirestore(app);
         return function saveEmail(email, source) {
           return fs.addDoc(fs.collection(db, WAITLIST_COLLECTION), {
             email: email,
@@ -502,8 +539,14 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     }
     return saveEmailPromise;
   }
-  // Warm up the SDK so the first sign-up doesn't wait on the download.
-  if (firebaseConfigured) window.addEventListener("load", function () { loadSaveEmail().catch(function () {}); });
+  // On page load: start analytics (this records the visit) and warm up Firestore
+  // so the first sign-up doesn't wait on the download.
+  if (firebaseConfigured) {
+    window.addEventListener("load", function () {
+      loadAnalytics();
+      loadSaveEmail().catch(function () {});
+    });
+  }
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -547,6 +590,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       try {
         const saveEmail = await loadSaveEmail();
         await saveEmail(email, form.id);
+        track("sign_up", { method: "waitlist", form: form.id });
         input.value = "";
         input.disabled = true;
         button.textContent = "You're on the list";

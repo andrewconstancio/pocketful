@@ -18,6 +18,20 @@ Pocketful — a SwiftUI iOS app (no UIKit). Single Xcode project (`pocketful-ios
 - There is no test target, linter, or CI configured — don't assume `xcodebuild test`, SwiftLint, or SwiftFormat exist. No build verification step is required before considering a change done.
 - No strong git branch/commit conventions yet (single `main` branch, early-stage repo).
 
+## Code review
+
+- **Correctness first**: Does it do what it claims? Check edge cases (empty states, nil/optional unwraps, async timing).
+- **Consistency with conventions**: Follows the patterns above — view file locations, `FontManager` usage, named color assets instead of hex, `#Preview` macro present.
+- **State management**: `@State`/`@Binding`/`@ObservedObject` used correctly — no unnecessary re-renders, no state that should be hoisted or lowered.
+- **No dead code**: Remove unused variables, commented-out blocks, leftover print statements.
+- **Naming**: Clear, descriptive names for views, functions, variables — no abbreviations that only make sense today.
+- **Small, single-purpose views**: If a view file is getting long or doing too much, flag it for splitting.
+- **Force unwraps (`!`) and force-try**: Justify every one — prefer `if let`/`guard let` unless truly guaranteed safe.
+- **Security basics**: No hardcoded secrets/API keys, no sensitive data logged.
+- **Comments**: Only where the code isn't self-explanatory. Keep them short and to the point — one sentence, straight to what's happening or why, no multi-line explanations.
+- **Manual test pass**: Since there's no test target, actually run the feature in the simulator before calling it done — note what you tested.
+- **Self-review before asking for a second opinion**: Read your own diff top-to-bottom once, as if someone else wrote it.
+
 ## Communication style
 
 - The user is a junior developer — explain what code does in plain terms, not shorthand that assumes senior-level familiarity.
