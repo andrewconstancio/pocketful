@@ -9,17 +9,22 @@ final class AppDependencies {
     
     // MARK: - Stores
     
+    /// App-level navigation.
+    let router: AppRouter
+    
+    /// The state of the users current session.
     let session: SessionStore
     
     init(authService: AuthServicing = AuthService()) {
         self.authService = authService
         
+        self.router = AppRouter()
         self.session = SessionStore(authService: authService)
     }
     
-    // MARK: - App-wide view models
+    // MARK: - Feature view models
     
-    func makeAuthViewModel() -> OnBoardingViewModel {
-        OnBoardingViewModel()
+    func makeOnboardingViewModel() -> OnBoardingViewModel {
+        OnBoardingViewModel(authService: authService)
     }
 }

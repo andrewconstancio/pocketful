@@ -17,6 +17,10 @@
 		1CAC14333080AB1A005846CF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1CAC14323080AB1A005846CF /* FirebaseFirestore */; };
 		1CAC14353080AB1A005846CF /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 1CAC14343080AB1A005846CF /* FirebaseStorage */; };
 		1CAC14373080AB4C005846CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CAC14363080AB4C005846CF /* GoogleService-Info.plist */; };
+		1CAC1439308189C8005846CF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC1438308189C4005846CF /* AppRouter.swift */; };
+		1CAC143B308189DD005846CF /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143A308189DA005846CF /* AppTab.swift */; };
+		1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143C30818B7A005846CF /* AuthRoute.swift */; };
+		1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14413082A000005846CF /* OnboardingFlowView.swift */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
@@ -34,6 +38,10 @@
 		1CAC142B3080A772005846CF /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		1CAC142D3080A8D5005846CF /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		1CAC14363080AB4C005846CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1CAC1438308189C4005846CF /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		1CAC143A308189DA005846CF /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
+		1CAC143C30818B7A005846CF /* AuthRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRoute.swift; sourceTree = "<group>"; };
+		1CAC14413082A000005846CF /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
@@ -83,6 +91,15 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
+		1CAC14403082A000005846CF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1CC3761A307AE6C800173B34 /* LoginView.swift */,
+				1CAC14413082A000005846CF /* OnboardingFlowView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		1CC375F7307AE5F400173B34 = {
 			isa = PBXGroup;
 			children = (
@@ -116,9 +133,10 @@
 		1CC37615307AE68C00173B34 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				1CAC14403082A000005846CF /* Views */,
 				1CAC14243080A4F5005846CF /* ViewModels */,
+				1CAC143C30818B7A005846CF /* AuthRoute.swift */,
 				1CAC142D3080A8D5005846CF /* AuthState.swift */,
-				1CC3761A307AE6C800173B34 /* LoginView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -127,6 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				1CAC142A3080A76A005846CF /* Stores */,
+				1CAC143A308189DA005846CF /* AppTab.swift */,
+				1CAC1438308189C4005846CF /* AppRouter.swift */,
 				1CAC14223080A49D005846CF /* AppDependencies.swift */,
 				1CC37610307AE68900173B34 /* pocketful_iosApp.swift */,
 				1CAC138530808BB6005846CF /* RootView.swift */,
@@ -250,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */,
+				1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */,
 				1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */,
 				1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */,
 				1CAC14293080A56B005846CF /* AuthService.swift in Sources */,
@@ -257,9 +278,12 @@
 				1CAC138630808BB6005846CF /* RootView.swift in Sources */,
 				1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
+				1CAC1439308189C8005846CF /* AppRouter.swift in Sources */,
+				1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */,
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
+				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

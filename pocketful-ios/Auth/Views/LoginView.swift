@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct LoginView: View {
+    
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+    
     var body: some View {
         VStack {
             Spacer()
@@ -11,7 +15,7 @@ struct LoginView: View {
             Spacer()
             VStack(spacing: 14) {
                 signUpButton
-                signUpText
+                logInText
             }
             Spacer()
         }
@@ -49,7 +53,7 @@ struct LoginView: View {
     
     private var signUpButton: some View {
         Button("Sign up") {
-            print("Sign up")
+            router.onboardingPath.append(AuthRoute.onboardingPageOne)
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,
@@ -60,16 +64,15 @@ struct LoginView: View {
         ))
     }
     
-    private var signUpText: some View {
+    private var logInText: some View {
         HStack(spacing: 8) {
             Text("Already have an account?")
                 .foregroundStyle(.textPrimary.opacity(0.6))
                 .font(.system(size: 16))
             
             Button {
-                
             } label: {
-                Text("Sign up")
+                Text("Log in")
                     .foregroundStyle(.textPrimary.opacity(0.7))
                     .font(.system(size: 16, weight: .bold))
             }
@@ -79,4 +82,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
+        .environment(AppRouter())
 }

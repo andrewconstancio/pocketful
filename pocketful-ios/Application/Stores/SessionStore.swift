@@ -12,7 +12,12 @@ final class SessionStore {
     
     init(authService: AuthServicing) {
         self.authService = authService
-        
-        authState = .unauthenticated
+    }
+    
+    /// Keeps `authState` in sync with Firebase Auth until the calling task is cancelled.
+    func observeAuthChanges() async {
+        for await userID in authService.userIDChanges() {
+            authState = userID == nil ? .unauthenticated : .authenticated
+        }
     }
 }
