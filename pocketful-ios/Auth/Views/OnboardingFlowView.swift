@@ -18,8 +18,8 @@ struct OnboardingFlowView: View {
             LoginView()
                 .navigationDestination(for: AuthRoute.self) { route in
                     switch route {
-                    case .onboardingPageOne:
-                        Text("Onboarding page one")
+                    case .getToKnowYou:
+                        OnboardingGetToKnowView()
                     }
                 }
         }

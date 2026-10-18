@@ -7,6 +7,7 @@ struct AppButtonStyle: ButtonStyle {
     var borderWidth: CGFloat = 1
     var cornerRadius: CGFloat
     var leadingImage: String?
+    var fontToUse: Font?
     
     func makeBody(configuration: Configuration) -> some View {
         HStack {
@@ -28,6 +29,6 @@ struct AppButtonStyle: ButtonStyle {
                     .stroke(borderColor ?? .clear, lineWidth: borderColor != nil ? borderWidth : 0)
             )
             .opacity(configuration.isPressed ? 0.8 : 1.0)
-            .font(FontManager.CormorantGaramond.regular.font(size: 22))
+            .font(fontToUse != nil ? fontToUse : .system(.body))
     }
 }

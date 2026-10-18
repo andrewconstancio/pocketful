@@ -7,6 +7,9 @@ struct FontManager {
         /// Regular.
         case regular = "CormorantGaramond-Regular"
         
+        /// Bold.
+        case bold = "CormorantGaramond-Bold"
+        
         /// The SwiftUI font for this CormorantGaramond weight, at `size`.
         func font(size: CGFloat) -> Font {
             return .custom(self.rawValue, size: size)

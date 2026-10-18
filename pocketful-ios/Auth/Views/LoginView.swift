@@ -26,7 +26,7 @@ struct LoginView: View {
     private var title: some View {
         Text("Pocketful")
             .foregroundStyle(.textPrimary)
-            .font(FontManager.CormorantGaramond.regular.font(size: 52))
+            .font(FontManager.CormorantGaramond.bold.font(size: 56))
     }
     
     private var description: some View {
@@ -53,7 +53,7 @@ struct LoginView: View {
     
     private var signUpButton: some View {
         Button("Sign up") {
-            router.onboardingPath.append(AuthRoute.onboardingPageOne)
+            router.onboardingPath.append(AuthRoute.getToKnowYou)
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,
