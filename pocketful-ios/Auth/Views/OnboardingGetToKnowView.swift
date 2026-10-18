@@ -1,6 +1,11 @@
 import SwiftUI
 
+/// A small preview page before getting started with the onboarding process.
 struct OnboardingGetToKnowView: View {
+
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+
     var body: some View {
         VStack {
             Spacer().frame(height: 10)
@@ -14,25 +19,28 @@ struct OnboardingGetToKnowView: View {
             Spacer()
             flowerImage
             Spacer()
-            continueButton
+            nextButton
             Spacer()
         }
         .padding()
         .background(.appBackground)
     }
     
+    /// The main title for this view.
     private var title: some View {
         Text("Lets get to know you a little.")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.bold.font(size: 28))
     }
     
+    /// The description for this view.
     private var description: some View {
         Text("A few questions to help create personalized reflections, reminders, and insights just for you.")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.regular.font(size: 22))
     }
     
+    /// The main flower image of this view.
     private var flowerImage: some View {
         Image("wildflower_4")
             .resizable()
@@ -49,8 +57,11 @@ struct OnboardingGetToKnowView: View {
             )
     }
     
-    private var continueButton: some View {
-        Button("Continue") {
+    /// The next button for this view. 
+    private var nextButton: some View {
+        Button("Next") {
+            HapticManager.shared.triggerImpact(style: .heavy)
+            router.onboardingPath.append(AuthRoute.moreOnLifeQuestions)
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,
@@ -64,4 +75,5 @@ struct OnboardingGetToKnowView: View {
 
 #Preview {
     OnboardingGetToKnowView()
+        .environment(AppRouter())
 }

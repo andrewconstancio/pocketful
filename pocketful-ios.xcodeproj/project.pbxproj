@@ -22,6 +22,10 @@
 		1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143C30818B7A005846CF /* AuthRoute.swift */; };
 		1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143E30824E88005846CF /* OnboardingGetToKnowView.swift */; };
 		1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14413082A000005846CF /* OnboardingFlowView.swift */; };
+		1CAC144230851276005846CF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144130851272005846CF /* HapticManager.swift */; };
+		1CAC14443083A000005846CF /* LifeGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14433083A000005846CF /* LifeGoal.swift */; };
+		1CAC14463083A000005846CF /* OnboardingProgressHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14453083A000005846CF /* OnboardingProgressHeader.swift */; };
+		1CAC14483083A000005846CF /* OnboardingLifeGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
@@ -44,6 +48,10 @@
 		1CAC143C30818B7A005846CF /* AuthRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRoute.swift; sourceTree = "<group>"; };
 		1CAC143E30824E88005846CF /* OnboardingGetToKnowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGetToKnowView.swift; sourceTree = "<group>"; };
 		1CAC14413082A000005846CF /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
+		1CAC144130851272005846CF /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		1CAC14433083A000005846CF /* LifeGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeGoal.swift; sourceTree = "<group>"; };
+		1CAC14453083A000005846CF /* OnboardingProgressHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressHeader.swift; sourceTree = "<group>"; };
+		1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLifeGoalsView.swift; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
@@ -99,8 +107,18 @@
 				1CC3761A307AE6C800173B34 /* LoginView.swift */,
 				1CAC14413082A000005846CF /* OnboardingFlowView.swift */,
 				1CAC143E30824E88005846CF /* OnboardingGetToKnowView.swift */,
+				1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */,
+				1CAC14453083A000005846CF /* OnboardingProgressHeader.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		1CAC144030851264005846CF /* UIHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				1CAC144130851272005846CF /* HapticManager.swift */,
+			);
+			path = UIHelpers;
 			sourceTree = "<group>";
 		};
 		1CC375F7307AE5F400173B34 = {
@@ -139,6 +157,7 @@
 				1CAC14403082A000005846CF /* Views */,
 				1CAC14243080A4F5005846CF /* ViewModels */,
 				1CAC143C30818B7A005846CF /* AuthRoute.swift */,
+				1CAC14433083A000005846CF /* LifeGoal.swift */,
 				1CAC142D3080A8D5005846CF /* AuthState.swift */,
 			);
 			path = Auth;
@@ -160,6 +179,7 @@
 		1CC3761C307AF11400173B34 /* Utilites */ = {
 			isa = PBXGroup;
 			children = (
+				1CAC144030851264005846CF /* UIHelpers */,
 				1CC37626307E5ACC00173B34 /* Extensions */,
 				1CC37623307E5A5500173B34 /* Styles */,
 				1CC3761D307AF11B00173B34 /* Fonts */,
@@ -278,12 +298,16 @@
 				1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */,
 				1CAC14293080A56B005846CF /* AuthService.swift in Sources */,
 				1CAC142E3080A8DA005846CF /* AuthState.swift in Sources */,
+				1CAC144230851276005846CF /* HapticManager.swift in Sources */,
 				1CAC138630808BB6005846CF /* RootView.swift in Sources */,
 				1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */,
 				1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
 				1CAC1439308189C8005846CF /* AppRouter.swift in Sources */,
 				1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */,
+				1CAC14483083A000005846CF /* OnboardingLifeGoalsView.swift in Sources */,
+				1CAC14463083A000005846CF /* OnboardingProgressHeader.swift in Sources */,
+				1CAC14443083A000005846CF /* LifeGoal.swift in Sources */,
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,

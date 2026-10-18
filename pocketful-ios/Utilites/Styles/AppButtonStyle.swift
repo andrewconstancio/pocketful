@@ -30,5 +30,6 @@ struct AppButtonStyle: ButtonStyle {
             )
             .opacity(configuration.isPressed ? 0.8 : 1.0)
             .font(fontToUse != nil ? fontToUse : .system(.body))
+            .bold()
     }
 }

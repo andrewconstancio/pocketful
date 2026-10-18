@@ -53,6 +53,7 @@ struct LoginView: View {
     
     private var signUpButton: some View {
         Button("Sign up") {
+            HapticManager.shared.triggerImpact(style: .heavy)
             router.onboardingPath.append(AuthRoute.getToKnowYou)
         }
         .buttonStyle(AppButtonStyle(
