@@ -22,6 +22,8 @@ struct OnboardingFlowView: View {
                         OnboardingGetToKnowView()
                     case .moreOnLifeQuestions:
                         OnboardingLifeGoalsView()
+                    case .stressLevels:
+                        OnboardingStressLevelsView()
                     }
                 }
         }

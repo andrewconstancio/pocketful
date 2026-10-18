@@ -2,6 +2,9 @@ import SwiftUI
 
 /// Onboarding question: "What are you hoping to get more of in your life?"
 struct OnboardingLifeGoalsView: View {
+    
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
 
     /// Holds the user's picks so they survive going back and forth in the flow.
     @Environment(OnBoardingViewModel.self) private var viewModel
@@ -57,6 +60,7 @@ struct OnboardingLifeGoalsView: View {
     private var nextButton: some View {
         Button("Next") {
             HapticManager.shared.triggerImpact(style: .heavy)
+            router.onboardingPath.append(AuthRoute.stressLevels)
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,

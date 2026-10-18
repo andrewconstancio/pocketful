@@ -12,6 +12,9 @@ final class OnBoardingViewModel {
 
     /// What the user hopes to get more of, from the life goals page.
     private(set) var selectedLifeGoals: Set<LifeGoal> = []
+    
+    /// The selected stress level for the user.
+    private(set) var selectedStressLevel: StressLevel?
 
     init(authService: AuthServicing) {
         self.authService = authService
@@ -30,5 +33,9 @@ final class OnBoardingViewModel {
     func canSelectLifeGoal(_ goal: LifeGoal) -> Bool {
         selectedLifeGoals.contains(goal) || selectedLifeGoals.count < Self.maxLifeGoals
     }
-
+    
+    /// Selects the stress level
+    func selectStressLevel(_ level: StressLevel) {
+        selectedStressLevel = level
+    }
 }
