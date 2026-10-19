@@ -2,18 +2,12 @@ import SwiftUI
 
 /// Onboarding question: "What are you hoping to get more of in your life?"
 struct OnboardingLifeGoalsView: View {
-    
-    /// App navigation, which holds the onboarding flow's path.
-    @Environment(AppRouter.self) private var router
 
     /// Holds the user's picks so they survive going back and forth in the flow.
     @Environment(OnBoardingViewModel.self) private var viewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnboardingProgressHeader(step: 2)
-                .padding(.bottom, 32)
-
             title
             subtitle
                 .padding(.top, 8)
@@ -36,13 +30,7 @@ struct OnboardingLifeGoalsView: View {
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
-
-            nextButton
-                .padding(.top, 16)
         }
-        .padding()
-        .background(.appBackground)
-        .navigationBarBackButtonHidden()
     }
 
     private var title: some View {
@@ -55,22 +43,6 @@ struct OnboardingLifeGoalsView: View {
         Text("Select up to \(OnBoardingViewModel.maxLifeGoals).")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
-    }
-
-    private var nextButton: some View {
-        Button("Next") {
-            HapticManager.shared.triggerImpact(style: .heavy)
-            router.onboardingPath.append(AuthRoute.stressLevels)
-        }
-        .buttonStyle(AppButtonStyle(
-            backgroundColor: .appButtonBackground01,
-            foregroundColor: .textOffWhite,
-            borderColor: .textOffWhite,
-            borderWidth: 2,
-            cornerRadius: 30,
-        ))
-        .disabled(viewModel.selectedLifeGoals.isEmpty)
-        .opacity(viewModel.selectedLifeGoals.isEmpty ? 0.5 : 1)
     }
 }
 
@@ -130,8 +102,8 @@ private struct LifeGoalRow: View {
 }
 
 #Preview {
-    NavigationStack {
-        OnboardingLifeGoalsView()
-    }
-    .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+    OnboardingLifeGoalsView()
+        .padding()
+        .background(.appBackground)
+        .environment(OnBoardingViewModel(authService: PreviewAuthService()))
 }

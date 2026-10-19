@@ -2,9 +2,7 @@ import SwiftUI
 
 /// Onboarding flow routes.
 enum AuthRoute: Hashable {
-    case getToKnowYou
-    case moreOnLifeQuestions
-    case stressLevels
+    case questions
 }
 
 /// Steps counted by the onboarding progress bar.

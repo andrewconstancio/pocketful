@@ -9,7 +9,6 @@ struct OnboardingGetToKnowView: View {
     var body: some View {
         VStack {
             Spacer().frame(height: 10)
-            
             VStack(alignment: .leading, spacing: 8) {
                 title
                 description
@@ -19,11 +18,7 @@ struct OnboardingGetToKnowView: View {
             Spacer()
             flowerImage
             Spacer()
-            nextButton
-            Spacer()
         }
-        .padding()
-        .background(.appBackground)
     }
     
     /// The main title for this view.
@@ -61,7 +56,7 @@ struct OnboardingGetToKnowView: View {
     private var nextButton: some View {
         Button("Next") {
             HapticManager.shared.triggerImpact(style: .heavy)
-            router.onboardingPath.append(AuthRoute.moreOnLifeQuestions)
+            router.onboardingPath.append(AuthRoute.questions)
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,

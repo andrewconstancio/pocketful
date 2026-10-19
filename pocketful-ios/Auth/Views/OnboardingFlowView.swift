@@ -18,12 +18,8 @@ struct OnboardingFlowView: View {
             LoginView()
                 .navigationDestination(for: AuthRoute.self) { route in
                     switch route {
-                    case .getToKnowYou:
-                        OnboardingGetToKnowView()
-                    case .moreOnLifeQuestions:
-                        OnboardingLifeGoalsView()
-                    case .stressLevels:
-                        OnboardingStressLevelsView()
+                    case .questions:
+                        OnboardingQuestionsView()
                     }
                 }
         }

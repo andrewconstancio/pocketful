@@ -1,15 +1,13 @@
 import SwiftUI
 
+/// Onboarding question: "How would you describe your current stress levels?"
 struct OnboardingStressLevelsView: View {
-    
+
     /// The onboarding view model.
     @Environment(OnBoardingViewModel.self) private var viewModel
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnboardingProgressHeader(step: 3)
-                .padding(.bottom, 32)
-            
             title
                 .padding(.bottom, 32)
             
@@ -29,35 +27,13 @@ struct OnboardingStressLevelsView: View {
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
-            
-            nextButton
-                .padding(.top, 16)
         }
-        .padding()
-        .background(.appBackground)
-        .navigationBarBackButtonHidden()
     }
     
     private var title: some View {
         Text("How would you describe your current stress levels?")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.bold.font(size: 34))
-    }
-    
-    private var nextButton: some View {
-        Button("Next") {
-            HapticManager.shared.triggerImpact(style: .heavy)
-//            router.onboardingPath.append(AuthRoute.stressLevels)
-        }
-        .buttonStyle(AppButtonStyle(
-            backgroundColor: .appButtonBackground01,
-            foregroundColor: .textOffWhite,
-            borderColor: .textOffWhite,
-            borderWidth: 2,
-            cornerRadius: 30,
-        ))
-        .disabled(viewModel.selectedStressLevel == nil)
-        .opacity(viewModel.selectedStressLevel == nil ? 0.5 : 1)
     }
 }
 
@@ -117,4 +93,7 @@ private struct StressLevelRow: View {
 
 #Preview {
     OnboardingStressLevelsView()
+        .padding()
+        .background(.appBackground)
+        .environment(OnBoardingViewModel(authService: PreviewAuthService()))
 }

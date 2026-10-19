@@ -28,6 +28,10 @@
 		1CAC1446308519AA005846CF /* OnboardingStressLevelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC1445308519AA005846CF /* OnboardingStressLevelsView.swift */; };
 		1CAC14483083A000005846CF /* OnboardingLifeGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */; };
 		1CAC144830851A1F005846CF /* StressLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144730851A19005846CF /* StressLevel.swift */; };
+		1CAC144A30859BA8005846CF /* OnboardingAreasOfFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144930859BA8005846CF /* OnboardingAreasOfFocusView.swift */; };
+		1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14493086B000005846CF /* OnboardingQuestion.swift */; };
+		1CAC144C3086B000005846CF /* OnboardingQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */; };
+		1CAC144D30859CA5005846CF /* FocusArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144C30859C9D005846CF /* FocusArea.swift */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
@@ -56,6 +60,10 @@
 		1CAC1445308519AA005846CF /* OnboardingStressLevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStressLevelsView.swift; sourceTree = "<group>"; };
 		1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLifeGoalsView.swift; sourceTree = "<group>"; };
 		1CAC144730851A19005846CF /* StressLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StressLevel.swift; sourceTree = "<group>"; };
+		1CAC144930859BA8005846CF /* OnboardingAreasOfFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAreasOfFocusView.swift; sourceTree = "<group>"; };
+		1CAC14493086B000005846CF /* OnboardingQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestion.swift; sourceTree = "<group>"; };
+		1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsView.swift; sourceTree = "<group>"; };
+		1CAC144C30859C9D005846CF /* FocusArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusArea.swift; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
@@ -113,7 +121,9 @@
 				1CAC143E30824E88005846CF /* OnboardingGetToKnowView.swift */,
 				1CAC14473083A000005846CF /* OnboardingLifeGoalsView.swift */,
 				1CAC14453083A000005846CF /* OnboardingProgressHeader.swift */,
+				1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */,
 				1CAC1445308519AA005846CF /* OnboardingStressLevelsView.swift */,
+				1CAC144930859BA8005846CF /* OnboardingAreasOfFocusView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -124,6 +134,17 @@
 				1CAC144130851272005846CF /* HapticManager.swift */,
 			);
 			path = UIHelpers;
+			sourceTree = "<group>";
+		};
+		1CAC144B30859C7D005846CF /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				1CAC144C30859C9D005846CF /* FocusArea.swift */,
+				1CAC14433083A000005846CF /* LifeGoal.swift */,
+				1CAC144730851A19005846CF /* StressLevel.swift */,
+				1CAC14493086B000005846CF /* OnboardingQuestion.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		1CC375F7307AE5F400173B34 = {
@@ -159,12 +180,11 @@
 		1CC37615307AE68C00173B34 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				1CAC144B30859C7D005846CF /* Enums */,
 				1CAC14403082A000005846CF /* Views */,
 				1CAC14243080A4F5005846CF /* ViewModels */,
 				1CAC143C30818B7A005846CF /* AuthRoute.swift */,
 				1CAC142D3080A8D5005846CF /* AuthState.swift */,
-				1CAC14433083A000005846CF /* LifeGoal.swift */,
-				1CAC144730851A19005846CF /* StressLevel.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -307,10 +327,14 @@
 				1CAC144230851276005846CF /* HapticManager.swift in Sources */,
 				1CAC138630808BB6005846CF /* RootView.swift in Sources */,
 				1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */,
+				1CAC144D30859CA5005846CF /* FocusArea.swift in Sources */,
 				1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
 				1CAC1439308189C8005846CF /* AppRouter.swift in Sources */,
 				1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */,
+				1CAC144C3086B000005846CF /* OnboardingQuestionsView.swift in Sources */,
+				1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */,
+				1CAC144A30859BA8005846CF /* OnboardingAreasOfFocusView.swift in Sources */,
 				1CAC14483083A000005846CF /* OnboardingLifeGoalsView.swift in Sources */,
 				1CAC14463083A000005846CF /* OnboardingProgressHeader.swift in Sources */,
 				1CAC14443083A000005846CF /* LifeGoal.swift in Sources */,

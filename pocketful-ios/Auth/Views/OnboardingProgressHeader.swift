@@ -6,7 +6,8 @@ struct OnboardingProgressHeader: View {
     /// The current step, starting at 1.
     let step: Int
 
-    @Environment(\.dismiss) private var dismiss
+    /// Called when the back arrow is tapped.
+    let onBack: () -> Void
 
     var body: some View {
         HStack(spacing: 16) {
@@ -17,9 +18,7 @@ struct OnboardingProgressHeader: View {
     }
 
     private var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
+        Button(action: onBack) {
             Image(systemName: "arrow.left")
                 .font(.system(size: 22, weight: .regular))
                 .foregroundStyle(.textPrimary)
@@ -35,6 +34,7 @@ struct OnboardingProgressHeader: View {
                     .frame(height: 4)
             }
         }
+        .animation(.easeInOut, value: step)
     }
 
     private var stepLabel: some View {
@@ -45,7 +45,7 @@ struct OnboardingProgressHeader: View {
 }
 
 #Preview {
-    OnboardingProgressHeader(step: 2)
+    OnboardingProgressHeader(step: 2, onBack: {})
         .padding()
         .background(.appBackground)
 }
