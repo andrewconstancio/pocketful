@@ -32,6 +32,10 @@
 		1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14493086B000005846CF /* OnboardingQuestion.swift */; };
 		1CAC144C3086B000005846CF /* OnboardingQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */; };
 		1CAC144D30859CA5005846CF /* FocusArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144C30859C9D005846CF /* FocusArea.swift */; };
+		1CAC144F30864E9D005846CF /* OnboardingChallengingMostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC144E30864E9D005846CF /* OnboardingChallengingMostView.swift */; };
+		1CAC145130864FA8005846CF /* ChallengeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145030864F9D005846CF /* ChallengeArea.swift */; };
+		1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */; };
+		1CAC145530879771005846CF /* HelpsBest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14543087976D005846CF /* HelpsBest.swift */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
@@ -64,6 +68,10 @@
 		1CAC14493086B000005846CF /* OnboardingQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestion.swift; sourceTree = "<group>"; };
 		1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionsView.swift; sourceTree = "<group>"; };
 		1CAC144C30859C9D005846CF /* FocusArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusArea.swift; sourceTree = "<group>"; };
+		1CAC144E30864E9D005846CF /* OnboardingChallengingMostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingChallengingMostView.swift; sourceTree = "<group>"; };
+		1CAC145030864F9D005846CF /* ChallengeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeArea.swift; sourceTree = "<group>"; };
+		1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelpsTheBestView.swift; sourceTree = "<group>"; };
+		1CAC14543087976D005846CF /* HelpsBest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpsBest.swift; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
@@ -124,6 +132,8 @@
 				1CAC144B3086B000005846CF /* OnboardingQuestionsView.swift */,
 				1CAC1445308519AA005846CF /* OnboardingStressLevelsView.swift */,
 				1CAC144930859BA8005846CF /* OnboardingAreasOfFocusView.swift */,
+				1CAC144E30864E9D005846CF /* OnboardingChallengingMostView.swift */,
+				1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -139,6 +149,8 @@
 		1CAC144B30859C7D005846CF /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				1CAC14543087976D005846CF /* HelpsBest.swift */,
+				1CAC145030864F9D005846CF /* ChallengeArea.swift */,
 				1CAC144C30859C9D005846CF /* FocusArea.swift */,
 				1CAC14433083A000005846CF /* LifeGoal.swift */,
 				1CAC144730851A19005846CF /* StressLevel.swift */,
@@ -321,7 +333,9 @@
 				1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */,
 				1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */,
 				1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */,
+				1CAC144F30864E9D005846CF /* OnboardingChallengingMostView.swift in Sources */,
 				1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */,
+				1CAC145130864FA8005846CF /* ChallengeArea.swift in Sources */,
 				1CAC14293080A56B005846CF /* AuthService.swift in Sources */,
 				1CAC142E3080A8DA005846CF /* AuthState.swift in Sources */,
 				1CAC144230851276005846CF /* HapticManager.swift in Sources */,
@@ -333,6 +347,7 @@
 				1CAC1439308189C8005846CF /* AppRouter.swift in Sources */,
 				1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */,
 				1CAC144C3086B000005846CF /* OnboardingQuestionsView.swift in Sources */,
+				1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */,
 				1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */,
 				1CAC144A30859BA8005846CF /* OnboardingAreasOfFocusView.swift in Sources */,
 				1CAC14483083A000005846CF /* OnboardingLifeGoalsView.swift in Sources */,
@@ -341,6 +356,7 @@
 				1CAC144830851A1F005846CF /* StressLevel.swift in Sources */,
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
+				1CAC145530879771005846CF /* HelpsBest.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 				1CAC1446308519AA005846CF /* OnboardingStressLevelsView.swift in Sources */,

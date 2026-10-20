@@ -6,4 +6,4 @@ enum AuthRoute: Hashable {
 }
 
 /// Steps counted by the onboarding progress bar.
-let onboardingTotalSteps = 8
+let onboardingTotalSteps = OnboardingQuestion.allCases.count

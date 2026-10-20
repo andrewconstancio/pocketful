@@ -6,8 +6,10 @@ enum OnboardingQuestion: Int, CaseIterable {
     case lifeGoals
     case stressLevel
     case areasOfFocus
+    case challengingMost
+    case helpsTheBest
 
-    /// The progress bar step; the Get To Know intro is step 1, so questions start at 2.
+    /// The step number shown in the progress header, starting at 1.
     var step: Int { rawValue + 1 }
 
     /// The question after this one, or `nil` on the last question.

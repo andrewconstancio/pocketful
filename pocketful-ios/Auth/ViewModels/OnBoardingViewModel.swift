@@ -18,6 +18,12 @@ final class OnBoardingViewModel {
     
     /// The areas of focus the user has selected.
     private(set) var selectedFocusAreas: Set<FocusArea> = []
+    
+    /// The users selected challenge areas.
+    private(set) var selectedChallengeArea: Set<ChallengeArea> = []
+
+    /// What helps the user feel their best.
+    private(set) var selectedHelpsBest: Set<HelpsBest> = []
 
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
@@ -29,6 +35,8 @@ final class OnBoardingViewModel {
         case .lifeGoals: !selectedLifeGoals.isEmpty
         case .stressLevel: selectedStressLevel != nil
         case .areasOfFocus: !selectedFocusAreas.isEmpty
+        case .challengingMost: !selectedChallengeArea.isEmpty
+        case .helpsTheBest: !selectedHelpsBest.isEmpty
         }
     }
 
@@ -75,6 +83,24 @@ final class OnBoardingViewModel {
             selectedFocusAreas.remove(area)
         } else {
             selectedFocusAreas.insert(area)
+        }
+    }
+    
+    /// Selects a challenge area, or deselects it if it's already picked.
+    func toggleChallengeArea(_ area: ChallengeArea) {
+        if selectedChallengeArea.contains(area) {
+            selectedChallengeArea.remove(area)
+        } else {
+            selectedChallengeArea.insert(area)
+        }
+    }
+
+    /// Selects a helps-best option, or deselects it if it's already picked.
+    func toggleHelpsBest(_ item: HelpsBest) {
+        if selectedHelpsBest.contains(item) {
+            selectedHelpsBest.remove(item)
+        } else {
+            selectedHelpsBest.insert(item)
         }
     }
 }
