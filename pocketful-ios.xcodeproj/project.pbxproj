@@ -36,6 +36,7 @@
 		1CAC145130864FA8005846CF /* ChallengeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145030864F9D005846CF /* ChallengeArea.swift */; };
 		1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */; };
 		1CAC145530879771005846CF /* HelpsBest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14543087976D005846CF /* HelpsBest.swift */; };
+		1CAC145730879BF2005846CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CAC145630879BF2005846CF /* LaunchScreen.storyboard */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
 		1CC37614307AE68900173B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC3760E307AE68900173B34 /* Assets.xcassets */; };
 		1CC3761B307AE6C800173B34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC3761A307AE6C800173B34 /* LoginView.swift */; };
@@ -72,6 +73,7 @@
 		1CAC145030864F9D005846CF /* ChallengeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeArea.swift; sourceTree = "<group>"; };
 		1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelpsTheBestView.swift; sourceTree = "<group>"; };
 		1CAC14543087976D005846CF /* HelpsBest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpsBest.swift; sourceTree = "<group>"; };
+		1CAC145630879BF2005846CF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC3760E307AE68900173B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC37610307AE68900173B34 /* pocketful_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pocketful_iosApp.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		1CC37611307AE68900173B34 /* pocketful-ios */ = {
 			isa = PBXGroup;
 			children = (
+				1CAC145630879BF2005846CF /* LaunchScreen.storyboard */,
 				1CAC14363080AB4C005846CF /* GoogleService-Info.plist */,
 				1CC37622307D061C00173B34 /* Info.plist */,
 				1CC3760E307AE68900173B34 /* Assets.xcassets */,
@@ -318,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC37614307AE68900173B34 /* Assets.xcassets in Resources */,
+				1CAC145730879BF2005846CF /* LaunchScreen.storyboard in Resources */,
 				1CC37621307D05FD00173B34 /* CormorantGaramond.ttf in Resources */,
 				1CAC14373080AB4C005846CF /* GoogleService-Info.plist in Resources */,
 			);
@@ -500,7 +504,6 @@
 				INFOPLIST_FILE = "pocketful-ios/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -533,7 +536,6 @@
 				INFOPLIST_FILE = "pocketful-ios/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
