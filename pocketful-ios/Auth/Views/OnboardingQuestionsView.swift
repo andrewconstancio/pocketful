@@ -6,6 +6,9 @@ struct OnboardingQuestionsView: View {
     /// Holds the current question and the user's answers.
     @Environment(OnBoardingViewModel.self) private var viewModel
 
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+
     @Environment(\.dismiss) private var dismiss
 
     /// Which way the questions slide.
@@ -28,6 +31,7 @@ struct OnboardingQuestionsView: View {
         }
         .padding()
         .background(.appBackground)
+        .ignoresSafeArea(.keyboard)
         .navigationBarBackButtonHidden()
     }
 
@@ -46,13 +50,27 @@ struct OnboardingQuestionsView: View {
             OnboardingChallengingMostView()
         case .helpsTheBest:
             OnboardingHelpsTheBestView()
+        case .fulfilledVersion:
+            OnboardingFulfilledVersionView()
+        case .additionalThoughts:
+            OnboardingAdditionalThoughtsView()
         }
     }
 
     private var nextButton: some View {
-        Button("Next") {
+        Button {
             HapticManager.shared.triggerImpact(style: .heavy)
-            moveQuestion(forward: true)
+            if viewModel.currentQuestion.next == nil {
+                router.onboardingPath.append(AuthRoute.generatingInsights)
+            } else {
+                moveQuestion(forward: true)
+            }
+        } label: {
+            if viewModel.currentQuestion.next == nil {
+               Text("Generate My Insights")
+            } else {
+                Text("Next")
+            }
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,
@@ -94,4 +112,5 @@ struct OnboardingQuestionsView: View {
         OnboardingQuestionsView()
     }
     .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+    .environment(AppRouter())
 }

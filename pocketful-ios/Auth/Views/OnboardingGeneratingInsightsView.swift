@@ -1,0 +1,93 @@
+import SwiftUI
+
+/// Shown after the last onboarding question while the user's insights are being created.
+struct OnboardingGeneratingInsightsView: View {
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            sparkles
+                .padding(.bottom, 24)
+            title
+                .padding(.bottom, 16)
+            description
+
+            Spacer()
+            Spacer()
+        }
+        .padding(.horizontal, 32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(alignment: .bottom) {
+            flowerImage
+        }
+        .background(.appBackground)
+        .navigationBarBackButtonHidden()
+        .task { await pulseHaptics() }
+    }
+
+    /// Vibrates in waves that speed up and slow down; stops on its own when the screen goes away.
+    private func pulseHaptics() async {
+        let fastestGap = 0.08
+        let slowestGap = 0.45
+        let secondsPerWave = 3.0
+        let start = Date.now
+
+        while !Task.isCancelled {
+            HapticManager.shared.triggerImpact(style: .heavy)
+
+            // Smoothly goes 0 → 1 → 0 each wave, where 1 is the fastest point.
+            let elapsed = Date.now.timeIntervalSince(start)
+            let speed = (1 - cos(elapsed / secondsPerWave * 2 * .pi)) / 2
+            let gap = slowestGap - (slowestGap - fastestGap) * speed
+            try? await Task.sleep(for: .seconds(gap))
+        }
+    }
+
+    /// Gently pulses so the screen feels like it's working.
+    private var sparkles: some View {
+        Image(systemName: "sparkles")
+            .font(.system(size: 40, weight: .light))
+            .foregroundStyle(.textPrimary.opacity(0.7))
+            .symbolEffect(.pulse)
+    }
+
+    private var title: some View {
+        Text("Creating your personalized insights...")
+            .foregroundStyle(.textPrimary)
+            .font(FontManager.CormorantGaramond.bold.font(size: 34))
+            .multilineTextAlignment(.center)
+    }
+
+    private var description: some View {
+        Text("Analyzing your responses to create thoughtful points to remember and reflect on.")
+            .foregroundStyle(.textPrimary.opacity(0.8))
+            .font(.system(size: 17))
+            .multilineTextAlignment(.center)
+            .lineSpacing(4)
+    }
+
+    /// Faded plants along the bottom edge.
+    private var flowerImage: some View {
+        Image("wildflower_1")
+            .resizable()
+            .scaledToFit()
+            .opacity(0.8)
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .black, location: 0.6),
+                        .init(color: .clear, location: 1.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .ignoresSafeArea(edges: .bottom)
+            .allowsHitTesting(false)
+    }
+}
+
+#Preview {
+    OnboardingGeneratingInsightsView()
+}

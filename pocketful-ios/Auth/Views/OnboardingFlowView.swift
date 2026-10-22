@@ -20,6 +20,8 @@ struct OnboardingFlowView: View {
                     switch route {
                     case .questions:
                         OnboardingQuestionsView()
+                    case .generatingInsights:
+                        OnboardingGeneratingInsightsView()
                     }
                 }
         }

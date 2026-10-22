@@ -25,6 +25,12 @@ final class OnBoardingViewModel {
     /// What helps the user feel their best.
     private(set) var selectedHelpsBest: Set<HelpsBest> = []
 
+    /// What a more fulfilled version of the user looks like, in their own words.
+    var fulfilledVersionText = ""
+
+    /// Anything else the user wants to share.
+    var additionalThoughtsText = ""
+
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
 
@@ -37,6 +43,8 @@ final class OnBoardingViewModel {
         case .areasOfFocus: !selectedFocusAreas.isEmpty
         case .challengingMost: !selectedChallengeArea.isEmpty
         case .helpsTheBest: !selectedHelpsBest.isEmpty
+        case .fulfilledVersion: true
+        case .additionalThoughts: true
         }
     }
 
