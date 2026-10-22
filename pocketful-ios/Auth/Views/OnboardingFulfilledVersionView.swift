@@ -25,16 +25,18 @@ struct OnboardingFulfilledVersionView: View {
 
             optionalLabel
                 .padding(.top, 12)
+            
+            Spacer(minLength: 0)
         }
         .background(alignment: .bottom) {
             flowerImage
         }
         .background {
-            // Sits behind the text box, so tapping anywhere else hides the keyboard.
             Color.clear
                 .contentShape(Rectangle())
                 .onTapGesture { isTextBoxFocused = false }
         }
+        .ignoresSafeArea(.keyboard)
     }
 
     private var title: some View {
@@ -51,10 +53,10 @@ struct OnboardingFulfilledVersionView: View {
 
     /// Faded plants tucked into the bottom corner.
     private var flowerImage: some View {
-        Image("wildflower_1")
+        Image("wildflower_2")
             .resizable()
             .scaledToFit()
-            .frame(width: 260)
+            .frame(width: 320)
             .opacity(0.8)
             .mask(
                 LinearGradient(

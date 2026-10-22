@@ -67,7 +67,12 @@ struct OnboardingQuestionsView: View {
             }
         } label: {
             if viewModel.currentQuestion.next == nil {
-               Text("Generate My Insights")
+                HStack(spacing: 4) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 26, weight: .light))
+                        .foregroundStyle(.textOffWhite)
+                    Text("Generate My Insights")
+                }
             } else {
                 Text("Next")
             }

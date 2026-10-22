@@ -22,10 +22,14 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="leaf.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="59t-NQ-UcQ">
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="leaf.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="59t-NQ-UcQ">
                                 <rect key="frame" x="146" y="376.66666666666669" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" name="appGreen"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="textLogo" translatesAutoresizingMaskIntoConstraints="NO" id="muJ-na-L2g" userLabel="logo">
+                                <rect key="frame" x="76" y="362" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
@@ -44,11 +48,12 @@
     </scenes>
     <resources>
         <image name="leaf.fill" catalog="system" width="128" height="109"/>
+        <image name="textLogo" width="739" height="198"/>
         <namedColor name="appBackground">
             <color red="0.97600001096725464" green="0.94900000095367432" blue="0.90600001811981201" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="appGreen">
-            <color red="0.062745098039215685" green="0.32156862745098036" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.063000001013278961" green="0.32199999690055847" blue="0.093999996781349182" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

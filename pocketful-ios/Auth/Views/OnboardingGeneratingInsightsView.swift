@@ -5,7 +5,7 @@ struct OnboardingGeneratingInsightsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
+            Spacer().frame(height: 70)
 
             sparkles
                 .padding(.bottom, 24)
@@ -14,12 +14,11 @@ struct OnboardingGeneratingInsightsView: View {
             description
 
             Spacer()
-            Spacer()
         }
         .padding(.horizontal, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(alignment: .bottom) {
-            flowerImage
+            growingPlant
         }
         .background(.appBackground)
         .navigationBarBackButtonHidden()
@@ -67,22 +66,9 @@ struct OnboardingGeneratingInsightsView: View {
             .lineSpacing(4)
     }
 
-    /// Faded plants along the bottom edge.
-    private var flowerImage: some View {
-        Image("wildflower_1")
-            .resizable()
-            .scaledToFit()
-            .opacity(0.8)
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .black, location: 0.6),
-                        .init(color: .clear, location: 1.0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+    /// Plant that grows up from the bottom edge while insights load.
+    private var growingPlant: some View {
+        GrowingPlantView()
             .ignoresSafeArea(edges: .bottom)
             .allowsHitTesting(false)
     }
