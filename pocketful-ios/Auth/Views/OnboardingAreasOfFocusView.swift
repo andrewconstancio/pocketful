@@ -102,5 +102,5 @@ private struct FocusAreaTile: View {
     OnboardingAreasOfFocusView()
         .padding()
         .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
 }

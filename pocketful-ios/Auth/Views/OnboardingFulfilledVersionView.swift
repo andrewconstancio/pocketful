@@ -76,5 +76,5 @@ struct OnboardingFulfilledVersionView: View {
     OnboardingFulfilledVersionView()
         .padding()
         .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
 }

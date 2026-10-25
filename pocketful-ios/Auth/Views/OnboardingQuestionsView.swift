@@ -116,6 +116,6 @@ struct OnboardingQuestionsView: View {
     NavigationStack {
         OnboardingQuestionsView()
     }
-    .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
     .environment(AppRouter())
 }

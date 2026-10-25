@@ -4,6 +4,7 @@ import SwiftUI
 enum AuthRoute: Hashable {
     case questions
     case generatingInsights
+    case insights
 }
 
 /// Steps counted by the onboarding progress bar.

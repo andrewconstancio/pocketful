@@ -105,5 +105,5 @@ private struct LifeGoalRow: View {
     OnboardingLifeGoalsView()
         .padding()
         .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
 }

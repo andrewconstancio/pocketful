@@ -22,6 +22,8 @@ struct OnboardingFlowView: View {
                         OnboardingQuestionsView()
                     case .generatingInsights:
                         OnboardingGeneratingInsightsView()
+                    case .insights:
+                        OnboardingInsightsView()
                     }
                 }
         }
@@ -30,6 +32,9 @@ struct OnboardingFlowView: View {
 }
 
 #Preview {
-    OnboardingFlowView(dependencies: AppDependencies(authService: PreviewAuthService()))
+    OnboardingFlowView(dependencies: AppDependencies(
+        authService: PreviewAuthService(),
+        foundationModelService: PreviewFoundationModelService()
+    ))
         .environment(AppRouter())
 }

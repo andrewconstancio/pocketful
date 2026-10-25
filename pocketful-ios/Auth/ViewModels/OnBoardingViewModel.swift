@@ -33,6 +33,14 @@ final class OnBoardingViewModel {
 
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
+    
+    private let foundationModelService: FoundationModelServicing
+
+    /// The insights made from the answers, or `nil` until they're ready.
+    private(set) var insights: OnboardingInsights?
+
+    /// True if creating insights failed.
+    private(set) var didFailToGenerateInsights = false
 
     /// Whether the current question is answered, so Next can be tapped.
     var canContinue: Bool {
@@ -48,8 +56,27 @@ final class OnBoardingViewModel {
         }
     }
 
-    init(authService: AuthServicing) {
+    init(authService: AuthServicing, foundationModelService: FoundationModelServicing) {
         self.authService = authService
+        self.foundationModelService = foundationModelService
+    }
+
+    /// Sends the answers to the on-device model and stores the insights.
+    func generateInsights() async {
+        let answers = OnboardingAnswers(
+            lifeGoals: Array(selectedLifeGoals),
+            stressLevel: selectedStressLevel,
+            focusAreas: Array(selectedFocusAreas),
+            challengeAreas: Array(selectedChallengeArea),
+            helpsBest: Array(selectedHelpsBest),
+            fulfilledVersion: fulfilledVersionText,
+            additionalThoughts: additionalThoughtsText
+        )
+        do {
+            insights = try await foundationModelService.generateInsights(from: answers)
+        } catch {
+            didFailToGenerateInsights = true
+        }
     }
 
     /// Moves to the next question; does nothing on the last one.

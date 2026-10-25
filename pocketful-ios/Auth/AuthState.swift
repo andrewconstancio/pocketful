@@ -4,4 +4,3 @@ enum AuthState {
     case setupUser
     case authenticated
 }
-

@@ -3,6 +3,12 @@ import SwiftUI
 /// Shown after the last onboarding question while the user's insights are being created.
 struct OnboardingGeneratingInsightsView: View {
 
+    /// Holds the user's answers and makes the insights.
+    @Environment(OnBoardingViewModel.self) private var viewModel
+
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+
     var body: some View {
         VStack(spacing: 0) {
             Spacer().frame(height: 70)
@@ -23,6 +29,14 @@ struct OnboardingGeneratingInsightsView: View {
         .background(.appBackground)
         .navigationBarBackButtonHidden()
         .task { await pulseHaptics() }
+        .task { await generateInsights() }
+    }
+
+    /// Makes the insights, then moves on to the results screen.
+    private func generateInsights() async {
+        await viewModel.generateInsights()
+        guard !Task.isCancelled else { return }
+        router.onboardingPath.append(AuthRoute.insights)
     }
 
     /// Vibrates in waves that speed up and slow down; stops on its own when the screen goes away.
@@ -76,4 +90,6 @@ struct OnboardingGeneratingInsightsView: View {
 
 #Preview {
     OnboardingGeneratingInsightsView()
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
+        .environment(AppRouter())
 }
