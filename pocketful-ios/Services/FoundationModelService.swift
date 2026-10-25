@@ -14,6 +14,32 @@ struct Insight {
 
     @Guide(description: "One or two uplifting sentences, speaking to the user as 'you', that connect this reminder to one specific answer they gave.")
     let body: String
+
+    // Comes after the text so the model picks an icon for what it already wrote.
+    @Guide(description: "The icon that best matches the feeling of this reminder.")
+    let icon: InsightIcon
+}
+
+/// The icons the model can choose from for a reminder.
+@Generable
+enum InsightIcon: String {
+    case calm, heart, sun, leaf, sparkles, moon, mountain, people, music, focus
+
+    /// The SF Symbol shown for this icon.
+    var systemName: String {
+        switch self {
+        case .calm: "wind"
+        case .heart: "heart"
+        case .sun: "sun.max"
+        case .leaf: "leaf"
+        case .sparkles: "sparkles"
+        case .moon: "moon.stars"
+        case .mountain: "mountain.2"
+        case .people: "person.2"
+        case .music: "music.note"
+        case .focus: "scope"
+        }
+    }
 }
 
 enum FoundationModelError: Error {
@@ -45,7 +71,7 @@ final class FoundationModelService: FoundationModelServicing {
         """
 
     /// A higher temperature adds randomness, so the same answers don't always produce the same reminders.
-    private static let insightsOptions = GenerationOptions(temperature: 1.2)
+    private static let insightsOptions = GenerationOptions(temperature: 0.9)
 
     var isAvailable: Bool { model.isAvailable }
 
@@ -75,9 +101,9 @@ final class PreviewFoundationModelService: FoundationModelServicing {
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights {
         if shouldFail { throw FoundationModelError.modelUnavailable }
         return OnboardingInsights(insights: [
-            Insight(title: "Slow down", body: "You're allowed to take your time today. Each small step still counts."),
-            Insight(title: "Be kind to yourself", body: "You're doing your best, and that's more than enough."),
-            Insight(title: "Be intentional", body: "Choose one thing today that brings you peace, and give it your full attention.")
+            Insight(title: "Slow down", body: "You're allowed to take your time today. Each small step still counts.", icon: .calm),
+            Insight(title: "Be kind to yourself", body: "You're doing your best, and that's more than enough.", icon: .heart),
+            Insight(title: "Be intentional", body: "Choose one thing today that brings you peace, and give it your full attention.", icon: .focus)
         ])
     }
 }

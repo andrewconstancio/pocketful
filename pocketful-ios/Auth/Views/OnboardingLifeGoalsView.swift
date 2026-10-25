@@ -57,7 +57,7 @@ private struct LifeGoalRow: View {
         Button(action: onTap) {
             HStack(spacing: 16) {
                 Image(systemName: goal.iconName)
-                    .font(.system(size: 22))
+                    .font(.system(size: 18))
                     .foregroundStyle(.textPrimary.opacity(0.7))
                     .frame(width: 32)
 

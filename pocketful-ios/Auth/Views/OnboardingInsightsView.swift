@@ -85,9 +85,15 @@ private struct InsightCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(insight.title)
-                .foregroundStyle(.textPrimary)
-                .font(FontManager.CormorantGaramond.bold.font(size: 24))
+            HStack(spacing: 12) {
+                Image(systemName: insight.icon.systemName)
+                    .font(.system(size: 22))
+                    .foregroundStyle(.textPrimary)
+
+                Text(insight.title)
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.bold.font(size: 24))
+            }
 
             Text(insight.body)
                 .foregroundStyle(.textPrimary.opacity(0.8))
