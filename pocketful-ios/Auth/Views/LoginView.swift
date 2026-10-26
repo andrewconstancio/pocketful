@@ -64,7 +64,7 @@ struct LoginView: View {
             }
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: .appButtonBackground01,
+            backgroundColor: .appGreen,
             foregroundColor: .textOffWhite,
             borderColor: .textOffWhite,
             borderWidth: 2,

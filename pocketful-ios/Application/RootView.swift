@@ -13,6 +13,10 @@ struct RootView: View {
             .task {
                 await session.observeAuthChanges()
             }
+            .onChange(of: session.authState) { oldValue, newValue in
+                print("oldValue \(oldValue)")
+                print("newValue \(newValue)")
+            }
     }
     
     @ViewBuilder
@@ -20,10 +24,12 @@ struct RootView: View {
         switch session.authState {
         case .startup:
             Text("Start up")
-        case .unauthenticated, .setupUser:
+        case .unauthenticated:
+            LoginView()
+        case .setupUser:
             OnboardingFlowView(dependencies: dependencies)
         case .authenticated:
-            Text("Main")
+            HomeView(dependencies: dependencies)
         }
     }
 }

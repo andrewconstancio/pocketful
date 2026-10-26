@@ -59,7 +59,7 @@ struct OnboardingGetToKnowView: View {
             router.onboardingPath.append(AuthRoute.questions)
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: .appButtonBackground01,
+            backgroundColor: .appGreen,
             foregroundColor: .textOffWhite,
             borderColor: .textOffWhite,
             borderWidth: 2,

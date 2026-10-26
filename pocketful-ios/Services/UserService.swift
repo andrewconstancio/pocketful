@@ -1,27 +1,35 @@
 import FirebaseFirestore
 
 protocol UserServicing {
-    func hasCompletedOnboarding(userID: String) async throws -> Bool
-    func markOnboardingComplete(userID: String) async throws
+    func userExists(uid: String) async throws -> Bool
+    func userExists(email: String) async throws -> Bool
+    func saveUser(uid: String, email: String) async throws
 }
 
 /// Reads and writes each user's doc at `users/{uid}` in Firestore.
 final class UserService: UserServicing {
+    /// Lazy so it resolves after `FirebaseApp.configure()` runs.
+    private var db: Firestore { Firestore.firestore() }
+    private let collection = "users"
 
-    /// Field names in the user doc.
-    private enum Field {
-        static let hasCompletedOnboarding = "hasCompletedOnboarding"
+    func userExists(uid: String) async throws -> Bool {
+        let snapshot = try await db.collection(collection).document(uid).getDocument()
+        return snapshot.exists
+    }
+    
+    func userExists(email: String) async throws -> Bool {
+        let snapshot = try await db.collection(collection)
+            .whereField("email", isEqualTo: email)
+            .limit(to: 1)
+            .getDocuments()
+        return !snapshot.documents.isEmpty
     }
 
-    private let users = Firestore.firestore().collection("users")
-
-    func hasCompletedOnboarding(userID: String) async throws -> Bool {
-        let snapshot = try await users.document(userID).getDocument()
-        return snapshot.data()?[Field.hasCompletedOnboarding] as? Bool ?? false
-    }
-
-    func markOnboardingComplete(userID: String) async throws {
-        try await users.document(userID).setData([Field.hasCompletedOnboarding: true], merge: true)
+    func saveUser(uid: String, email: String) async throws {
+        try await db.collection(collection).document(uid).setData([
+            "email": email,
+            "created_at": FieldValue.serverTimestamp()
+        ], merge: true)
     }
 }
 
@@ -29,17 +37,16 @@ final class UserService: UserServicing {
 /// A fake user service so previews don't need Firebase.
 final class PreviewUserService: UserServicing {
 
-    /// What to report for `hasCompletedOnboarding`.
-    let hasCompletedOnboarding: Bool
+    /// What to report for `userExists(uid:)`.
+    let isExistingUser: Bool
 
-    init(hasCompletedOnboarding: Bool = false) {
-        self.hasCompletedOnboarding = hasCompletedOnboarding
+    init(isExistingUser: Bool = false) {
+        self.isExistingUser = isExistingUser
     }
-
-    func hasCompletedOnboarding(userID: String) async throws -> Bool {
-        hasCompletedOnboarding
+    func userExists(uid: String) async throws -> Bool {
+        isExistingUser
     }
-
-    func markOnboardingComplete(userID: String) async throws {}
+    func userExists(email: String) async throws -> Bool { return false }
+    func saveUser(uid: String, email: String) async throws {}
 }
 #endif

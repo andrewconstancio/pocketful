@@ -85,7 +85,7 @@ private struct ChallengeRow: View {
             .font(.system(size: 14, weight: .bold))
             .foregroundStyle(.textOffWhite)
             .frame(width: 30, height: 30)
-            .background(Circle().fill(.appButtonBackground01))
+            .background(Circle().fill(.appGreen))
     }
     
     private var emptyCircle: some View {

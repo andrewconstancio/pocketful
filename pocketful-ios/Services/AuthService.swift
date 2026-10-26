@@ -5,8 +5,10 @@ import UIKit
 
 protocol AuthServicing {
     var currentUserId: String? { get }
+    var currentUserEmail: String? { get }
     func userIDChanges() -> AsyncStream<String?>
     func signInWithGoogle() async throws
+    func signOut() throws
 }
 
 enum AuthError: Error {
@@ -17,9 +19,12 @@ enum AuthError: Error {
 
 final class AuthService: AuthServicing {
     
-    /// The signed-in user's uid, or `nil` when signed out.
     var currentUserId: String? {
         Auth.auth().currentUser?.uid
+    }
+
+    var currentUserEmail: String? {
+        Auth.auth().currentUser?.email
     }
 
     func userIDChanges() -> AsyncStream<String?> {
@@ -53,6 +58,10 @@ final class AuthService: AuthServicing {
         )
         try await Auth.auth().signIn(with: credential)
     }
+    
+    func signOut() throws {
+        try Auth.auth().signOut()
+    }
 
     /// Google's sheet has to be presented from a UIKit view controller, so grab the window's root one.
     private func rootViewController() -> UIViewController? {
@@ -72,6 +81,8 @@ final class PreviewAuthService: AuthServicing {
         Auth.auth().currentUser?.uid
     }
 
+    var currentUserEmail: String? { nil }
+
     /// The user ID to report, or `nil` for signed out.
     let userID: String?
 
@@ -86,5 +97,6 @@ final class PreviewAuthService: AuthServicing {
     }
 
     func signInWithGoogle() async throws {}
+    func signOut() throws {}
 }
 #endif

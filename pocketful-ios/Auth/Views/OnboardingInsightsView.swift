@@ -83,7 +83,7 @@ struct OnboardingInsightsView: View {
             Text("Continue")
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: .appButtonBackground01,
+            backgroundColor: .appGreen,
             foregroundColor: .textOffWhite,
             borderColor: .textOffWhite,
             borderWidth: 2,

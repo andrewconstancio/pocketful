@@ -25,7 +25,12 @@ final class SessionStore {
     var currentUserId: String? {
         authService.currentUserId
     }
-    
+
+    /// The signed-in user's email, or `nil` when signed out.
+    var currentUserEmail: String? {
+        authService.currentUserEmail
+    }
+
     init(authService: AuthServicing, userService: UserServicing) {
         self.authService = authService
         self.userService = userService
@@ -50,19 +55,22 @@ final class SessionStore {
 
     /// Saves that onboarding is finished, then moves the user into the app.
     func completeOnboarding() async {
-        guard let userID = currentUserId else { return }
+        guard let userID = currentUserId, let email = currentUserEmail else {
+            didFailToCompleteOnboarding = true
+            return
+        }
         do {
-            try await userService.markOnboardingComplete(userID: userID)
+            try await userService.saveUser(uid: userID, email: email)
             authState = .authenticated
         } catch {
             didFailToCompleteOnboarding = true
         }
     }
 
-    /// Treats a failed read as not onboarded, so a user is never let in without finishing setup.
+    /// The user doc is only created at the end of onboarding, so a missing doc (or a failed read) means not onboarded.
     private func hasCompletedOnboarding(userID: String) async -> Bool {
         do {
-            return try await userService.hasCompletedOnboarding(userID: userID)
+            return try await userService.userExists(uid: userID)
         } catch {
             return false
         }

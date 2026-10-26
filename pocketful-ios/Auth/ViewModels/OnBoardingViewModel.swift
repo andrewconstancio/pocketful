@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The onboarding vview model.
+/// The onboarding view model.
 @Observable
 final class OnBoardingViewModel {
 
