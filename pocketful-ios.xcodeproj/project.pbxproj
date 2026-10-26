@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1C0125BA308AC3890089119A /* FoundationModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125B9308AC3860089119A /* FoundationModelService.swift */; };
 		1C0125BD308CF9DF0089119A /* OnboardingAnswers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */; };
+		1C0125BF308E92D90089119A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C0125BE308E92D90089119A /* GoogleService-Info.plist */; };
+		1C0125C2308E940B0089119A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1C0125C1308E940B0089119A /* GoogleSignIn */; };
+		1C0125C4308E940B0089119A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C0125C3308E940B0089119A /* GoogleSignInSwift */; };
+		1C0125C6308EDB880089119A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125C5308EDB830089119A /* UserService.swift */; };
 		1CAC138630808BB6005846CF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC138530808BB6005846CF /* RootView.swift */; };
 		1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14223080A49D005846CF /* AppDependencies.swift */; };
 		1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */; };
@@ -18,7 +22,6 @@
 		1CAC14313080AB1A005846CF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1CAC14303080AB1A005846CF /* FirebaseAuth */; };
 		1CAC14333080AB1A005846CF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1CAC14323080AB1A005846CF /* FirebaseFirestore */; };
 		1CAC14353080AB1A005846CF /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 1CAC14343080AB1A005846CF /* FirebaseStorage */; };
-		1CAC14373080AB4C005846CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CAC14363080AB4C005846CF /* GoogleService-Info.plist */; };
 		1CAC1439308189C8005846CF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC1438308189C4005846CF /* AppRouter.swift */; };
 		1CAC143B308189DD005846CF /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143A308189DA005846CF /* AppTab.swift */; };
 		1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC143C30818B7A005846CF /* AuthRoute.swift */; };
@@ -44,7 +47,6 @@
 		1CAC145D3088F000005846CF /* OnboardingTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C3088F000005846CF /* OnboardingTextBox.swift */; };
 		1CAC145D308A400B005846CF /* aitest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C308A4006005846CF /* aitest.swift */; };
 		1CAC145F3088F100005846CF /* OnboardingGeneratingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */; };
-		1CF1A0023090000000ABCDEF /* OnboardingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */; };
 		1CAC14AB3088F100005846CF /* GrowingPlantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14AA3088F100005846CF /* GrowingPlantView.swift */; };
 		1CAC14AD3088F100005846CF /* GrowingPlantParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14AC3088F100005846CF /* GrowingPlantParts.swift */; };
 		1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37610307AE68900173B34 /* pocketful_iosApp.swift */; };
@@ -54,18 +56,20 @@
 		1CC37621307D05FD00173B34 /* CormorantGaramond.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CC37620307D05FD00173B34 /* CormorantGaramond.ttf */; };
 		1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37624307E5A5F00173B34 /* AppButtonStyle.swift */; };
 		1CC37628307E5AD600173B34 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37627307E5AD400173B34 /* Color.swift */; };
+		1CF1A0023090000000ABCDEF /* OnboardingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1C0125B9308AC3860089119A /* FoundationModelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationModelService.swift; sourceTree = "<group>"; };
 		1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAnswers.swift; sourceTree = "<group>"; };
+		1C0125BE308E92D90089119A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1C0125C5308EDB830089119A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		1CAC138530808BB6005846CF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1CAC14223080A49D005846CF /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
 		1CAC14283080A565005846CF /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		1CAC142B3080A772005846CF /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		1CAC142D3080A8D5005846CF /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
-		1CAC14363080AB4C005846CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1CAC1438308189C4005846CF /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		1CAC143A308189DA005846CF /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		1CAC143C30818B7A005846CF /* AuthRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRoute.swift; sourceTree = "<group>"; };
@@ -91,7 +95,6 @@
 		1CAC145C3088F000005846CF /* OnboardingTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextBox.swift; sourceTree = "<group>"; };
 		1CAC145C308A4006005846CF /* aitest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aitest.swift; sourceTree = "<group>"; };
 		1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGeneratingInsightsView.swift; sourceTree = "<group>"; };
-		1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInsightsView.swift; sourceTree = "<group>"; };
 		1CAC14AA3088F100005846CF /* GrowingPlantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingPlantView.swift; sourceTree = "<group>"; };
 		1CAC14AC3088F100005846CF /* GrowingPlantParts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingPlantParts.swift; sourceTree = "<group>"; };
 		1CC37600307AE5F400173B34 /* pocketful-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pocketful-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +106,7 @@
 		1CC37622307D061C00173B34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CC37624307E5A5F00173B34 /* AppButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButtonStyle.swift; sourceTree = "<group>"; };
 		1CC37627307E5AD400173B34 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +114,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C0125C4308E940B0089119A /* GoogleSignInSwift in Frameworks */,
 				1CAC14313080AB1A005846CF /* FirebaseAuth in Frameworks */,
+				1C0125C2308E940B0089119A /* GoogleSignIn in Frameworks */,
 				1CAC14333080AB1A005846CF /* FirebaseFirestore in Frameworks */,
 				1CAC14353080AB1A005846CF /* FirebaseStorage in Frameworks */,
 			);
@@ -138,6 +144,7 @@
 		1CAC14273080A55C005846CF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1C0125C5308EDB830089119A /* UserService.swift */,
 				1C0125B9308AC3860089119A /* FoundationModelService.swift */,
 				1CAC14283080A565005846CF /* AuthService.swift */,
 			);
@@ -217,8 +224,8 @@
 			isa = PBXGroup;
 			children = (
 				1CAC145C308A4006005846CF /* aitest.swift */,
+				1C0125BE308E92D90089119A /* GoogleService-Info.plist */,
 				1CAC145630879BF2005846CF /* LaunchScreen.storyboard */,
-				1CAC14363080AB4C005846CF /* GoogleService-Info.plist */,
 				1CC37622307D061C00173B34 /* Info.plist */,
 				1CC3760E307AE68900173B34 /* Assets.xcassets */,
 				1CAC14273080A55C005846CF /* Services */,
@@ -311,6 +318,8 @@
 				1CAC14303080AB1A005846CF /* FirebaseAuth */,
 				1CAC14323080AB1A005846CF /* FirebaseFirestore */,
 				1CAC14343080AB1A005846CF /* FirebaseStorage */,
+				1C0125C1308E940B0089119A /* GoogleSignIn */,
+				1C0125C3308E940B0089119A /* GoogleSignInSwift */,
 			);
 			productName = "pocketful-ios";
 			productReference = 1CC37600307AE5F400173B34 /* pocketful-ios.app */;
@@ -342,6 +351,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1CAC142F3080AB1A005846CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				1C0125C0308E940B0089119A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1CC37601307AE5F400173B34 /* Products */;
@@ -359,9 +369,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC37614307AE68900173B34 /* Assets.xcassets in Resources */,
+				1C0125BF308E92D90089119A /* GoogleService-Info.plist in Resources */,
 				1CAC145730879BF2005846CF /* LaunchScreen.storyboard in Resources */,
 				1CC37621307D05FD00173B34 /* CormorantGaramond.ttf in Resources */,
-				1CAC14373080AB4C005846CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +421,7 @@
 				1CAC145530879771005846CF /* HelpsBest.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
+				1C0125C6308EDB880089119A /* UserService.swift in Sources */,
 				1CAC1446308519AA005846CF /* OnboardingStressLevelsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -627,6 +638,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1C0125C0308E940B0089119A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.1.0;
+			};
+		};
 		1CAC142F3080AB1A005846CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -638,6 +657,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1C0125C1308E940B0089119A /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C0125C0308E940B0089119A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		1C0125C3308E940B0089119A /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C0125C0308E940B0089119A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		1CAC14303080AB1A005846CF /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1CAC142F3080AB1A005846CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -29,7 +29,7 @@ struct RootView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService())
     
     RootView(dependencies: dependencies)
         .environment(dependencies.router)

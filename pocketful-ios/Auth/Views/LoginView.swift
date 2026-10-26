@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct LoginView: View {
-    
-    /// App navigation, which holds the onboarding flow's path.
-    @Environment(AppRouter.self) private var router
-    
+
+    /// Who is signed in, and how to sign in.
+    @Environment(SessionStore.self) private var session
+
     var body: some View {
+        // Lets the alert below bind to the session's error flag.
+        @Bindable var session = session
+
         VStack {
             Spacer()
             title
@@ -13,14 +16,16 @@ struct LoginView: View {
             Spacer()
             flowerImage
             Spacer()
-            VStack(spacing: 14) {
-                signUpButton
-                logInText
-            }
+            googleSignInButton
             Spacer()
         }
         .padding()
         .background(.appBackground)
+        .alert("Couldn't sign in", isPresented: $session.didFailToSignIn) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Something went wrong signing in with Google. Please try again.")
+        }
     }
     
     private var title: some View {
@@ -51,10 +56,12 @@ struct LoginView: View {
             )
     }
     
-    private var signUpButton: some View {
-        Button("Sign up") {
+    private var googleSignInButton: some View {
+        Button("Sign in with Google") {
             HapticManager.shared.triggerImpact(style: .heavy)
-            router.onboardingPath.append(AuthRoute.questions)
+            Task {
+                await session.signInWithGoogle()
+            }
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appButtonBackground01,
@@ -64,24 +71,9 @@ struct LoginView: View {
             cornerRadius: 30,
         ))
     }
-    
-    private var logInText: some View {
-        HStack(spacing: 8) {
-            Text("Already have an account?")
-                .foregroundStyle(.textPrimary.opacity(0.6))
-                .font(.system(size: 16))
-            
-            Button {
-            } label: {
-                Text("Log in")
-                    .foregroundStyle(.textPrimary.opacity(0.7))
-                    .font(.system(size: 16, weight: .bold))
-            }
-        }
-    }
 }
 
 #Preview {
     LoginView()
-        .environment(AppRouter())
+        .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
 }

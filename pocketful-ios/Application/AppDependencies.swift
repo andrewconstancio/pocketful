@@ -7,6 +7,7 @@ final class AppDependencies {
     
     let authService: AuthServicing
     let foundationModelService: FoundationModelServicing
+    let userService: UserServicing
     
     // MARK: - Stores
     
@@ -18,18 +19,23 @@ final class AppDependencies {
     
     init(
         authService: AuthServicing = AuthService(),
-        foundationModelService: FoundationModelServicing = FoundationModelService()
+        foundationModelService: FoundationModelServicing = FoundationModelService(),
+        userService: UserServicing = UserService()
     ) {
-        self.authService = authService
-        self.foundationModelService = foundationModelService
+        self.authService                = authService
+        self.foundationModelService     = foundationModelService
+        self.userService                = userService
         
-        self.router = AppRouter()
-        self.session = SessionStore(authService: authService)
+        self.router                     = AppRouter()
+        self.session                    = SessionStore(authService: authService, userService: userService)
     }
     
     // MARK: - Feature view models
     
     func makeOnboardingViewModel() -> OnBoardingViewModel {
-        OnBoardingViewModel(authService: authService, foundationModelService: foundationModelService)
+        OnBoardingViewModel(
+            authService: authService,
+            foundationModelService: foundationModelService
+        )
     }
 }

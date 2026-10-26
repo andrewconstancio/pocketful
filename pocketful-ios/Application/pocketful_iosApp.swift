@@ -1,5 +1,6 @@
 import SwiftUI
 import FirebaseCore
+import GoogleSignIn
 
 @main
 struct pocketful_iosApp: App {
@@ -18,6 +19,10 @@ struct pocketful_iosApp: App {
             RootView(dependencies: dependencies)
                 .environment(dependencies.router)
                 .environment(dependencies.session)
+                // Google sends the user back here after they sign in.
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
         }
     }
 }

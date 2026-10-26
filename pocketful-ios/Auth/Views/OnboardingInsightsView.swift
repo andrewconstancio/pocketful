@@ -6,7 +6,13 @@ struct OnboardingInsightsView: View {
     /// Holds the insights made on the generating screen.
     @Environment(OnBoardingViewModel.self) private var viewModel
 
+    /// Saves that onboarding is finished.
+    @Environment(SessionStore.self) private var session
+
     var body: some View {
+        // Lets the alert below bind to the session's error flag.
+        @Bindable var session = session
+
         VStack(alignment: .leading, spacing: 0) {
             title
             subtitle
@@ -26,6 +32,11 @@ struct OnboardingInsightsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
+        .alert("Couldn't save your progress", isPresented: $session.didFailToCompleteOnboarding) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Check your connection and tap Continue again.")
+        }
     }
 
     private var title: some View {
@@ -65,7 +76,9 @@ struct OnboardingInsightsView: View {
     private var continueButton: some View {
         Button {
             HapticManager.shared.triggerImpact(style: .heavy)
-            // Placeholder: goes to the next screen once it exists.
+            Task {
+                await session.completeOnboarding()
+            }
         } label: {
             Text("Continue")
         }
@@ -113,6 +126,7 @@ private struct InsightCard: View {
         OnboardingInsightsView()
     }
     .environment(viewModel)
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
     .task { await viewModel.generateInsights() }
 }
 
@@ -123,5 +137,6 @@ private struct InsightCard: View {
         OnboardingInsightsView()
     }
     .environment(viewModel)
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
     .task { await viewModel.generateInsights() }
 }

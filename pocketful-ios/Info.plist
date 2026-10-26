@@ -4,6 +4,15 @@
 <dict>
 	<key></key>
 	<string></string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.25263191510-auqufibn87e6rn78tcivm9k15lendkvq</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>CormorantGaramond.ttf</string>

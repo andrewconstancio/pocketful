@@ -11,7 +11,9 @@ struct OnboardingProgressHeader: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            backButton
+            if step !=  1 {
+                backButton
+            }
             progressBar
             stepLabel
         }
