@@ -15,6 +15,9 @@ final class SessionStore {
     
     /// The insights firebase service.
     private let insightsService: InsightsServicing
+    
+    /// An alert to present to the user.
+    var activeAlert: AppAlert?
 
     // MARK: - Current user
 
@@ -36,12 +39,6 @@ final class SessionStore {
         self.authService = authService
         self.userService = userService
         self.insightsService = insightsService
-
-        if let uid = self.currentUserId {
-            print("uid \(uid)")
-        } else {
-            print("none")
-        }
     }
     
     /// Keeps `authState` in sync with Firebase Auth until the calling task is cancelled.
@@ -51,8 +48,6 @@ final class SessionStore {
                 authState = .unauthenticated
                 continue
             }
-            
-            print("here 1 userID: \(userID)")
             authState = await hasCompletedOnboarding(userID: userID) ? .authenticated : .setupUser
         }
     }
@@ -66,6 +61,7 @@ final class SessionStore {
             try userService.saveUser(uid: userID, email: email)
             authState = .authenticated
         } catch {
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)
         }
     }
@@ -78,6 +74,8 @@ final class SessionStore {
             }
             return try await insightsService.userHasInsights(uid: userID)
         } catch {
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
+            print(error.localizedDescription)
             return false
         }
     }
@@ -87,6 +85,7 @@ final class SessionStore {
         do {
             try await authService.signInWithGoogle()
         } catch {
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)
         }
     }
@@ -96,6 +95,7 @@ final class SessionStore {
         do {
             try authService.signOut()
         } catch {
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)
         }
     }

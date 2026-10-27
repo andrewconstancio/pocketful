@@ -112,10 +112,10 @@ struct OnboardingQuestionsView: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        OnboardingQuestionsView()
-//    }
-//    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-//    .environment(AppRouter())
-//}
+#Preview {
+    NavigationStack {
+        OnboardingQuestionsView()
+    }
+    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+    .environment(AppRouter())
+}

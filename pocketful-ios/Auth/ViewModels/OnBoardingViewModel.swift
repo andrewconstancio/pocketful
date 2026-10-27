@@ -33,9 +33,9 @@ final class OnBoardingViewModel {
 
     /// The insights made from the answers, or `nil` until they're ready.
     private(set) var insights: OnboardingInsights?
-
-    /// True if creating insights failed.
-    private(set) var didFailToGenerateInsights = false
+    
+    /// An alert to present to the user.
+    var activeAlert: AppAlert?
     
     /// The auth service for this app.
     private let authService: AuthServicing
@@ -90,7 +90,8 @@ final class OnBoardingViewModel {
                 )
             }
         } catch {
-            didFailToGenerateInsights = true
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
+            print(error.localizedDescription)
         }
     }
 

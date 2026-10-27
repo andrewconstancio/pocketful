@@ -6,9 +6,6 @@ struct LoginView: View {
     @Environment(SessionStore.self) private var session
 
     var body: some View {
-        // Lets the alert below bind to the session's error flag.
-        @Bindable var session = session
-
         VStack {
             Spacer()
             title

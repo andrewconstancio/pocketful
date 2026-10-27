@@ -10,6 +10,9 @@ struct OnboardingGeneratingInsightsView: View {
     @Environment(AppRouter.self) private var router
 
     var body: some View {
+        // Lets the alert below bind to the view model's alert.
+        @Bindable var viewModel = viewModel
+
         VStack(spacing: 0) {
             Spacer().frame(height: 70)
 
@@ -30,6 +33,7 @@ struct OnboardingGeneratingInsightsView: View {
         .navigationBarBackButtonHidden()
         .task { await pulseHaptics() }
         .task { await generateInsights() }
+        .appAlert(alert: $viewModel.activeAlert)
     }
 
     /// Makes the insights, then moves on to the results screen.
