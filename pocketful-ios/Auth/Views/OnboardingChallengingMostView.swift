@@ -105,9 +105,9 @@ private struct ChallengeRow: View {
 
 }
 
-//#Preview {
-//    OnboardingChallengingMostView()
-//        .padding()
-//        .background(.appBackground)
-//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-//}
+#Preview {
+    OnboardingChallengingMostView()
+        .padding()
+        .background(.appBackground)
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+}

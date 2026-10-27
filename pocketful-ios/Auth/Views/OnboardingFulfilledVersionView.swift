@@ -72,9 +72,9 @@ struct OnboardingFulfilledVersionView: View {
     }
 }
 
-//#Preview {
-//    OnboardingFulfilledVersionView()
-//        .padding()
-//        .background(.appBackground)
-//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-//}
+#Preview {
+    OnboardingFulfilledVersionView()
+        .padding()
+        .background(.appBackground)
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+}

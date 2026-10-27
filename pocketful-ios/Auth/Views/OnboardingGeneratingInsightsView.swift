@@ -87,9 +87,9 @@ struct OnboardingGeneratingInsightsView: View {
             .allowsHitTesting(false)
     }
 }
-//
-//#Preview {
-//    OnboardingGeneratingInsightsView()
-//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-//        .environment(AppRouter())
-//}
+
+#Preview {
+    OnboardingGeneratingInsightsView()
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+        .environment(AppRouter())
+}

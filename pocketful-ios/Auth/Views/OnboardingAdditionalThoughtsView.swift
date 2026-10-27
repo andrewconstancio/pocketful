@@ -69,9 +69,9 @@ struct OnboardingAdditionalThoughtsView: View {
     }
 }
 
-//#Preview {
-//    OnboardingAdditionalThoughtsView()
-//        .padding()
-//        .background(.appBackground)
-//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-//}
+#Preview {
+    OnboardingAdditionalThoughtsView()
+        .padding()
+        .background(.appBackground)
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+}

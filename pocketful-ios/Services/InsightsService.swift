@@ -37,3 +37,10 @@ final class Insightservice: InsightsServicing {
         return !snapshot.isEmpty
     }
 }
+
+#if DEBUG
+final class PreviewInsightsService: InsightsServicing {
+    func saveInsights(uid: String, insights: [Insight]) throws {}
+    func userHasInsights(uid: String) async throws -> Bool { return true}
+}
+#endif

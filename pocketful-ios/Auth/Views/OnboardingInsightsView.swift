@@ -135,24 +135,24 @@ private struct InsightCard: View {
     }
 }
 
-//#Preview("Insights") {
-//    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService())
-//
-//    NavigationStack {
-//        OnboardingInsightsView()
-//    }
-//    .environment(viewModel)
-//    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-//    .task { await viewModel.generateInsights() }
-//}
-//
-//#Preview("Failed") {
-//    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true))
-//
-//    NavigationStack {
-//        OnboardingInsightsView()
-//    }
-//    .environment(viewModel)
-//    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-//    .task { await viewModel.generateInsights() }
-//}
+#Preview("Insights") {
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService())
+
+    NavigationStack {
+        OnboardingInsightsView()
+    }
+    .environment(viewModel)
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService()))
+    .task { await viewModel.generateInsights() }
+}
+
+#Preview("Failed") {
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true), insightsService: PreviewInsightsService())
+
+    NavigationStack {
+        OnboardingInsightsView()
+    }
+    .environment(viewModel)
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService()))
+    .task { await viewModel.generateInsights() }
+}
