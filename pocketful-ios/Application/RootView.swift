@@ -9,7 +9,6 @@ struct RootView: View {
     @Environment(SessionStore.self) private var session
     
     var body: some View {
-        // Lets the alert below bind to the session's alert.
         @Bindable var session = session
 
         content

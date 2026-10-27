@@ -59,7 +59,6 @@ final class SessionStore {
         }
         do {
             try userService.saveUser(uid: userID, email: email)
-            authState = .authenticated
         } catch {
             activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)
