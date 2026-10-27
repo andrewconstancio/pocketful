@@ -91,9 +91,9 @@ private struct StressLevelRow: View {
     }
 }
 
-#Preview {
-    OnboardingStressLevelsView()
-        .padding()
-        .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-}
+//#Preview {
+//    OnboardingStressLevelsView()
+//        .padding()
+//        .background(.appBackground)
+//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
+//}

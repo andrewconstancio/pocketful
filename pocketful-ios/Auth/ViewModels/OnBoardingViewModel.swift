@@ -7,9 +7,6 @@ final class OnBoardingViewModel {
     /// The most life goals the user can pick.
     static let maxLifeGoals = 3
 
-    /// The auth service for this app.
-    private let authService: AuthServicing
-
     /// What the user hopes to get more of, from the life goals page.
     private(set) var selectedLifeGoals: Set<LifeGoal> = []
     
@@ -33,14 +30,19 @@ final class OnBoardingViewModel {
 
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
-    
-    private let foundationModelService: FoundationModelServicing
 
     /// The insights made from the answers, or `nil` until they're ready.
     private(set) var insights: OnboardingInsights?
 
     /// True if creating insights failed.
     private(set) var didFailToGenerateInsights = false
+    
+    /// The auth service for this app.
+    private let authService: AuthServicing
+    
+    private let foundationModelService: FoundationModelServicing
+    
+    private let insightsService: InsightsServicing
 
     /// Whether the current question is answered, so Next can be tapped.
     var canContinue: Bool {
@@ -56,9 +58,14 @@ final class OnBoardingViewModel {
         }
     }
 
-    init(authService: AuthServicing, foundationModelService: FoundationModelServicing) {
+    init(
+        authService: AuthServicing,
+        foundationModelService: FoundationModelServicing,
+        insightsService: InsightsServicing
+    ) {
         self.authService = authService
         self.foundationModelService = foundationModelService
+        self.insightsService = insightsService
     }
 
     /// Sends the answers to the on-device model and stores the insights.
@@ -74,6 +81,14 @@ final class OnBoardingViewModel {
         )
         do {
             insights = try await foundationModelService.generateInsights(from: answers)
+            
+            if let insightsList = insights?.insights,
+               let uid = authService.currentUserId {
+                try insightsService.saveInsights(
+                    uid: uid,
+                    insights: insightsList
+                )
+            }
         } catch {
             didFailToGenerateInsights = true
         }

@@ -7,17 +7,14 @@ final class SessionStore {
     /// The current auth state.
     private(set) var authState: AuthState = .startup
 
-    /// True if signing in failed. Settable so the view's alert can reset it when dismissed.
-    var didFailToSignIn = false
-
-    /// True if saving that onboarding is finished failed. Settable so the view's alert can reset it when dismissed.
-    var didFailToCompleteOnboarding = false
-
     /// The Firebase Auth wrapper.
     private let authService: AuthServicing
 
     /// Reads and writes the user's Firestore doc.
     private let userService: UserServicing
+    
+    /// The insights firebase service.
+    private let insightsService: InsightsServicing
 
     // MARK: - Current user
 
@@ -31,9 +28,14 @@ final class SessionStore {
         authService.currentUserEmail
     }
 
-    init(authService: AuthServicing, userService: UserServicing) {
+    init(
+        authService: AuthServicing,
+        userService: UserServicing,
+        insightsService: InsightsServicing
+    ) {
         self.authService = authService
         self.userService = userService
+        self.insightsService = insightsService
 
         if let uid = self.currentUserId {
             print("uid \(uid)")
@@ -49,28 +51,32 @@ final class SessionStore {
                 authState = .unauthenticated
                 continue
             }
+            
+            print("here 1 userID: \(userID)")
             authState = await hasCompletedOnboarding(userID: userID) ? .authenticated : .setupUser
         }
     }
 
     /// Saves that onboarding is finished, then moves the user into the app.
-    func completeOnboarding() async {
+    func saveUser() {
         guard let userID = currentUserId, let email = currentUserEmail else {
-            didFailToCompleteOnboarding = true
             return
         }
         do {
-            try await userService.saveUser(uid: userID, email: email)
+            try userService.saveUser(uid: userID, email: email)
             authState = .authenticated
         } catch {
-            didFailToCompleteOnboarding = true
+            print(error.localizedDescription)
         }
     }
 
     /// The user doc is only created at the end of onboarding, so a missing doc (or a failed read) means not onboarded.
     private func hasCompletedOnboarding(userID: String) async -> Bool {
         do {
-            return try await userService.userExists(uid: userID)
+            guard let userID = currentUserId else {
+                return false
+            }
+            return try await insightsService.userHasInsights(uid: userID)
         } catch {
             return false
         }
@@ -81,7 +87,16 @@ final class SessionStore {
         do {
             try await authService.signInWithGoogle()
         } catch {
-            didFailToSignIn = true
+            print(error.localizedDescription)
+        }
+    }
+    
+    /// Signing out the user.
+    func signOut() {
+        do {
+            try authService.signOut()
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

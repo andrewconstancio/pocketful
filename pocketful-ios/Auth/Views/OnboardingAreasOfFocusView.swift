@@ -98,9 +98,9 @@ private struct FocusAreaTile: View {
     }
 }
 
-#Preview {
-    OnboardingAreasOfFocusView()
-        .padding()
-        .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-}
+//#Preview {
+//    OnboardingAreasOfFocusView()
+//        .padding()
+//        .background(.appBackground)
+//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
+//}

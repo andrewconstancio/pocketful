@@ -101,9 +101,9 @@ private struct LifeGoalRow: View {
     }
 }
 
-#Preview {
-    OnboardingLifeGoalsView()
-        .padding()
-        .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-}
+//#Preview {
+//    OnboardingLifeGoalsView()
+//        .padding()
+//        .background(.appBackground)
+//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
+//}

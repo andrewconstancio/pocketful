@@ -76,10 +76,8 @@ final class AuthService: AuthServicing {
 #if DEBUG
 /// A fake auth service so previews don't need Firebase.
 final class PreviewAuthService: AuthServicing {
-    
-    var currentUserId: String? {
-        Auth.auth().currentUser?.uid
-    }
+
+    var currentUserId: String? { userID }
 
     var currentUserEmail: String? { nil }
 

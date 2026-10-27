@@ -3,21 +3,41 @@ import FoundationModels
 /// The insights the model creates from the onboarding answers.
 @Generable
 struct OnboardingInsights {
-    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(3))
+    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(5))
     let insights: [Insight]
 }
 
 @Generable
-struct Insight {
-    @Guide(description: "A short, gentle, positive phrase of two to four words that the user can repeat to themselves during the day.")
+struct Insight: Encodable {
+    @Guide(description: "A short, warm title of a few words that names this insight.")
     let title: String
 
-    @Guide(description: "One or two uplifting sentences, speaking to the user as 'you', that connect this reminder to one specific answer they gave.")
+    @Guide(description: "Three to five uplifting sentences, speaking to the user as 'you'. Name the specific answer this insight comes from, explain what it shows about them, and why focusing on it can help them feel more fulfilled.")
     let body: String
 
-    // Comes after the text so the model picks an icon for what it already wrote.
+    @Guide(description: "One small, concrete thing the user can try today based on this insight, in one or two sentences.")
+    let practice: String
+
     @Guide(description: "The icon that best matches the feeling of this reminder.")
     let icon: InsightIcon
+    
+    @Guide(description: "A short, positive phrase of one to four words that the user can repeat to themselves during the day, written in fresh words that fit this insight.")
+    let reminder: String
+
+    // Manual Encodable conformance because @Generable synthesizes
+    // hidden stored properties that aren't Encodable.
+    private enum CodingKeys: String, CodingKey {
+        case title, body, practice, icon, reminder
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(body, forKey: .body)
+        try container.encode(practice, forKey: .practice)
+        try container.encode(icon.rawValue, forKey: .icon)
+        try container.encode(reminder, forKey: .reminder)
+    }
 }
 
 /// The icons the model can choose from for a reminder.
@@ -61,9 +81,9 @@ final class FoundationModelService: FoundationModelServicing {
 
     private static let insightsInstructions = """
         You are a warm, supportive wellness guide. Using the user's onboarding answers, \
-        write short, gentle reminders they can carry with them and think about throughout the day. \
-        Speak to them as "you". \
-        Base each reminder on a different one of their answers, such as their stress level, a life goal, \
+        write thoughtful, in-depth insights about them, each with a short reminder they can carry with them \
+        throughout the day. Speak to them as "you". \
+        Base each insight on a different one of their answers, such as their stress level, a life goal, \
         an area of focus, what challenges them, what helps them feel best, or their own words. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
@@ -101,9 +121,27 @@ final class PreviewFoundationModelService: FoundationModelServicing {
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights {
         if shouldFail { throw FoundationModelError.modelUnavailable }
         return OnboardingInsights(insights: [
-            Insight(title: "Slow down", body: "You're allowed to take your time today. Each small step still counts.", icon: .calm),
-            Insight(title: "Be kind to yourself", body: "You're doing your best, and that's more than enough.", icon: .heart),
-            Insight(title: "Be intentional", body: "Choose one thing today that brings you peace, and give it your full attention.", icon: .focus)
+            Insight(
+                title: "Room to breathe",
+                body: "You shared that your stress has been high lately. That tells us you care deeply about doing things well. Giving yourself small pauses can help that care feel lighter, and leave more energy for what matters to you.",
+                practice: "Take three slow breaths before you open your next message or email.",
+                icon: .calm,
+                reminder: "Slow down"
+            ),
+            Insight(
+                title: "Your own best friend",
+                body: "You named overthinking as something you're working through. That shows how thoughtful you are. Meeting your thoughts with the same kindness you'd give a friend can make them easier to carry.",
+                practice: "When a hard thought comes up, ask what you'd say to a friend who had it.",
+                icon: .heart,
+                reminder: "Be kind to yourself"
+            ),
+            Insight(
+                title: "Time in nature",
+                body: "You said time in nature helps you feel your best. That's a wonderful thing to know about yourself. Even a few minutes outside can bring back the calm you're looking for.",
+                practice: "Step outside for five minutes today and notice three things you can hear.",
+                icon: .leaf,
+                reminder: "Get outside"
+            )
         ])
     }
 }

@@ -32,11 +32,6 @@ struct OnboardingInsightsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
-        .alert("Couldn't save your progress", isPresented: $session.didFailToCompleteOnboarding) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("Check your connection and tap Continue again.")
-        }
     }
 
     private var title: some View {
@@ -76,9 +71,6 @@ struct OnboardingInsightsView: View {
     private var continueButton: some View {
         Button {
             HapticManager.shared.triggerImpact(style: .heavy)
-            Task {
-                await session.completeOnboarding()
-            }
         } label: {
             Text("Continue")
         }
@@ -92,7 +84,7 @@ struct OnboardingInsightsView: View {
     }
 }
 
-/// One insight: a short title and a sentence or two.
+/// One insight: a title, the insight itself, something to try today, and a short reminder.
 private struct InsightCard: View {
     let insight: Insight
 
@@ -112,6 +104,30 @@ private struct InsightCard: View {
                 .foregroundStyle(.textPrimary.opacity(0.8))
                 .font(.system(size: 17))
                 .lineSpacing(4)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Try this")
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.regular.font(size: 18))
+
+                Text(insight.practice)
+                    .foregroundStyle(.textPrimary.opacity(0.8))
+                    .font(.system(size: 17))
+                    .lineSpacing(4)
+            }
+            .padding(.top, 16)
+
+            Spacer().frame(height: 30)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Reminder")
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.regular.font(size: 18))
+                
+                Text(insight.reminder)
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.bold.font(size: 22))
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
@@ -119,24 +135,24 @@ private struct InsightCard: View {
     }
 }
 
-#Preview("Insights") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService())
-
-    NavigationStack {
-        OnboardingInsightsView()
-    }
-    .environment(viewModel)
-    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-    .task { await viewModel.generateInsights() }
-}
-
-#Preview("Failed") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true))
-
-    NavigationStack {
-        OnboardingInsightsView()
-    }
-    .environment(viewModel)
-    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-    .task { await viewModel.generateInsights() }
-}
+//#Preview("Insights") {
+//    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService())
+//
+//    NavigationStack {
+//        OnboardingInsightsView()
+//    }
+//    .environment(viewModel)
+//    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
+//    .task { await viewModel.generateInsights() }
+//}
+//
+//#Preview("Failed") {
+//    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true))
+//
+//    NavigationStack {
+//        OnboardingInsightsView()
+//    }
+//    .environment(viewModel)
+//    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
+//    .task { await viewModel.generateInsights() }
+//}

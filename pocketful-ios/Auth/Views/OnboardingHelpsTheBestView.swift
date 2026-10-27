@@ -96,9 +96,9 @@ private struct HelpsBestRow: View {
     }
 }
 
-#Preview {
-    OnboardingHelpsTheBestView()
-        .padding()
-        .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
-}
+//#Preview {
+//    OnboardingHelpsTheBestView()
+//        .padding()
+//        .background(.appBackground)
+//        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService()))
+//}

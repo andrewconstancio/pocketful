@@ -23,13 +23,13 @@ struct RootView: View {
     private var content: some View {
         switch session.authState {
         case .startup:
-            Text("Start up")
+            StartupView()
         case .unauthenticated:
             LoginView()
         case .setupUser:
             OnboardingFlowView(dependencies: dependencies)
         case .authenticated:
-            HomeView(dependencies: dependencies)
+            HomeView()
         }
     }
 }

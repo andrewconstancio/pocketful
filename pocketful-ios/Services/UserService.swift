@@ -2,8 +2,17 @@ import FirebaseFirestore
 
 protocol UserServicing {
     func userExists(uid: String) async throws -> Bool
-    func userExists(email: String) async throws -> Bool
-    func saveUser(uid: String, email: String) async throws
+    func saveUser(uid: String, email: String) throws
+}
+
+private struct UserDocument: Encodable {
+    let email: String
+    @ServerTimestamp var createdAt: Timestamp?
+    
+    enum CodingKeys: String, CodingKey {
+        case email
+        case createdAt = "created_at"
+    }
 }
 
 /// Reads and writes each user's doc at `users/{uid}` in Firestore.
@@ -16,20 +25,9 @@ final class UserService: UserServicing {
         let snapshot = try await db.collection(collection).document(uid).getDocument()
         return snapshot.exists
     }
-    
-    func userExists(email: String) async throws -> Bool {
-        let snapshot = try await db.collection(collection)
-            .whereField("email", isEqualTo: email)
-            .limit(to: 1)
-            .getDocuments()
-        return !snapshot.documents.isEmpty
-    }
 
-    func saveUser(uid: String, email: String) async throws {
-        try await db.collection(collection).document(uid).setData([
-            "email": email,
-            "created_at": FieldValue.serverTimestamp()
-        ], merge: true)
+    func saveUser(uid: String, email: String) throws {
+        try db.collection(collection).document(uid).setData(from: UserDocument(email: email))
     }
 }
 
@@ -46,7 +44,6 @@ final class PreviewUserService: UserServicing {
     func userExists(uid: String) async throws -> Bool {
         isExistingUser
     }
-    func userExists(email: String) async throws -> Bool { return false }
-    func saveUser(uid: String, email: String) async throws {}
+    func saveUser(uid: String, email: String) throws {}
 }
 #endif

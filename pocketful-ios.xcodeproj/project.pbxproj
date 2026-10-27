@@ -15,6 +15,8 @@
 		1C0125C6308EDB880089119A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125C5308EDB830089119A /* UserService.swift */; };
 		1C0125C9308EE8800089119A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125C8308EE8800089119A /* HomeView.swift */; };
 		1C0125CB308EE8C30089119A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CA308EE8BE0089119A /* HomeViewModel.swift */; };
+		1C0125CD308EF18D0089119A /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CC308EF18D0089119A /* StartupView.swift */; };
+		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
 		1CAC138630808BB6005846CF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC138530808BB6005846CF /* RootView.swift */; };
 		1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14223080A49D005846CF /* AppDependencies.swift */; };
 		1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */; };
@@ -47,7 +49,6 @@
 		1CAC14593088E137005846CF /* OnboardingFulfilledVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */; };
 		1CAC145B3088E173005846CF /* OnboardingAdditionalThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145A3088E173005846CF /* OnboardingAdditionalThoughtsView.swift */; };
 		1CAC145D3088F000005846CF /* OnboardingTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C3088F000005846CF /* OnboardingTextBox.swift */; };
-		1CAC145D308A400B005846CF /* aitest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C308A4006005846CF /* aitest.swift */; };
 		1CAC145F3088F100005846CF /* OnboardingGeneratingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */; };
 		1CAC14AB3088F100005846CF /* GrowingPlantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14AA3088F100005846CF /* GrowingPlantView.swift */; };
 		1CAC14AD3088F100005846CF /* GrowingPlantParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14AC3088F100005846CF /* GrowingPlantParts.swift */; };
@@ -68,6 +69,8 @@
 		1C0125C5308EDB830089119A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		1C0125C8308EE8800089119A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1C0125CA308EE8BE0089119A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		1C0125CC308EF18D0089119A /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
+		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
 		1CAC138530808BB6005846CF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1CAC14223080A49D005846CF /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
@@ -97,7 +100,6 @@
 		1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFulfilledVersionView.swift; sourceTree = "<group>"; };
 		1CAC145A3088E173005846CF /* OnboardingAdditionalThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdditionalThoughtsView.swift; sourceTree = "<group>"; };
 		1CAC145C3088F000005846CF /* OnboardingTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextBox.swift; sourceTree = "<group>"; };
-		1CAC145C308A4006005846CF /* aitest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aitest.swift; sourceTree = "<group>"; };
 		1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGeneratingInsightsView.swift; sourceTree = "<group>"; };
 		1CAC14AA3088F100005846CF /* GrowingPlantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingPlantView.swift; sourceTree = "<group>"; };
 		1CAC14AC3088F100005846CF /* GrowingPlantParts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingPlantParts.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		1CAC14273080A55C005846CF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
 				1C0125B9308AC3860089119A /* FoundationModelService.swift */,
 				1CAC14283080A565005846CF /* AuthService.swift */,
@@ -236,7 +239,6 @@
 		1CC37611307AE68900173B34 /* pocketful-ios */ = {
 			isa = PBXGroup;
 			children = (
-				1CAC145C308A4006005846CF /* aitest.swift */,
 				1C0125BE308E92D90089119A /* GoogleService-Info.plist */,
 				1CAC145630879BF2005846CF /* LaunchScreen.storyboard */,
 				1CC37622307D061C00173B34 /* Info.plist */,
@@ -272,6 +274,7 @@
 				1CAC14223080A49D005846CF /* AppDependencies.swift */,
 				1CC37610307AE68900173B34 /* pocketful_iosApp.swift */,
 				1CAC138530808BB6005846CF /* RootView.swift */,
+				1C0125CC308EF18D0089119A /* StartupView.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */,
 				1CAC144D30859CA5005846CF /* FocusArea.swift in Sources */,
 				1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */,
+				1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
 				1CAC145B3088E173005846CF /* OnboardingAdditionalThoughtsView.swift in Sources */,
 				1C0125C9308EE8800089119A /* HomeView.swift in Sources */,
@@ -421,7 +425,7 @@
 				1CAC1439308189C8005846CF /* AppRouter.swift in Sources */,
 				1CAC143D30818B7E005846CF /* AuthRoute.swift in Sources */,
 				1CAC144C3086B000005846CF /* OnboardingQuestionsView.swift in Sources */,
-				1CAC145D308A400B005846CF /* aitest.swift in Sources */,
+				1C0125CD308EF18D0089119A /* StartupView.swift in Sources */,
 				1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */,
 				1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */,
 				1CAC144A30859BA8005846CF /* OnboardingAreasOfFocusView.swift in Sources */,

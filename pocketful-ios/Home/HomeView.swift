@@ -2,15 +2,12 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @State private var homeViewModel: HomeViewModel
+    @Environment(SessionStore.self) private var session
     
-    init(dependencies: AppDependencies) {
-        _homeViewModel = State(initialValue: dependencies.makeHomeViewModel())
-    }
     
     var body: some View {
         Button {
-            homeViewModel.signOut()
+            session.signOut()
         } label: {
             Text("Sign out")
         }

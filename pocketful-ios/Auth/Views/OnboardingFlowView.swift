@@ -44,12 +44,12 @@ struct OnboardingFlowView: View {
     }
 }
 
-#Preview {
-    OnboardingFlowView(dependencies: AppDependencies(
-        authService: PreviewAuthService(),
-        foundationModelService: PreviewFoundationModelService(),
-        userService: PreviewUserService()
-    ))
-        .environment(AppRouter())
-        .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-}
+//#Preview {
+//    OnboardingFlowView(dependencies: AppDependencies(
+//        authService: PreviewAuthService(),
+//        foundationModelService: PreviewFoundationModelService(),
+//        userService: PreviewUserService()
+//    ))
+//        .environment(AppRouter())
+//        .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
+//}

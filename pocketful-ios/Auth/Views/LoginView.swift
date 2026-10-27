@@ -21,11 +21,6 @@ struct LoginView: View {
         }
         .padding()
         .background(.appBackground)
-        .alert("Couldn't sign in", isPresented: $session.didFailToSignIn) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("Something went wrong signing in with Google. Please try again.")
-        }
     }
     
     private var title: some View {
@@ -61,6 +56,7 @@ struct LoginView: View {
             HapticManager.shared.triggerImpact(style: .heavy)
             Task {
                 await session.signInWithGoogle()
+                session.saveUser()
             }
         }
         .buttonStyle(AppButtonStyle(
@@ -73,7 +69,7 @@ struct LoginView: View {
     }
 }
 
-#Preview {
-    LoginView()
-        .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
-}
+//#Preview {
+//    LoginView()
+//        .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
+//}
