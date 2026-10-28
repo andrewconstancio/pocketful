@@ -31,6 +31,9 @@ final class SessionStore {
         authService.currentUserEmail
     }
 
+    /// The signed-in user's name, or `nil` until it's loaded.
+    private(set) var userName: String?
+
     init(
         authService: AuthServicing,
         userService: UserServicing,
@@ -45,10 +48,23 @@ final class SessionStore {
     func observeAuthChanges() async {
         for await userID in authService.userIDChanges() {
             guard let userID else {
+                userName = nil
                 authState = .unauthenticated
                 continue
             }
             authState = await hasCompletedOnboarding(userID: userID) ? .authenticated : .setupUser
+        }
+    }
+
+    /// Reads the signed-in user's name from Firestore.
+    func loadUserName() async {
+        guard let userID = currentUserId else {
+            return
+        }
+        do {
+            userName = try await userService.fetchName(uid: userID)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 

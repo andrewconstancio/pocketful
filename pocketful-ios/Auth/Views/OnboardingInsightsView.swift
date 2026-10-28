@@ -136,7 +136,7 @@ private struct InsightCard: View {
 }
 
 #Preview("Insights") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService())
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService())
 
     NavigationStack {
         OnboardingInsightsView()
@@ -147,7 +147,7 @@ private struct InsightCard: View {
 }
 
 #Preview("Failed") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true), insightsService: PreviewInsightsService())
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true), insightsService: PreviewInsightsService(), userService: PreviewUserService())
 
     NavigationStack {
         OnboardingInsightsView()

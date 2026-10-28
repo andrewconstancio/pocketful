@@ -3,6 +3,8 @@ import FirebaseFirestore
 protocol UserServicing {
     func userExists(uid: String) async throws -> Bool
     func saveUser(uid: String, email: String) throws
+    func saveName(uid: String, name: String)
+    func fetchName(uid: String) async throws -> String?
 }
 
 private struct UserDocument: Encodable {
@@ -26,8 +28,20 @@ final class UserService: UserServicing {
         return snapshot.exists
     }
 
+    /// Merges so it doesn't wipe fields saved elsewhere, like the name.
     func saveUser(uid: String, email: String) throws {
-        try db.collection(collection).document(uid).setData(from: UserDocument(email: email))
+        try db.collection(collection).document(uid).setData(from: UserDocument(email: email), merge: true)
+    }
+
+    /// Merges so the email and created date stay put.
+    func saveName(uid: String, name: String) {
+        db.collection(collection).document(uid).setData(["name": name], merge: true)
+    }
+
+    /// Returns `nil` if the doc or its name field doesn't exist yet.
+    func fetchName(uid: String) async throws -> String? {
+        let snapshot = try await db.collection(collection).document(uid).getDocument()
+        return snapshot.get("name") as? String
     }
 }
 
@@ -45,5 +59,7 @@ final class PreviewUserService: UserServicing {
         isExistingUser
     }
     func saveUser(uid: String, email: String) throws {}
+    func saveName(uid: String, name: String) {}
+    func fetchName(uid: String) async throws -> String? { "Alex" }
 }
 #endif

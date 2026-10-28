@@ -3,6 +3,7 @@ import Foundation
 /// The onboarding questions, in the order they're shown.
 enum OnboardingQuestion: Int, CaseIterable {
     case getToKnow
+    case name
     case lifeGoals
     case stressLevel
     case areasOfFocus

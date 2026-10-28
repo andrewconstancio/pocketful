@@ -24,16 +24,17 @@ struct RootView: View {
     
     @ViewBuilder
     private var content: some View {
-        switch session.authState {
-        case .startup:
-            StartupView()
-        case .unauthenticated:
-            LoginView()
-        case .setupUser:
-            OnboardingFlowView(dependencies: dependencies)
-        case .authenticated:
-            HomeView()
-        }
+        HomeView()
+//        switch session.authState {
+//        case .startup:
+//            StartupView()
+//        case .unauthenticated:
+//            LoginView()
+//        case .setupUser:
+//            OnboardingFlowView(dependencies: dependencies)
+//        case .authenticated:
+//            HomeView()
+//        }
     }
 }
 

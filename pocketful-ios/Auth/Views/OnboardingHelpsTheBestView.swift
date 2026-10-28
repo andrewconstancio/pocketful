@@ -100,5 +100,5 @@ private struct HelpsBestRow: View {
     OnboardingHelpsTheBestView()
         .padding()
         .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService()))
 }

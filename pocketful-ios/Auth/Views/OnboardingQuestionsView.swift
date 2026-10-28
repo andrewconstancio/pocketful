@@ -40,6 +40,8 @@ struct OnboardingQuestionsView: View {
         switch viewModel.currentQuestion {
         case .getToKnow:
             OnboardingGetToKnowView()
+        case .name:
+            OnboardingNameView()
         case .lifeGoals:
             OnboardingLifeGoalsView()
         case .stressLevel:
@@ -116,6 +118,6 @@ struct OnboardingQuestionsView: View {
     NavigationStack {
         OnboardingQuestionsView()
     }
-    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService()))
     .environment(AppRouter())
 }

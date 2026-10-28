@@ -94,6 +94,6 @@ struct OnboardingGeneratingInsightsView: View {
 
 #Preview {
     OnboardingGeneratingInsightsView()
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService()))
         .environment(AppRouter())
 }

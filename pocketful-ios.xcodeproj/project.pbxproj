@@ -47,6 +47,7 @@
 		1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */; };
 		1CAC145530879771005846CF /* HelpsBest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14543087976D005846CF /* HelpsBest.swift */; };
 		1CAC145730879BF2005846CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CAC145630879BF2005846CF /* LaunchScreen.storyboard */; };
+		1CAC1461A1B2C3D4005846CF /* OnboardingNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */; };
 		1CAC14593088E137005846CF /* OnboardingFulfilledVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */; };
 		1CAC145B3088E173005846CF /* OnboardingAdditionalThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145A3088E173005846CF /* OnboardingAdditionalThoughtsView.swift */; };
 		1CAC145D3088F000005846CF /* OnboardingTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C3088F000005846CF /* OnboardingTextBox.swift */; };
@@ -99,6 +100,7 @@
 		1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelpsTheBestView.swift; sourceTree = "<group>"; };
 		1CAC14543087976D005846CF /* HelpsBest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpsBest.swift; sourceTree = "<group>"; };
 		1CAC145630879BF2005846CF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNameView.swift; sourceTree = "<group>"; };
 		1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFulfilledVersionView.swift; sourceTree = "<group>"; };
 		1CAC145A3088E173005846CF /* OnboardingAdditionalThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdditionalThoughtsView.swift; sourceTree = "<group>"; };
 		1CAC145C3088F000005846CF /* OnboardingTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextBox.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				1CAC144E30864E9D005846CF /* OnboardingChallengingMostView.swift */,
 				1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */,
 				1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */,
+				1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */,
 				1CAC145A3088E173005846CF /* OnboardingAdditionalThoughtsView.swift */,
 				1CAC145C3088F000005846CF /* OnboardingTextBox.swift */,
 				1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */,
@@ -440,6 +443,7 @@
 				1CAC14443083A000005846CF /* LifeGoal.swift in Sources */,
 				1CAC144830851A1F005846CF /* StressLevel.swift in Sources */,
 				1CAC14593088E137005846CF /* OnboardingFulfilledVersionView.swift in Sources */,
+				1CAC1461A1B2C3D4005846CF /* OnboardingNameView.swift in Sources */,
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
 				1CAC145530879771005846CF /* HelpsBest.swift in Sources */,

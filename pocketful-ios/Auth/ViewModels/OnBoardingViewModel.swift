@@ -22,6 +22,9 @@ final class OnBoardingViewModel {
     /// What helps the user feel their best.
     private(set) var selectedHelpsBest: Set<HelpsBest> = []
 
+    /// The name the user wants to be called.
+    var nameText = ""
+
     /// What a more fulfilled version of the user looks like, in their own words.
     var fulfilledVersionText = ""
 
@@ -44,10 +47,19 @@ final class OnBoardingViewModel {
     
     private let insightsService: InsightsServicing
 
+    /// Reads and writes the user's Firestore doc.
+    private let userService: UserServicing
+
+    /// The name with leading and trailing spaces removed.
+    private var trimmedName: String {
+        nameText.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     /// Whether the current question is answered, so Next can be tapped.
     var canContinue: Bool {
         switch currentQuestion {
         case .getToKnow: true
+        case .name: !trimmedName.isEmpty
         case .lifeGoals: !selectedLifeGoals.isEmpty
         case .stressLevel: selectedStressLevel != nil
         case .areasOfFocus: !selectedFocusAreas.isEmpty
@@ -61,14 +73,16 @@ final class OnBoardingViewModel {
     init(
         authService: AuthServicing,
         foundationModelService: FoundationModelServicing,
-        insightsService: InsightsServicing
+        insightsService: InsightsServicing,
+        userService: UserServicing
     ) {
         self.authService = authService
         self.foundationModelService = foundationModelService
         self.insightsService = insightsService
+        self.userService = userService
     }
 
-    /// Sends the answers to the on-device model and stores the insights.
+    /// Saves the user's name, then sends the answers to the on-device model and stores the insights.
     func generateInsights() async {
         let answers = OnboardingAnswers(
             lifeGoals: Array(selectedLifeGoals),
@@ -80,6 +94,10 @@ final class OnBoardingViewModel {
             additionalThoughts: additionalThoughtsText
         )
         do {
+            if let uid = authService.currentUserId {
+                userService.saveName(uid: uid, name: trimmedName)
+            }
+
             insights = try await foundationModelService.generateInsights(from: answers)
             
             if let insightsList = insights?.insights,

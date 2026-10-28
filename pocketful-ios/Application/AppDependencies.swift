@@ -39,7 +39,8 @@ final class AppDependencies {
         OnBoardingViewModel(
             authService: authService,
             foundationModelService: foundationModelService,
-            insightsService: insightsService
+            insightsService: insightsService,
+            userService: userService
         )
     }
     
