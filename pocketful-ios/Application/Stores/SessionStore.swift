@@ -114,4 +114,9 @@ final class SessionStore {
             print(error.localizedDescription)
         }
     }
+    
+    /// the
+    func setUsersAutthToAuthenticated() {
+        authState = .authenticated
+    }
 }

@@ -46,7 +46,8 @@ final class AppDependencies {
     
     func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
-            authService: authService
+            authService: authService,
+            foundationModelService: foundationModelService
         )
     }
 }

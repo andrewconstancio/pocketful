@@ -25,7 +25,7 @@ struct OnboardingInsightsView: View {
                 failureMessage
             }
 
-            continueButton
+            finishButton
                 .padding(.top, 16)
         }
         .padding()
@@ -68,11 +68,12 @@ struct OnboardingInsightsView: View {
             .frame(maxHeight: .infinity, alignment: .top)
     }
 
-    private var continueButton: some View {
+    private var finishButton: some View {
         Button {
             HapticManager.shared.triggerImpact(style: .heavy)
+            session.setUsersAutthToAuthenticated()
         } label: {
-            Text("Continue")
+            Text("Finish")
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appGreen,

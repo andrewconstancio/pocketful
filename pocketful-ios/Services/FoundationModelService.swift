@@ -1,65 +1,12 @@
 import FoundationModels
 
-/// The insights the model creates from the onboarding answers.
 @Generable
-struct OnboardingInsights {
-    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(5))
-    let insights: [Insight]
-}
+struct Thought {
+    @Guide(description: "One short, gentle sentence, under 15 words")
+    let headline: String
 
-@Generable
-struct Insight: Encodable {
-    @Guide(description: "A short, warm title of a few words that names this insight.")
-    let title: String
-
-    @Guide(description: "Three to five uplifting sentences, speaking to the user as 'you'. Name the specific answer this insight comes from, explain what it shows about them, and why focusing on it can help them feel more fulfilled.")
+    @Guide(description: "Two sentences that expand on the headline")
     let body: String
-
-    @Guide(description: "One small, concrete thing the user can try today based on this insight, in one or two sentences.")
-    let practice: String
-
-    @Guide(description: "The icon that best matches the feeling of this reminder.")
-    let icon: InsightIcon
-    
-    @Guide(description: "A short, positive phrase of one to four words that the user can repeat to themselves during the day, written in fresh words that fit this insight.")
-    let reminder: String
-
-    // Manual Encodable conformance because @Generable synthesizes
-    // hidden stored properties that aren't Encodable.
-    private enum CodingKeys: String, CodingKey {
-        case title, body, practice, icon, reminder
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
-        try container.encode(body, forKey: .body)
-        try container.encode(practice, forKey: .practice)
-        try container.encode(icon.rawValue, forKey: .icon)
-        try container.encode(reminder, forKey: .reminder)
-    }
-}
-
-/// The icons the model can choose from for a reminder.
-@Generable
-enum InsightIcon: String {
-    case calm, heart, sun, leaf, sparkles, moon, mountain, people, music, focus
-
-    /// The SF Symbol shown for this icon.
-    var systemName: String {
-        switch self {
-        case .calm: "wind"
-        case .heart: "heart"
-        case .sun: "sun.max"
-        case .leaf: "leaf"
-        case .sparkles: "sparkles"
-        case .moon: "moon.stars"
-        case .mountain: "mountain.2"
-        case .people: "person.2"
-        case .music: "music.note"
-        case .focus: "scope"
-        }
-    }
 }
 
 enum FoundationModelError: Error {
@@ -68,11 +15,9 @@ enum FoundationModelError: Error {
 }
 
 protocol FoundationModelServicing {
-    /// Whether the on-device model can be used right now.
     var isAvailable: Bool { get }
-
-    /// Creates personalized insights from the user's onboarding answers.
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights
+    func generateTodaysThought() async throws -> Thought
 }
 
 final class FoundationModelService: FoundationModelServicing {
@@ -89,6 +34,18 @@ final class FoundationModelService: FoundationModelServicing {
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
         """
+    
+    private static let todaysThoughInstructions = """
+        You write one short daily reflection for a calm, encouraging app.
+        Be warm and simple. No clichés, no emojis, no exclamation marks.
+
+        Examples of the tone:
+        Headline: Progress doesn't always look like a big leap. Sometimes it's just showing up again.
+        Body: Small, consistent actions still move you forward. You don't have to have it all figured out to be proud of the effort you're putting in.
+
+        Headline: Rest is part of the work, not a break from it.
+        Body: Slowing down gives you room to notice what matters. You can pick things back up tomorrow.
+        """
 
     /// A higher temperature adds randomness, so the same answers don't always produce the same reminders.
     private static let insightsOptions = GenerationOptions(temperature: 0.9)
@@ -101,6 +58,15 @@ final class FoundationModelService: FoundationModelServicing {
         // A new session each time so old messages don't leak into this request.
         let session = LanguageModelSession(model: model, instructions: Self.insightsInstructions)
         let response = try await session.respond(to: answers.promptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
+        return response.content
+    }
+    
+    func generateTodaysThought() async throws -> Thought {
+        guard isAvailable else { throw FoundationModelError.modelUnavailable }
+
+        // A new session each time so old messages don't leak into this request.
+        let session = LanguageModelSession(model: model, instructions: Self.todaysThoughInstructions)
+        let response = try await session.respond(to: "Write today's thought.", generating: Thought.self)
         return response.content
     }
 }
@@ -144,5 +110,7 @@ final class PreviewFoundationModelService: FoundationModelServicing {
             )
         ])
     }
+    
+    func generateTodaysThought() async throws -> Thought { return Thought(headline: "Hi", body: "Hello") }
 }
 #endif

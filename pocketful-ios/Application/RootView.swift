@@ -24,17 +24,36 @@ struct RootView: View {
     
     @ViewBuilder
     private var content: some View {
-        HomeView()
-//        switch session.authState {
-//        case .startup:
-//            StartupView()
-//        case .unauthenticated:
-//            LoginView()
-//        case .setupUser:
-//            OnboardingFlowView(dependencies: dependencies)
-//        case .authenticated:
-//            HomeView()
-//        }
+        switch session.authState {
+        case .startup:
+            StartupView()
+        case .unauthenticated:
+            LoginView()
+        case .setupUser:
+            OnboardingFlowView(dependencies: dependencies)
+        case .authenticated:
+            mainContent
+        }
+    }
+    
+    private var mainContent: some View {
+        TabView {
+            Tab("Home", systemImage: "house") {
+                NavigationStack {
+                    HomeView(dependencies: dependencies)
+                }
+            }
+            Tab("My Tree", systemImage: "tree") {
+                TreeView()
+            }
+            Tab("Jounal", systemImage: "book.pages") {
+                HomeView(dependencies: dependencies)
+            }
+            Tab("Profile", systemImage: "person") {
+                HomeView(dependencies: dependencies)
+            }
+        }
+        .tint(.appGreen)
     }
 }
 
