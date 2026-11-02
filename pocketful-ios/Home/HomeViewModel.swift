@@ -6,6 +6,8 @@ final class HomeViewModel {
     /// The auth service for this app.
     private let authService: AuthServicing
     
+    private let thoughtStorage: ThoughtStorage
+    
     /// The foundations model service for this app.
     private let foundationModelService: FoundationModelServicing
     
@@ -13,15 +15,23 @@ final class HomeViewModel {
     
     init(
         authService: AuthServicing,
-        foundationModelService: FoundationModelServicing
+        foundationModelService: FoundationModelServicing,
+        thoughtStorage: ThoughtStorage
     ) {
         self.authService = authService
         self.foundationModelService = foundationModelService
+        self.thoughtStorage = thoughtStorage
     }
     
-    func generateTodaysThought() async {
+    func loadTodaysThought() async {
+        if let saved = thoughtStorage.loadTodaysThought() {
+            todaysThought = saved
+            return
+        }
         do {
-            todaysThought = try await foundationModelService.generateTodaysThought()
+            let newThought = try await foundationModelService.generateTodaysThought()
+            try? thoughtStorage.save(newThought)
+            todaysThought = newThought
         } catch {
             print(error)
         }

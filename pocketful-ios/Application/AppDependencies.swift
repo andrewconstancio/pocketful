@@ -18,11 +18,16 @@ final class AppDependencies {
     /// The state of the users current session.
     let session: SessionStore
     
+    
+    // MARK: - Storage
+    let thoughtStorage: ThoughtStorage
+    
     init(
         authService: AuthServicing = AuthService(),
         foundationModelService: FoundationModelServicing = FoundationModelService(),
         userService: UserServicing = UserService(),
-        insightsService: InsightsServicing = Insightservice()
+        insightsService: InsightsServicing = Insightservice(),
+        thoughtStorage: ThoughtStorage = ThoughtStorage()
     ) {
         self.authService                = authService
         self.foundationModelService     = foundationModelService
@@ -31,6 +36,7 @@ final class AppDependencies {
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService, insightsService: insightsService)
+        self.thoughtStorage             = thoughtStorage
     }
     
     // MARK: - Feature view models
@@ -47,7 +53,8 @@ final class AppDependencies {
     func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
             authService: authService,
-            foundationModelService: foundationModelService
+            foundationModelService: foundationModelService,
+            thoughtStorage: thoughtStorage
         )
     }
 }

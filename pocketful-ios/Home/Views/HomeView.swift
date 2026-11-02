@@ -24,20 +24,20 @@ struct HomeView: View {
         .background(.appBackground)
         
         // Toolbar
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-               Button(action: {
-                   print("Settings tapped")
-               }) {
-                   Image(systemName: "bell")
-               }
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//               Button(action: {
+//                   print("Settings tapped")
+//               }) {
+//                   Image(systemName: "bell")
+//               }
+//            }
+//        }
         
         // Task
         .task {
             await session.loadUserName()
-            await homeViewModel.generateTodaysThought()
+            await homeViewModel.loadTodaysThought()
         }
     }
 
@@ -87,32 +87,56 @@ struct HomeView: View {
             HStack(spacing: 2) {
                 Image("sun-icon")
                     .resizable()
-                    .frame(width: 28, height: 28)
+                    .frame(width: 32, height: 32)
                 
                 Text("Today's Thought")
+                    .font(.system(size: 14))
                     .foregroundStyle(.textPrimary)
+                    .fontWeight(.light)
                 
                 Spacer()
                 
                 Image(systemName: "ellipsis")
+                    .resizable()
+                    .frame(width: 18, height: 6)
             }
             
             if let thought = homeViewModel.todaysThought {
-                Text(thought.headline)
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.bold.font(size: 28))
-                    .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                        width * 2 / 3
-                    }
-                
-                Text(thought.body)
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.regular.font(size: 22))
+                TodaysThoughtTextView(thought: thought)
                     .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
                         width * 2 / 3
                     }
             }
             
+            Spacer().frame(height: 60)
+            
+            HStack(spacing: 12) {
+                // Bookmark button
+                Button {
+                    
+                } label: {
+                    Image(systemName: "bookmark")
+                        .resizable()
+                        .frame(width: 18, height: 23)
+                        .foregroundStyle(.black)
+                        .frame(width: 44, height: 44)
+                        .background(.appGreen.opacity(0.1))
+                        .clipShape(Circle())
+                }
+                
+                // Share button
+                Button {
+                    
+                } label: {
+                    Image("icon-share")
+                        .resizable()
+                        .frame(width: 24, height: 26)
+                        .foregroundStyle(.black)
+                        .frame(width: 44, height: 44)
+                        .background(.appGreen.opacity(0.1))
+                        .clipShape(Circle())
+                }
+            }
         }
         .padding()
         .background(alignment: .bottomTrailing) {
@@ -128,7 +152,7 @@ struct HomeView: View {
     private var todayThoughtFlowerImage: some View {
         Image("wildflower_5")
             .resizable()
-            .frame(width: 200, height: 250)
+            .frame(width: 200, height: 200)
             .mask(
                 LinearGradient(
                     stops: [
@@ -153,13 +177,14 @@ struct HomeView: View {
     }
 }
 
-//#Preview {
-//    HomeView()
-//        .environment(
-//            SessionStore(
-//                authService: PreviewAuthService(),
-//                userService: PreviewUserService(),
-//                insightsService: PreviewInsightsService()
-//            )
-//        )
-//}
+#Preview {
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService())
+    HomeView(dependencies: dependencies)
+        .environment(
+            SessionStore(
+                authService: PreviewAuthService(),
+                userService: PreviewUserService(),
+                insightsService: PreviewInsightsService()
+            )
+        )
+}
