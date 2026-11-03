@@ -8,16 +8,15 @@ struct RootView: View {
     /// Who is signed in.
     @Environment(SessionStore.self) private var session
     
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+    
     var body: some View {
         @Bindable var session = session
 
         content
             .task {
                 await session.observeAuthChanges()
-            }
-            .onChange(of: session.authState) { oldValue, newValue in
-                print("oldValue \(oldValue)")
-                print("newValue \(newValue)")
             }
             .appAlert(alert: $session.activeAlert)
     }
@@ -39,18 +38,27 @@ struct RootView: View {
     private var mainContent: some View {
         TabView {
             Tab("Home", systemImage: "house") {
-                NavigationStack {
+                NavigationStack(path: Bindable(router).homePath) {
                     HomeView(dependencies: dependencies)
+                        .navigationDestination(for: HomeRoute.self) { route in
+                            switch route {
+                            case .notifications:
+                                NotificationView()
+                                
+                            case .insightDetail(let insight):
+                                InsightDetailView(insight: insight)
+                            }
+                        }
                 }
             }
             Tab("My Tree", systemImage: "tree") {
                 TreeView()
             }
             Tab("Jounal", systemImage: "book.pages") {
-                HomeView(dependencies: dependencies)
+                JournalView()
             }
             Tab("Profile", systemImage: "person") {
-                HomeView(dependencies: dependencies)
+               ProfileView()
             }
         }
         .tint(.appGreen)

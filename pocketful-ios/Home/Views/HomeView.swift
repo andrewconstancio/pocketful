@@ -5,7 +5,9 @@ struct HomeView: View {
     /// The apps session store.
     @Environment(SessionStore.self) private var session
     
-
+    /// App navigation, which holds the onboarding flow's path.
+    @Environment(AppRouter.self) private var router
+    
     @State private var homeViewModel: HomeViewModel
     
     init(dependencies: AppDependencies) {
@@ -13,31 +15,42 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
-            header
-            Spacer().frame(height: 20)
-            todaysThoughts
-            Spacer()
+        ScrollView {
+            VStack {
+                header
+                Spacer().frame(height: 20)
+                TodaysThoughtView(homeViewModel: homeViewModel)
+
+                if !homeViewModel.insights.isEmpty {
+                    InsightsListView(insights: homeViewModel.insights)
+                        .padding(.top, 12)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
+        .scrollIndicators(.hidden)
         .background(.appBackground)
         
         // Toolbar
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//               Button(action: {
-//                   print("Settings tapped")
-//               }) {
-//                   Image(systemName: "bell")
-//               }
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+               Button(action: {
+                   router.homePath.append(HomeRoute.notifications)
+               }) {
+                   Image(systemName: "bell")
+               }
+            }
+        }
         
-        // Task
         .task {
             await session.loadUserName()
+        }
+        .task {
             await homeViewModel.loadTodaysThought()
+        }
+        .task {
+            await homeViewModel.loadInsights()
         }
     }
 
@@ -82,90 +95,6 @@ struct HomeView: View {
             )
     }
     
-    private var todaysThoughts: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 2) {
-                Image("sun-icon")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                
-                Text("Today's Thought")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.textPrimary)
-                    .fontWeight(.light)
-                
-                Spacer()
-                
-                Image(systemName: "ellipsis")
-                    .resizable()
-                    .frame(width: 18, height: 6)
-            }
-            
-            if let thought = homeViewModel.todaysThought {
-                TodaysThoughtTextView(thought: thought)
-                    .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                        width * 2 / 3
-                    }
-            }
-            
-            Spacer().frame(height: 60)
-            
-            HStack(spacing: 12) {
-                // Bookmark button
-                Button {
-                    
-                } label: {
-                    Image(systemName: "bookmark")
-                        .resizable()
-                        .frame(width: 18, height: 23)
-                        .foregroundStyle(.black)
-                        .frame(width: 44, height: 44)
-                        .background(.appGreen.opacity(0.1))
-                        .clipShape(Circle())
-                }
-                
-                // Share button
-                Button {
-                    
-                } label: {
-                    Image("icon-share")
-                        .resizable()
-                        .frame(width: 24, height: 26)
-                        .foregroundStyle(.black)
-                        .frame(width: 44, height: 44)
-                        .background(.appGreen.opacity(0.1))
-                        .clipShape(Circle())
-                }
-            }
-        }
-        .padding()
-        .background(alignment: .bottomTrailing) {
-            todayThoughtFlowerImage
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(.white.opacity(0.7))
-        )
-    }
-    
-    /// The main flower image of this view.
-    private var todayThoughtFlowerImage: some View {
-        Image("wildflower_5")
-            .resizable()
-            .frame(width: 200, height: 200)
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .black, location: 0.6),
-                        .init(color: .clear, location: 1.0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .opacity(0.5)
-    }
-    
     /// "Good morning" before noon, "Good afternoon" until 5pm, "Good evening" after that.
     private var timeOfDayGreeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
@@ -178,7 +107,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService())
     HomeView(dependencies: dependencies)
         .environment(
             SessionStore(

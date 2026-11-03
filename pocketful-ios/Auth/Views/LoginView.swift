@@ -49,11 +49,19 @@ struct LoginView: View {
     }
     
     private var googleSignInButton: some View {
-        Button("Sign in with Google") {
+        Button {
             HapticManager.shared.triggerImpact(style: .heavy)
             Task {
                 await session.signInWithGoogle()
                 session.saveUser()
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "g.circle.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                
+                Text("Sign in with Google")
             }
         }
         .buttonStyle(AppButtonStyle(

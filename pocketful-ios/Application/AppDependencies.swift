@@ -54,7 +54,8 @@ final class AppDependencies {
         HomeViewModel(
             authService: authService,
             foundationModelService: foundationModelService,
-            thoughtStorage: thoughtStorage
+            thoughtStorage: thoughtStorage,
+            insightsService: insightsService
         )
     }
 }

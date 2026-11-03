@@ -1,7 +1,7 @@
 import FirebaseFirestore
 
 /// The shape of the Firestore document stored in the "insights" collection.
-private struct InsightsDocument: Encodable {
+private struct InsightsDocument: Codable {
     let userId: String
     let insights: [Insight]
     @ServerTimestamp var createdAt: Timestamp?
@@ -16,6 +16,7 @@ private struct InsightsDocument: Encodable {
 protocol InsightsServicing {
     func saveInsights(uid: String, insights: [Insight]) throws
     func userHasInsights(uid: String) async throws -> Bool
+    func fetchInsights(uid: String) async throws -> [Insight]
 }
 
 /// Reads and writes each user's doc at `users/{uid}` in Firestore.
@@ -36,11 +37,20 @@ final class Insightservice: InsightsServicing {
             .getDocuments()
         return !snapshot.isEmpty
     }
+    
+    func fetchInsights(uid: String) async throws -> [Insight] {
+        let snapshot = try await db.collection(collection)
+            .whereField("user_id", isEqualTo: uid)
+            .limit(to: 1)
+            .getDocuments()
+        return try snapshot.documents.first?.data(as: InsightsDocument.self).insights ?? []
+    }
 }
 
 #if DEBUG
 final class PreviewInsightsService: InsightsServicing {
     func saveInsights(uid: String, insights: [Insight]) throws {}
     func userHasInsights(uid: String) async throws -> Bool { return true}
+    func fetchInsights(uid: String) async throws -> [Insight] { [] }
 }
 #endif

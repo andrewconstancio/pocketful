@@ -8,7 +8,7 @@ struct OnboardingInsights {
 }
 
 @Generable
-struct Insight: Encodable {
+struct Insight: Encodable, Equatable, Hashable {
     @Guide(description: "A short, warm title of a few words that names this insight.")
     let title: String
 
@@ -37,6 +37,21 @@ struct Insight: Encodable {
         try container.encode(practice, forKey: .practice)
         try container.encode(icon.rawValue, forKey: .icon)
         try container.encode(reminder, forKey: .reminder)
+    }
+}
+
+// In an extension so the automatic `Insight(title:body:...)` init still exists.
+extension Insight: Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let iconName = try container.decode(String.self, forKey: .icon)
+        self.init(
+            title: try container.decode(String.self, forKey: .title),
+            body: try container.decode(String.self, forKey: .body),
+            practice: try container.decode(String.self, forKey: .practice),
+            icon: InsightIcon(rawValue: iconName) ?? .sparkles,
+            reminder: try container.decode(String.self, forKey: .reminder)
+        )
     }
 }
 
