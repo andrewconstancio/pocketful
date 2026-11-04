@@ -16,9 +16,15 @@ final class HomeViewModel {
     private let insightsService: InsightsServicing
     
     var todaysThought: Thought?
-    
+
+    /// Whether today's thought was just generated rather than loaded from disk, so it gets typed out.
+    private(set) var isTodaysThoughtNew = false
+
     /// The insights made from the user's onboarding answers.
     var insights: [Insight] = []
+
+    /// Whether the first insights load has finished, even if it failed or found none.
+    private(set) var hasLoadedInsights = false
     
     init(
         authService: AuthServicing,
@@ -40,6 +46,7 @@ final class HomeViewModel {
         do {
             let newThought = try await foundationModelService.generateTodaysThought()
             try? thoughtStorage.save(newThought)
+            isTodaysThoughtNew = true
             todaysThought = newThought
         } catch {
             print(error)
@@ -49,6 +56,7 @@ final class HomeViewModel {
     /// Loads the user's insights once; skips if they're already loaded.
     func loadInsights() async {
         guard insights.isEmpty, let uid = authService.currentUserId else { return }
+        defer { hasLoadedInsights = true }
         do {
             insights = try await insightsService.fetchInsights(uid: uid)
         } catch {

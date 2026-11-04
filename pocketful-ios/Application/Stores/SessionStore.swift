@@ -16,6 +16,9 @@ final class SessionStore {
     /// The insights firebase service.
     private let insightsService: InsightsServicing
     
+    /// Caches small values like the user's name.
+    private let defaults = UserDefaults.standard
+
     /// An alert to present to the user.
     var activeAlert: AppAlert?
 
@@ -49,6 +52,7 @@ final class SessionStore {
         for await userID in authService.userIDChanges() {
             guard let userID else {
                 userName = nil
+                defaults.removeObject(forKey: Constants.DefaultsKeys.userName)
                 authState = .unauthenticated
                 continue
             }
@@ -56,13 +60,18 @@ final class SessionStore {
         }
     }
 
-    /// Reads the signed-in user's name from Firestore.
+    /// Loads the user's name, from the saved copy if there is one, otherwise from Firestore.
     func loadUserName() async {
         guard let userID = currentUserId else {
             return
         }
+        if let cachedName = defaults.string(forKey: Constants.DefaultsKeys.userName) {
+            userName = cachedName
+            return
+        }
         do {
             userName = try await userService.fetchName(uid: userID)
+            defaults.set(userName, forKey: Constants.DefaultsKeys.userName)
         } catch {
             print(error.localizedDescription)
         }

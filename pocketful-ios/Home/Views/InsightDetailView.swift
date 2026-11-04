@@ -30,21 +30,32 @@ struct InsightDetailView: View {
         .fullScreenCover(isPresented: $isRecordingReflection) {
             VoiceReflectionView(insight: insight)
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+               Button(action: {
+                  print("PRESSED EDIT")
+               }) {
+                   Image(systemName: "ellipsis")
+               }
+            }
+        }
     }
 
     /// The insight's icon, title and reminder.
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: insight.icon.systemName)
-                .font(.system(size: 24))
-                .foregroundStyle(.textPrimary)
-                .frame(width: 56, height: 56)
-                .background(.appGreen.opacity(0.1))
-                .clipShape(Circle())
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: insight.icon.systemName)
+                    .font(.system(size: 22))
+                    .foregroundStyle(.textPrimary)
+                    .frame(width: 50, height: 50)
+                    .background(.appGreen.opacity(0.1))
+                    .clipShape(Circle())
 
-            Text(insight.title)
-                .foregroundStyle(.textPrimary)
-                .font(FontManager.CormorantGaramond.bold.font(size: 36))
+                Text(insight.title)
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.bold.font(size: 32))
+            }
 
             Text(insight.reminder)
                 .foregroundStyle(.textPrimary.opacity(0.7))

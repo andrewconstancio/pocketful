@@ -8,7 +8,7 @@ struct TodaysThoughtView: View {
             heading
             
             if let thought = homeViewModel.todaysThought {
-                TodaysThoughtTextView(thought: thought)
+                TodaysThoughtTextView(thought: thought, typesOut: homeViewModel.isTodaysThoughtNew)
                     .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
                         width * 2 / 3
                     }

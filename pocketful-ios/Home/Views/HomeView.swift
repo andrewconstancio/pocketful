@@ -9,7 +9,10 @@ struct HomeView: View {
     @Environment(AppRouter.self) private var router
     
     @State private var homeViewModel: HomeViewModel
-    
+
+    /// Whether the "add your own insight" sheet is showing.
+    @State private var isAddingInsight = false
+
     init(dependencies: AppDependencies) {
         _homeViewModel = State(initialValue: dependencies.makeHomeViewModel())
     }
@@ -21,15 +24,23 @@ struct HomeView: View {
                 Spacer().frame(height: 20)
                 TodaysThoughtView(homeViewModel: homeViewModel)
 
-                if !homeViewModel.insights.isEmpty {
-                    InsightsListView(insights: homeViewModel.insights)
-                        .padding(.top, 12)
+                // Waits for the first load so "Add your first insight" doesn't flash before real insights arrive.
+                if homeViewModel.hasLoadedInsights {
+                    InsightsListView(insights: homeViewModel.insights) {
+                        HapticManager.shared.triggerImpact()
+                        isAddingInsight = true
+                    }
+                    .padding(.top, 12)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding()
         }
         .scrollIndicators(.hidden)
+        .background {
+            HomeBackgroundView()
+                .ignoresSafeArea()
+        }
         .background(.appBackground)
         
         // Toolbar
@@ -43,6 +54,9 @@ struct HomeView: View {
             }
         }
         
+        .sheet(isPresented: $isAddingInsight) {
+            AddInsightView()
+        }
         .task {
             await session.loadUserName()
         }
@@ -68,7 +82,7 @@ struct HomeView: View {
                         .font(FontManager.CormorantGaramond.bold.font(size: 38))
                 }	
                 
-                Text("A little more of matters")
+                Text("A little more of what matters")
                     .foregroundStyle(.textPrimary)
                     .font(FontManager.CormorantGaramond.regular.font(size: 20))
             }

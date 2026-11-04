@@ -1,12 +1,18 @@
 import SwiftUI
 
-/// Today's thought, typed out one character at a time with a light tap for each character.
+/// Today's thought, optionally typed out one character at a time with a light tap for each character.
 struct TodaysThoughtTextView: View {
 
     let thought: Thought
 
     /// How many characters of the headline and body are shown so far.
-    @State private var typedCount = 0
+    @State private var typedCount: Int
+
+    /// Starts fully shown unless `typesOut` is true.
+    init(thought: Thought, typesOut: Bool) {
+        self.thought = thought
+        _typedCount = State(initialValue: typesOut ? 0 : thought.headline.count + thought.body.count)
+    }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -21,10 +27,10 @@ struct TodaysThoughtTextView: View {
                 .font(FontManager.CormorantGaramond.bold.font(size: 28))
 
             typedText(thought.body, shownCount: typedCount - thought.headline.count)
-                .font(FontManager.CormorantGaramond.regular.font(size: 22))
+                .font(FontManager.CormorantGaramond.regular.font(size: 20))
         }
         .foregroundStyle(.textPrimary)
-        // Only tap when a single character is typed, not when everything appears at once.
+        // Only tap when a single charact  er is typed, not when everything appears at once.
         .sensoryFeedback(.impact(weight: .light, intensity: 0.6), trigger: typedCount) { oldCount, newCount in
             newCount == oldCount + 1
         }
@@ -66,7 +72,8 @@ struct TodaysThoughtTextView: View {
         thought: Thought(
             headline: "Progress doesn't always look like a big leap.",
             body: "Small, consistent actions still move you forward. You don't have to have it all figured out."
-        )
+        ),
+        typesOut: true
     )
     .padding()
     .background(.appBackground)

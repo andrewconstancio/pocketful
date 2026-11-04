@@ -17,6 +17,7 @@
 		1C0125CB308EE8800089119A /* TodaysThoughtTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CA308EE8800089119A /* TodaysThoughtTextView.swift */; };
 		1C0125CB308EE8C30089119A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CA308EE8BE0089119A /* HomeViewModel.swift */; };
 		1C0125CD308EE8800089119A /* InsightsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CC308EE8800089119A /* InsightsListView.swift */; };
+		1C0125CF308EE8800089119A /* HomeBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CE308EE8800089119A /* HomeBackgroundView.swift */; };
 		1C0125CD308EF18D0089119A /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CC308EF18D0089119A /* StartupView.swift */; };
 		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
 		1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60D3090D43C00BF093F /* Alerts.swift */; };
@@ -29,6 +30,9 @@
 		1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F62230996E6F00BF093F /* HomeRoute.swift */; };
 		1C54F6263099717700BF093F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6253099717700BF093F /* ProfileView.swift */; };
 		1C67C770309A137200745118 /* InsightDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C76F309A137200745118 /* InsightDetailView.swift */; };
+		1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D0308EE8800089119A /* AddInsightView.swift */; };
+		1C67C772309A200000745118 /* VoiceReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C771309A200000745118 /* VoiceReflectionView.swift */; };
+		1C67C773309A1CF900745118 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C772309A1CF500745118 /* Constants.swift */; };
 		1CAC138630808BB6005846CF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC138530808BB6005846CF /* RootView.swift */; };
 		1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14223080A49D005846CF /* AppDependencies.swift */; };
 		1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */; };
@@ -73,7 +77,6 @@
 		1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37624307E5A5F00173B34 /* AppButtonStyle.swift */; };
 		1CC37628307E5AD600173B34 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37627307E5AD400173B34 /* Color.swift */; };
 		1CF1A0023090000000ABCDEF /* OnboardingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */; };
-		1C67C772309A200000745118 /* VoiceReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C771309A200000745118 /* VoiceReflectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +88,7 @@
 		1C0125CA308EE8800089119A /* TodaysThoughtTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtTextView.swift; sourceTree = "<group>"; };
 		1C0125CA308EE8BE0089119A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		1C0125CC308EE8800089119A /* InsightsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsListView.swift; sourceTree = "<group>"; };
+		1C0125CE308EE8800089119A /* HomeBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBackgroundView.swift; sourceTree = "<group>"; };
 		1C0125CC308EF18D0089119A /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
 		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
 		1C54F60D3090D43C00BF093F /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -97,6 +101,9 @@
 		1C54F62230996E6F00BF093F /* HomeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoute.swift; sourceTree = "<group>"; };
 		1C54F6253099717700BF093F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		1C67C76F309A137200745118 /* InsightDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightDetailView.swift; sourceTree = "<group>"; };
+		1C0125D0308EE8800089119A /* AddInsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightView.swift; sourceTree = "<group>"; };
+		1C67C771309A200000745118 /* VoiceReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceReflectionView.swift; sourceTree = "<group>"; };
+		1C67C772309A1CF500745118 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1CAC138530808BB6005846CF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1CAC14223080A49D005846CF /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
@@ -140,7 +147,6 @@
 		1CC37624307E5A5F00173B34 /* AppButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButtonStyle.swift; sourceTree = "<group>"; };
 		1CC37627307E5AD400173B34 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInsightsView.swift; sourceTree = "<group>"; };
-		1C67C771309A200000745118 /* VoiceReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceReflectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,8 +189,10 @@
 				1C0125C8308EE8800089119A /* HomeView.swift */,
 				1C0125CA308EE8800089119A /* TodaysThoughtTextView.swift */,
 				1C0125CC308EE8800089119A /* InsightsListView.swift */,
+				1C0125CE308EE8800089119A /* HomeBackgroundView.swift */,
 				1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */,
 				1C67C76F309A137200745118 /* InsightDetailView.swift */,
+				1C0125D0308EE8800089119A /* AddInsightView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,6 +242,30 @@
 				1C54F6253099717700BF093F /* ProfileView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		1C67C771309A1CEE00745118 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				1C67C772309A1CF500745118 /* Constants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		1C67C773309A200000745118 /* Reflection */ = {
+			isa = PBXGroup;
+			children = (
+				1C67C774309A200000745118 /* Views */,
+			);
+			path = Reflection;
+			sourceTree = "<group>";
+		};
+		1C67C774309A200000745118 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1C67C771309A200000745118 /* VoiceReflectionView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		1CAC14243080A4F5005846CF /* ViewModels */ = {
@@ -364,6 +396,7 @@
 		1CC3761C307AF11400173B34 /* Utilites */ = {
 			isa = PBXGroup;
 			children = (
+				1C67C771309A1CEE00745118 /* Constants */,
 				1CAC144030851264005846CF /* UIHelpers */,
 				1CC37626307E5ACC00173B34 /* Extensions */,
 				1CC37623307E5A5500173B34 /* Styles */,
@@ -395,22 +428,6 @@
 				1CC37627307E5AD400173B34 /* Color.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		1C67C773309A200000745118 /* Reflection */ = {
-			isa = PBXGroup;
-			children = (
-				1C67C774309A200000745118 /* Views */,
-			);
-			path = Reflection;
-			sourceTree = "<group>";
-		};
-		1C67C774309A200000745118 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				1C67C771309A200000745118 /* VoiceReflectionView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -515,11 +532,13 @@
 				1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */,
 				1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
+				1C67C773309A1CF900745118 /* Constants.swift in Sources */,
 				1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */,
 				1CAC145B3088E173005846CF /* OnboardingAdditionalThoughtsView.swift in Sources */,
 				1C0125C9308EE8800089119A /* HomeView.swift in Sources */,
 				1C0125CB308EE8800089119A /* TodaysThoughtTextView.swift in Sources */,
 				1C0125CD308EE8800089119A /* InsightsListView.swift in Sources */,
+				1C0125CF308EE8800089119A /* HomeBackgroundView.swift in Sources */,
 				1CAC145D3088F000005846CF /* OnboardingTextBox.swift in Sources */,
 				1CAC145F3088F100005846CF /* OnboardingGeneratingInsightsView.swift in Sources */,
 				1CF1A0023090000000ABCDEF /* OnboardingInsightsView.swift in Sources */,
@@ -552,6 +571,7 @@
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 				1C67C770309A137200745118 /* InsightDetailView.swift in Sources */,
+				1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */,
 				1C67C772309A200000745118 /* VoiceReflectionView.swift in Sources */,
 				1C0125C6308EDB880089119A /* UserService.swift in Sources */,
 				1CAC1446308519AA005846CF /* OnboardingStressLevelsView.swift in Sources */,
