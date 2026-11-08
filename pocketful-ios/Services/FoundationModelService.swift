@@ -50,7 +50,7 @@ final class FoundationModelService: FoundationModelServicing {
     
     private static let todaysThoughInstructions = """
         You write one short daily reflection for a calm, encouraging app.
-        Be warm and simple. No clichés, no emojis, no exclamation marks. The headline of the reflection should be no more than two sentences max. The body of the reflection should be no more than thre sentences max. 
+        Be warm and simple. No clichés, no emojis, no exclamation marks. The headline of the reflection should be no more than two sentences max. The body of the reflection should be no more than thre sentences max. Can you pull this information 
 
         Examples of the tone:
         Headline: Progress doesn't always look like a big leap. Sometimes it's just showing up again.

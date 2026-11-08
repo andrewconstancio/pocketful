@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 /// The sheet where the user writes an insight of their own.
 struct AddInsightView: View {
@@ -69,8 +70,8 @@ struct AddInsightView: View {
         } label: {
             HStack(spacing: 8) {
                 if viewModel.isGenerating {
-                    ProgressView()
-                        .tint(.textPrimary)
+                    LottieView(animationName: "loading-ai", loopMode: .loop, speed: 1.0)
+                        .frame(width: 25, height: 25)
                     Text("Writing your insight...")
                 } else {
                     Image(systemName: "sparkles")
