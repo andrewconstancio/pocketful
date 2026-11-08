@@ -52,6 +52,6 @@ struct OnboardingFlowView: View {
     ))
         .environment(AppRouter())
         .environment(
-            SessionStore(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService())
+            SessionStore(authService: PreviewAuthService(), userService: PreviewUserService())
         )
 }

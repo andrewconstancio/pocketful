@@ -18,6 +18,7 @@ protocol FoundationModelServicing {
     var isAvailable: Bool { get }
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights
     func generateTodaysThought() async throws -> Thought
+    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error>
 }
 
 final class FoundationModelService: FoundationModelServicing {
@@ -37,7 +38,7 @@ final class FoundationModelService: FoundationModelServicing {
     
     private static let todaysThoughInstructions = """
         You write one short daily reflection for a calm, encouraging app.
-        Be warm and simple. No clichés, no emojis, no exclamation marks.
+        Be warm and simple. No clichés, no emojis, no exclamation marks. The headline of the reflection should be no more than two sentences max. The body of the reflection should be no more than thre sentences max. 
 
         Examples of the tone:
         Headline: Progress doesn't always look like a big leap. Sometimes it's just showing up again.
@@ -55,7 +56,6 @@ final class FoundationModelService: FoundationModelServicing {
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
-        // A new session each time so old messages don't leak into this request.
         let session = LanguageModelSession(model: model, instructions: Self.insightsInstructions)
         let response = try await session.respond(to: answers.promptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
         return response.content
@@ -64,10 +64,31 @@ final class FoundationModelService: FoundationModelServicing {
     func generateTodaysThought() async throws -> Thought {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
-        // A new session each time so old messages don't leak into this request.
         let session = LanguageModelSession(model: model, instructions: Self.todaysThoughInstructions)
         let response = try await session.respond(to: "Write today's thought.", generating: Thought.self)
         return response.content
+    }
+    
+    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                guard isAvailable else {
+                    continuation.finish(throwing: FoundationModelError.modelUnavailable)
+                    return
+                }
+                do {
+                    let session = LanguageModelSession(model: model, instructions: Self.todaysThoughInstructions)
+                    let responseStream = session.streamResponse(to: "Write today's thought.", generating: Thought.self)
+                    for try await snapshot in responseStream {
+                        continuation.yield(snapshot.content)
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
     }
 }
 
@@ -112,5 +133,34 @@ final class PreviewFoundationModelService: FoundationModelServicing {
     }
     
     func generateTodaysThought() async throws -> Thought { return Thought(headline: "Hi", body: "Hello") }
+    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                if shouldFail {
+                    continuation.finish(throwing: FoundationModelError.modelUnavailable)
+                    return
+                }
+                let headlineWords = "Progress doesn't always look like a big leap.".split(separator: " ")
+                let bodyWords = "Small, consistent actions still move you forward.".split(separator: " ")
+                let headline = headlineWords.joined(separator: " ")
+                for count in 1...headlineWords.count {
+                    continuation.yield(
+                        Thought(headline: headlineWords.prefix(count).joined(separator: " "), body: "")
+                            .asPartiallyGenerated()
+                    )
+                    try? await Task.sleep(for: .milliseconds(150))
+                }
+                for count in 1...bodyWords.count {
+                    continuation.yield(
+                        Thought(headline: headline, body: bodyWords.prefix(count).joined(separator: " "))
+                            .asPartiallyGenerated()
+                    )
+                    try? await Task.sleep(for: .milliseconds(150))
+                }
+                continuation.finish()
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
 }
 #endif

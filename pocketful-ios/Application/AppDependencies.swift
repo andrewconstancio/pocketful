@@ -26,7 +26,7 @@ final class AppDependencies {
         authService: AuthServicing = AuthService(),
         foundationModelService: FoundationModelServicing = FoundationModelService(),
         userService: UserServicing = UserService(),
-        insightsService: InsightsServicing = Insightservice(),
+        insightsService: InsightsServicing = InsightsService(),
         thoughtStorage: ThoughtStorage = ThoughtStorage()
     ) {
         self.authService                = authService
@@ -35,7 +35,7 @@ final class AppDependencies {
         self.insightsService            = insightsService
         
         self.router                     = AppRouter()
-        self.session                    = SessionStore(authService: authService, userService: userService, insightsService: insightsService)
+        self.session                    = SessionStore(authService: authService, userService: userService)
         self.thoughtStorage             = thoughtStorage
     }
     
@@ -45,7 +45,6 @@ final class AppDependencies {
         OnBoardingViewModel(
             authService: authService,
             foundationModelService: foundationModelService,
-            insightsService: insightsService,
             userService: userService
         )
     }

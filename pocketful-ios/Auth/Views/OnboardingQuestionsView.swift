@@ -31,7 +31,6 @@ struct OnboardingQuestionsView: View {
         }
         .padding()
         .background(.appBackground)
-        .ignoresSafeArea(.keyboard)
         .navigationBarBackButtonHidden()
     }
 
@@ -118,6 +117,6 @@ struct OnboardingQuestionsView: View {
     NavigationStack {
         OnboardingQuestionsView()
     }
-    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService()))
+    .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), userService: PreviewUserService()))
     .environment(AppRouter())
 }

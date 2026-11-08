@@ -8,7 +8,6 @@ struct OnboardingNameView: View {
 
     /// Whether the keyboard is up for the name field.
     @FocusState private var isNameFieldFocused: Bool
-
     var body: some View {
         @Bindable var viewModel = viewModel
 
@@ -26,6 +25,9 @@ struct OnboardingNameView: View {
                 .onTapGesture { isNameFieldFocused = false }
         }
         .ignoresSafeArea(.keyboard)
+        .onAppear {
+            isNameFieldFocused = true
+        }
     }
 
     private var title: some View {
@@ -55,5 +57,5 @@ struct OnboardingNameView: View {
     OnboardingNameView()
         .padding()
         .background(.appBackground)
-        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService()))
+        .environment(OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), userService: PreviewUserService()))
 }

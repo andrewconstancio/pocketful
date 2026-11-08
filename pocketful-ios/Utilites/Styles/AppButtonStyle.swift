@@ -20,7 +20,7 @@ struct AppButtonStyle: ButtonStyle {
             configuration.label
         }
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(22)
             .background(backgroundColor)
             .foregroundColor(foregroundColor)
             .cornerRadius(cornerRadius)

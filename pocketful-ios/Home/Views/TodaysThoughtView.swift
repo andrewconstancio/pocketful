@@ -7,11 +7,15 @@ struct TodaysThoughtView: View {
         VStack(alignment: .leading, spacing: 8) {
             heading
             
-            if let thought = homeViewModel.todaysThought {
-                TodaysThoughtTextView(thought: thought, typesOut: homeViewModel.isTodaysThoughtNew)
-                    .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                        width * 2 / 3
-                    }
+            Group {
+                if let thought = homeViewModel.todaysThought {
+                    TodaysThoughtTextView(thought: thought, typesOut: homeViewModel.isTodaysThoughtNew)
+                } else if !homeViewModel.hasLoadedTodaysThought {
+                    TodaysThoughtPlaceholderView()
+                }
+            }
+            .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
+                width * 2 / 3
             }
             Spacer().frame(height: 60)
             actionButtons
@@ -35,13 +39,13 @@ struct TodaysThoughtView: View {
             Text("Today's Thought")
                 .font(.system(size: 14))
                 .foregroundStyle(.textPrimary)
-                .fontWeight(.light)
+                .fontWeight(.medium)
             
             Spacer()
             
             Image(systemName: "ellipsis")
                 .resizable()
-                .frame(width: 17, height: 5)
+                .frame(width: 14, height: 3)
         }
     }
     

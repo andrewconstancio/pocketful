@@ -70,7 +70,7 @@ private struct InsightRow: View {
             router.homePath.append(HomeRoute.insightDetail(insight))
         } label: {
             HStack(spacing: 12) {
-                Image(systemName: insight.icon.systemName)
+                Image(insight.icon.iconName)
                     .font(.system(size: 18))
                     .foregroundStyle(.textPrimary)
                     .frame(width: 44, height: 44)

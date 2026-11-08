@@ -1,7 +1,7 @@
 import Foundation
 
 /// The user's onboarding answers, sent to the on-device model.
-struct OnboardingAnswers {
+struct OnboardingAnswers: Encodable {
     let lifeGoals: [LifeGoal]
     let stressLevel: StressLevel?
     let focusAreas: [FocusArea]
@@ -9,6 +9,17 @@ struct OnboardingAnswers {
     let helpsBest: [HelpsBest]
     let fulfilledVersion: String
     let additionalThoughts: String
+
+    /// Snake case to match the other Firestore fields, like `created_at`.
+    enum CodingKeys: String, CodingKey {
+        case lifeGoals = "life_goals"
+        case stressLevel = "stress_level"
+        case focusAreas = "focus_areas"
+        case challengeAreas = "challenge_areas"
+        case helpsBest = "helps_best"
+        case fulfilledVersion = "fulfilled_version"
+        case additionalThoughts = "additional_thoughts"
+    }
 
     /// The answers as plain lines of text for the prompt.
     var promptText: String {

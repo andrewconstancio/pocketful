@@ -1,56 +1,26 @@
 import FirebaseFirestore
 
-/// The shape of the Firestore document stored in the "insights" collection.
-private struct InsightsDocument: Codable {
-    let userId: String
-    let insights: [Insight]
-    @ServerTimestamp var createdAt: Timestamp?
-
-    enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case insights
-        case createdAt = "created_at"
-    }
-}
-
 protocol InsightsServicing {
-    func saveInsights(uid: String, insights: [Insight]) throws
-    func userHasInsights(uid: String) async throws -> Bool
     func fetchInsights(uid: String) async throws -> [Insight]
 }
 
-/// Reads and writes each user's doc at `users/{uid}` in Firestore.
-final class Insightservice: InsightsServicing {
+/// Reads each user's insights at `users/{uid}/insights` in Firestore.
+final class InsightsService: InsightsServicing {
     /// Lazy so it resolves after `FirebaseApp.configure()` runs.
     private var db: Firestore { Firestore.firestore() }
-    private let collection = "insights"
-    
-    func saveInsights(uid: String, insights: [Insight]) throws {
-        let document = db.collection(collection).document()
-        try document.setData(from: InsightsDocument(userId: uid, insights: insights))
-    }
-    
-    func userHasInsights(uid: String) async throws -> Bool {
-        let snapshot = try await db.collection(collection)
-            .whereField("user_id", isEqualTo: uid)
-            .limit(to: 1)
-            .getDocuments()
-        return !snapshot.isEmpty
-    }
-    
+
     func fetchInsights(uid: String) async throws -> [Insight] {
-        let snapshot = try await db.collection(collection)
-            .whereField("user_id", isEqualTo: uid)
-            .limit(to: 1)
+        let snapshot = try await db.collection(Constants.FirestorePaths.users)
+            .document(uid)
+            .collection(Constants.FirestorePaths.insights)
+            .order(by: "position")
             .getDocuments()
-        return try snapshot.documents.first?.data(as: InsightsDocument.self).insights ?? []
+        return try snapshot.documents.map { try $0.data(as: Insight.self) }
     }
 }
 
 #if DEBUG
 final class PreviewInsightsService: InsightsServicing {
-    func saveInsights(uid: String, insights: [Insight]) throws {}
-    func userHasInsights(uid: String) async throws -> Bool { return true}
     func fetchInsights(uid: String) async throws -> [Insight] { [] }
 }
 #endif

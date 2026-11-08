@@ -12,10 +12,7 @@ final class SessionStore {
 
     /// Reads and writes the user's Firestore doc.
     private let userService: UserServicing
-    
-    /// The insights firebase service.
-    private let insightsService: InsightsServicing
-    
+
     /// Caches small values like the user's name.
     private let defaults = UserDefaults.standard
 
@@ -39,12 +36,10 @@ final class SessionStore {
 
     init(
         authService: AuthServicing,
-        userService: UserServicing,
-        insightsService: InsightsServicing
+        userService: UserServicing
     ) {
         self.authService = authService
         self.userService = userService
-        self.insightsService = insightsService
     }
     
     /// Keeps `authState` in sync with Firebase Auth until the calling task is cancelled.
@@ -77,26 +72,23 @@ final class SessionStore {
         }
     }
 
-    /// Saves that onboarding is finished, then moves the user into the app.
-    func saveUser() {
+    /// Creates or updates the signed-in user's Firestore doc.
+    func saveUser() async {
         guard let userID = currentUserId, let email = currentUserEmail else {
             return
         }
         do {
-            try userService.saveUser(uid: userID, email: email)
+            try await userService.saveUser(uid: userID, email: email)
         } catch {
             activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)
         }
     }
 
-    /// The user doc is only created at the end of onboarding, so a missing doc (or a failed read) means not onboarded.
+    /// Reads the `onboarding_completed` flag; a failed read counts as not onboarded.
     private func hasCompletedOnboarding(userID: String) async -> Bool {
         do {
-            guard let userID = currentUserId else {
-                return false
-            }
-            return try await insightsService.userHasInsights(uid: userID)
+            return try await userService.hasCompletedOnboarding(uid: userID)
         } catch {
             activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)

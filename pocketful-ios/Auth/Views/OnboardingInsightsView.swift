@@ -9,29 +9,32 @@ struct OnboardingInsightsView: View {
     /// Saves that onboarding is finished.
     @Environment(SessionStore.self) private var session
 
+    /// Used to go back to the generating screen to try again.
+    @Environment(AppRouter.self) private var router
+
     var body: some View {
-        // Lets the alert below bind to the session's error flag.
         @Bindable var session = session
 
         VStack(alignment: .leading, spacing: 0) {
-            title
-            subtitle
-                .padding(.top, 8)
-                .padding(.bottom, 24)
-
             if let insights = viewModel.insights {
                 insightList(insights)
+                    .padding(.top, 60)
+                    .padding(.bottom, 120)
             } else {
                 failureMessage
             }
-
-            finishButton
-                .padding(.top, 16)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(.appBackground)
+        .ignoresSafeArea(.all)
         .navigationBarBackButtonHidden()
+        .safeAreaInset(edge: .bottom) {
+            if viewModel.insights != nil {
+                finishButton
+            } else {
+                tryAgainButton
+            }
+        }
     }
 
     private var title: some View {
@@ -48,6 +51,14 @@ struct OnboardingInsightsView: View {
 
     private func insightList(_ insights: OnboardingInsights) -> some View {
         ScrollView {
+            
+            VStack(alignment: .leading, spacing: 4) {
+                title
+                subtitle
+                    .padding(.top, 8)
+                    .padding(.bottom, 24)
+            }
+            
             VStack(spacing: 12) {
                 // Indexes as IDs, since the model could repeat a title.
                 ForEach(insights.insights.indices, id: \.self) { index in
@@ -61,7 +72,7 @@ struct OnboardingInsightsView: View {
     }
 
     private var failureMessage: some View {
-        Text("We couldn't create your insights right now. Make sure Apple Intelligence is turned on in Settings.")
+        Text("We couldn't create your insights right now. Check your internet connection and make sure Apple Intelligence is turned on in Settings.")
             .foregroundStyle(.textPrimary.opacity(0.8))
             .font(.system(size: 17))
             .lineSpacing(4)
@@ -78,10 +89,26 @@ struct OnboardingInsightsView: View {
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appGreen,
             foregroundColor: .textOffWhite,
-            borderColor: .textOffWhite,
-            borderWidth: 2,
-            cornerRadius: 30,
+            cornerRadius: 30
         ))
+        .padding()
+    }
+
+    /// Goes back to the generating screen, which makes and saves the insights again when it reappears.
+    private var tryAgainButton: some View {
+        Button {
+            HapticManager.shared.triggerImpact(style: .heavy)
+            router.onboardingPath.removeLast()
+        } label: {
+            Text("Try again")
+        }
+        .buttonStyle(AppButtonStyle(
+            backgroundColor: .appGreen,
+            foregroundColor: .textOffWhite,
+            cornerRadius: 30
+        ))
+        .padding()
+        .background(.appBackground)
     }
 }
 
@@ -92,8 +119,9 @@ private struct InsightCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
-                Image(systemName: insight.icon.systemName)
-                    .font(.system(size: 22))
+                Image(insight.icon.iconName)
+                    .resizable()
+                    .frame(width: 25, height: 25)
                     .foregroundStyle(.textPrimary)
 
                 Text(insight.title)
@@ -137,23 +165,25 @@ private struct InsightCard: View {
 }
 
 #Preview("Insights") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(), insightsService: PreviewInsightsService(), userService: PreviewUserService())
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(userID: "preview"), foundationModelService: PreviewFoundationModelService(), userService: PreviewUserService())
 
     NavigationStack {
         OnboardingInsightsView()
     }
     .environment(viewModel)
-    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService()))
+    .environment(AppRouter())
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
     .task { await viewModel.generateInsights() }
 }
 
 #Preview("Failed") {
-    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(), foundationModelService: PreviewFoundationModelService(shouldFail: true), insightsService: PreviewInsightsService(), userService: PreviewUserService())
+    let viewModel = OnBoardingViewModel(authService: PreviewAuthService(userID: "preview"), foundationModelService: PreviewFoundationModelService(shouldFail: true), userService: PreviewUserService())
 
     NavigationStack {
         OnboardingInsightsView()
     }
     .environment(viewModel)
-    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService()))
+    .environment(AppRouter())
+    .environment(SessionStore(authService: PreviewAuthService(), userService: PreviewUserService()))
     .task { await viewModel.generateInsights() }
 }

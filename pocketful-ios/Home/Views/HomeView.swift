@@ -126,8 +126,7 @@ struct HomeView: View {
         .environment(
             SessionStore(
                 authService: PreviewAuthService(),
-                userService: PreviewUserService(),
-                insightsService: PreviewInsightsService()
+                userService: PreviewUserService()
             )
         )
 }

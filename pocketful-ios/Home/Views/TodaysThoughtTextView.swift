@@ -34,7 +34,8 @@ struct TodaysThoughtTextView: View {
         .sensoryFeedback(.impact(weight: .light, intensity: 0.6), trigger: typedCount) { oldCount, newCount in
             newCount == oldCount + 1
         }
-        .task {
+        // Restarts typing whenever more streamed text arrives.
+        .task(id: totalCount) {
             await typeOut()
         }
     }
@@ -56,13 +57,14 @@ struct TodaysThoughtTextView: View {
             typedCount = totalCount
             return
         }
+        // Type before sleeping, so a restart from new streamed text still makes progress.
         while typedCount < totalCount {
+            typedCount += 1
             do {
                 try await Task.sleep(for: characterDelay)
             } catch {
                 return
             }
-            typedCount += 1
         }
     }
 }

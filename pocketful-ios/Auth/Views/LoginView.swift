@@ -53,7 +53,7 @@ struct LoginView: View {
             HapticManager.shared.triggerImpact(style: .heavy)
             Task {
                 await session.signInWithGoogle()
-                session.saveUser()
+                await session.saveUser()
             }
         } label: {
             HStack(spacing: 8) {

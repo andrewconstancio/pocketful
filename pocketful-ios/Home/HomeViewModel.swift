@@ -1,4 +1,5 @@
 import SwiftUI
+import FoundationModels
 
 /// The home vview model.
 @Observable
@@ -16,16 +17,30 @@ final class HomeViewModel {
     private let insightsService: InsightsServicing
     
     var todaysThought: Thought?
+    
+    var todaysThoughtPartial: Thought.PartiallyGenerated?
 
     /// Whether today's thought was just generated rather than loaded from disk, so it gets typed out.
     private(set) var isTodaysThoughtNew = false
+
+    /// Whether loading today's thought has finished, so the placeholder stops even if it failed.
+    private(set) var hasLoadedTodaysThought = false
 
     /// The insights made from the user's onboarding answers.
     var insights: [Insight] = []
 
     /// Whether the first insights load has finished, even if it failed or found none.
     private(set) var hasLoadedInsights = false
-    
+
+    /// How many times to try generating today's thought before using the backup.
+    private static let maxThoughtAttempts = 3
+
+    /// Shown when today's thought can't be generated, so the card is never blank.
+    private static let backupThought = Thought(
+        headline: "Progress doesn't always look like a big leap.",
+        body: "Small, consistent actions still move you forward. You don't have to have it all figured out."
+    )
+
     init(
         authService: AuthServicing,
         foundationModelService: FoundationModelServicing,
@@ -39,17 +54,39 @@ final class HomeViewModel {
     }
     
     func loadTodaysThought() async {
+        defer { hasLoadedTodaysThought = true }
         if let saved = thoughtStorage.loadTodaysThought() {
             todaysThought = saved
             return
         }
-        do {
-            let newThought = try await foundationModelService.generateTodaysThought()
-            try? thoughtStorage.save(newThought)
+        for _ in 1...Self.maxThoughtAttempts {
+            do {
+                try await streamNewThought()
+                return
+            } catch LanguageModelSession.GenerationError.guardrailViolation {
+                // The safety filter often flags harmless text, so clear it and ask again.
+                todaysThought = nil
+            } catch {
+                print(error)
+                break
+            }
+        }
+        // Not saved, so the next launch tries generating a real one again.
+        isTodaysThoughtNew = true
+        todaysThought = Self.backupThought
+    }
+
+    /// Streams a new thought into `todaysThought`, saving it once it's finished.
+    private func streamNewThought() async throws {
+        for try await partial in foundationModelService.streamTodaysThought() {
+            // Wait for the first words so the skeleton doesn't disappear into an empty card.
+            guard let headline = partial.headline, !headline.isEmpty else { continue }
             isTodaysThoughtNew = true
-            todaysThought = newThought
-        } catch {
-            print(error)
+            todaysThought = Thought(headline: headline, body: partial.body ?? "")
+        }
+        // Only save once it's finished, so a half-written thought never gets stored.
+        if let finishedThought = todaysThought {
+            try? thoughtStorage.save(finishedThought)
         }
     }
     

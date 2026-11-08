@@ -44,8 +44,6 @@ final class OnBoardingViewModel {
     private let authService: AuthServicing
     
     private let foundationModelService: FoundationModelServicing
-    
-    private let insightsService: InsightsServicing
 
     /// Reads and writes the user's Firestore doc.
     private let userService: UserServicing
@@ -73,17 +71,19 @@ final class OnBoardingViewModel {
     init(
         authService: AuthServicing,
         foundationModelService: FoundationModelServicing,
-        insightsService: InsightsServicing,
         userService: UserServicing
     ) {
         self.authService = authService
         self.foundationModelService = foundationModelService
-        self.insightsService = insightsService
         self.userService = userService
     }
 
-    /// Saves the user's name, then sends the answers to the on-device model and stores the insights.
+    /// Makes insights from the answers with the on-device model, then saves everything to Firestore in one go.
     func generateInsights() async {
+        guard let uid = authService.currentUserId else {
+            activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
+            return
+        }
         let answers = OnboardingAnswers(
             lifeGoals: Array(selectedLifeGoals),
             stressLevel: selectedStressLevel,
@@ -94,19 +94,14 @@ final class OnBoardingViewModel {
             additionalThoughts: additionalThoughtsText
         )
         do {
-            if let uid = authService.currentUserId {
-                userService.saveName(uid: uid, name: trimmedName)
-            }
-
-            insights = try await foundationModelService.generateInsights(from: answers)
-            
-            if let insightsList = insights?.insights,
-               let uid = authService.currentUserId {
-                try insightsService.saveInsights(
-                    uid: uid,
-                    insights: insightsList
-                )
-            }
+            let generated = try await foundationModelService.generateInsights(from: answers)
+            try await userService.completeOnboarding(
+                uid: uid,
+                name: trimmedName,
+                answers: answers,
+                insights: generated.insights
+            )
+            insights = generated
         } catch {
             activeAlert = AppAlert(title: "Oops!", message: "Something went wrong. Please try again later.")
             print(error.localizedDescription)

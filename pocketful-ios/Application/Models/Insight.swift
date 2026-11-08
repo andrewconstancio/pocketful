@@ -3,7 +3,7 @@ import FoundationModels
 /// The insights the model creates from the onboarding answers.
 @Generable
 struct OnboardingInsights {
-    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(5))
+    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(3))
     let insights: [Insight]
 }
 
@@ -59,20 +59,19 @@ extension Insight: Decodable {
 @Generable
 enum InsightIcon: String {
     case calm, heart, sun, leaf, sparkles, moon, mountain, people, music, focus
-
-    /// The SF Symbol shown for this icon.
-    var systemName: String {
+    
+    var iconName: String {
         switch self {
-        case .calm: "wind"
-        case .heart: "heart"
-        case .sun: "sun.max"
-        case .leaf: "leaf"
-        case .sparkles: "sparkles"
-        case .moon: "moon.stars"
-        case .mountain: "mountain.2"
-        case .people: "person.2"
-        case .music: "music.note"
-        case .focus: "scope"
+        case .calm: "icon-win"
+        case .heart: "icon-heart"
+        case .sun: "icon-sun-max"
+        case .leaf: "icon-leaf"
+        case .sparkles: "icon-sparkles"
+        case .moon: "icon-moon-stars"
+        case .mountain: "icon-mountains-2"
+        case .people: "icon-people"
+        case .music: "icon-music-note"
+        case .focus: "icon-scope"
         }
     }
 }

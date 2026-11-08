@@ -45,7 +45,7 @@ struct InsightDetailView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
-                Image(systemName: insight.icon.systemName)
+                Image(insight.icon.iconName)
                     .font(.system(size: 22))
                     .foregroundStyle(.textPrimary)
                     .frame(width: 50, height: 50)
