@@ -1,7 +1,7 @@
 import Foundation
 
 /// Something the user hopes to get more of, picked during onboarding.
-enum LifeGoal: String, CaseIterable, Identifiable, Encodable {
+enum LifeGoal: String, CaseIterable, Identifiable, Codable {
     case peace
     case focus
     case relationships

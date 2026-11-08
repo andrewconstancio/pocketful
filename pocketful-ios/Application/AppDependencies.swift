@@ -57,4 +57,15 @@ final class AppDependencies {
             insightsService: insightsService
         )
     }
+
+    func makeAddInsightViewModel(existingInsights: [Insight], onInsightSaved: @escaping (Insight) -> Void) -> AddInsightViewModel {
+        AddInsightViewModel(
+            authService: authService,
+            foundationModelService: foundationModelService,
+            insightsService: insightsService,
+            userService: userService,
+            existingInsights: existingInsights,
+            onInsightSaved: onInsightSaved
+        )
+    }
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-enum HelpsBest: String, CaseIterable, Identifiable, Encodable {
+enum HelpsBest: String, CaseIterable, Identifiable, Codable {
     case timeInNature
     case exerciseOrMovement
     case goodSleep

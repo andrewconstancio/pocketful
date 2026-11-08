@@ -1,6 +1,6 @@
 import Foundation
 
-enum StressLevel: String, CaseIterable, Identifiable, Encodable {
+enum StressLevel: String, CaseIterable, Identifiable, Codable {
     case veryLow
     case low
     case moderate

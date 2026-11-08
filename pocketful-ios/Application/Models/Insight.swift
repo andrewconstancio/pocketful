@@ -57,12 +57,12 @@ extension Insight: Decodable {
 
 /// The icons the model can choose from for a reminder.
 @Generable
-enum InsightIcon: String {
+enum InsightIcon: String, CaseIterable {
     case calm, heart, sun, leaf, sparkles, moon, mountain, people, music, focus
     
     var iconName: String {
         switch self {
-        case .calm: "icon-win"
+        case .calm: "icon-wind"
         case .heart: "icon-heart"
         case .sun: "icon-sun-max"
         case .leaf: "icon-leaf"

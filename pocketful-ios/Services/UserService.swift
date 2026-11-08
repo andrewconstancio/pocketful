@@ -6,6 +6,7 @@ protocol UserServicing {
     func fetchName(uid: String) async throws -> String?
     func hasCompletedOnboarding(uid: String) async throws -> Bool
     func completeOnboarding(uid: String, name: String, answers: OnboardingAnswers, insights: [Insight]) async throws
+    func fetchOnboardingAnswers(uid: String) async throws -> OnboardingAnswers?
 }
 
 private struct UserDocument: Encodable {
@@ -75,6 +76,16 @@ final class UserService: UserServicing {
 
         try await batch.commit()
     }
+
+    /// Returns `nil` if onboarding was never finished, so no answers were saved.
+    func fetchOnboardingAnswers(uid: String) async throws -> OnboardingAnswers? {
+        let snapshot = try await userDocument(uid: uid)
+            .collection(Constants.FirestorePaths.onboarding)
+            .document("answers")
+            .getDocument()
+        guard snapshot.exists else { return nil }
+        return try snapshot.data(as: OnboardingAnswers.self)
+    }
 }
 
 #if DEBUG
@@ -94,5 +105,16 @@ final class PreviewUserService: UserServicing {
     func fetchName(uid: String) async throws -> String? { "Alex" }
     func hasCompletedOnboarding(uid: String) async throws -> Bool { isExistingUser }
     func completeOnboarding(uid: String, name: String, answers: OnboardingAnswers, insights: [Insight]) async throws {}
+    func fetchOnboardingAnswers(uid: String) async throws -> OnboardingAnswers? {
+        OnboardingAnswers(
+            lifeGoals: [.peace],
+            stressLevel: .moderate,
+            focusAreas: [.mentalHealth],
+            challengeAreas: [.overthinking],
+            helpsBest: [.timeInNature],
+            fulfilledVersion: "",
+            additionalThoughts: ""
+        )
+    }
 }
 #endif

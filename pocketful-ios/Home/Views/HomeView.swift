@@ -10,10 +10,14 @@ struct HomeView: View {
     
     @State private var homeViewModel: HomeViewModel
 
+    /// Kept so the add-insight sheet can build its view model.
+    private let dependencies: AppDependencies
+
     /// Whether the "add your own insight" sheet is showing.
     @State private var isAddingInsight = false
 
     init(dependencies: AppDependencies) {
+        self.dependencies = dependencies
         _homeViewModel = State(initialValue: dependencies.makeHomeViewModel())
     }
     
@@ -55,7 +59,10 @@ struct HomeView: View {
         }
         
         .sheet(isPresented: $isAddingInsight) {
-            AddInsightView()
+            AddInsightView(viewModel: dependencies.makeAddInsightViewModel(
+                existingInsights: homeViewModel.insights,
+                onInsightSaved: homeViewModel.appendInsight
+            ))
         }
         .task {
             await session.loadUserName()
@@ -63,8 +70,10 @@ struct HomeView: View {
         .task {
             await homeViewModel.loadTodaysThought()
         }
-        .task {
-            await homeViewModel.loadInsights()
+        .onAppear {
+            Task {
+                await homeViewModel.loadInsights()
+            }
         }
     }
 

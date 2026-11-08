@@ -12,6 +12,7 @@ Pocketful — a SwiftUI iOS app (no UIKit). Single Xcode project (`pocketful-ios
 - Custom fonts are centralized in `FontManager` as nested enums per font family (raw value = PostScript name) exposing a `.font(size:)` helper. Register new font files in `Info.plist` under `UIAppFonts`.
 - Colors are defined as named assets in `Assets.xcassets/Colors/` (e.g. `appBackground`, `textPrimary`) and referenced via dot-syntax (`.foregroundStyle(.textPrimary)`), not hardcoded hex/Color literals.
 - Uses the modern `#Preview` macro for SwiftUI previews.
+- Error handling lives in view models, never in views: no `do`/`catch` or `try` in a View. The view model catches errors and sets an `activeAlert: AppAlert?` (shown via `.appAlert(alert:)`), and returns a `Bool` when the view needs to know whether an action worked (e.g. to dismiss a sheet). See `OnBoardingViewModel` and `AddInsightViewModel`.
 
 ## Working in this repo
 

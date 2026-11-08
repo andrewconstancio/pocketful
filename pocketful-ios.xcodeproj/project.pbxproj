@@ -17,6 +17,7 @@
 		1C0125CB308EE8800089119A /* TodaysThoughtTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CA308EE8800089119A /* TodaysThoughtTextView.swift */; };
 		7A3F91E2B4C5D6E7F8091A2C /* TodaysThoughtPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F91E2B4C5D6E7F8091A2B /* TodaysThoughtPlaceholderView.swift */; };
 		1C0125CB308EE8C30089119A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CA308EE8BE0089119A /* HomeViewModel.swift */; };
+		1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D2308EE8800089119A /* AddInsightViewModel.swift */; };
 		1C0125CD308EE8800089119A /* InsightsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CC308EE8800089119A /* InsightsListView.swift */; };
 		1C0125CF308EE8800089119A /* HomeBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CE308EE8800089119A /* HomeBackgroundView.swift */; };
 		1C0125CD308EF18D0089119A /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CC308EF18D0089119A /* StartupView.swift */; };
@@ -89,6 +90,7 @@
 		1C0125CA308EE8800089119A /* TodaysThoughtTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtTextView.swift; sourceTree = "<group>"; };
 		7A3F91E2B4C5D6E7F8091A2B /* TodaysThoughtPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtPlaceholderView.swift; sourceTree = "<group>"; };
 		1C0125CA308EE8BE0089119A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		1C0125D2308EE8800089119A /* AddInsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightViewModel.swift; sourceTree = "<group>"; };
 		1C0125CC308EE8800089119A /* InsightsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsListView.swift; sourceTree = "<group>"; };
 		1C0125CE308EE8800089119A /* HomeBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBackgroundView.swift; sourceTree = "<group>"; };
 		1C0125CC308EF18D0089119A /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				1C54F6123092B14600BF093F /* Views */,
 				1C54F62230996E6F00BF093F /* HomeRoute.swift */,
 				1C0125CA308EE8BE0089119A /* HomeViewModel.swift */,
+				1C0125D2308EE8800089119A /* AddInsightViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */,
 				1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */,
 				1C0125CB308EE8C30089119A /* HomeViewModel.swift in Sources */,
+				1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */,
 				1CAC144F30864E9D005846CF /* OnboardingChallengingMostView.swift in Sources */,
 				1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */,
 				1CAC145130864FA8005846CF /* ChallengeArea.swift in Sources */,

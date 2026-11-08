@@ -26,7 +26,7 @@ final class HomeViewModel {
     /// Whether loading today's thought has finished, so the placeholder stops even if it failed.
     private(set) var hasLoadedTodaysThought = false
 
-    /// The insights made from the user's onboarding answers.
+    /// The user's insights: the ones made at onboarding plus any they added.
     var insights: [Insight] = []
 
     /// Whether the first insights load has finished, even if it failed or found none.
@@ -101,6 +101,11 @@ final class HomeViewModel {
         }
     }
     
+    /// Adds an insight the user just saved to the end of the home list.
+    func appendInsight(_ insight: Insight) {
+        insights.append(insight)
+    }
+
     func signOut() {
         do {
             try authService.signOut()

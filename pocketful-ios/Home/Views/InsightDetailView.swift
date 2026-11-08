@@ -16,7 +16,10 @@ struct InsightDetailView: View {
                     .foregroundStyle(.textPrimary)
                     .font(FontManager.CormorantGaramond.regular.font(size: 22))
 
-                practiceCard
+                // Insights the user writes themselves may skip the practice.
+                if !insight.practice.isEmpty {
+                    practiceCard
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
@@ -46,11 +49,8 @@ struct InsightDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 Image(insight.icon.iconName)
-                    .font(.system(size: 22))
-                    .foregroundStyle(.textPrimary)
+                    .resizable()
                     .frame(width: 50, height: 50)
-                    .background(.appGreen.opacity(0.1))
-                    .clipShape(Circle())
 
                 Text(insight.title)
                     .foregroundStyle(.textPrimary)
@@ -66,7 +66,7 @@ struct InsightDetailView: View {
     /// The small thing the user can try today.
     private var practiceCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Try this today")
+            Text("Try this")
                 .font(.system(size: 14))
                 .foregroundStyle(.textPrimary)
                 .fontWeight(.light)

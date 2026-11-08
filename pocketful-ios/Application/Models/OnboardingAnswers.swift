@@ -1,7 +1,7 @@
 import Foundation
 
 /// The user's onboarding answers, sent to the on-device model.
-struct OnboardingAnswers: Encodable {
+struct OnboardingAnswers: Codable {
     let lifeGoals: [LifeGoal]
     let stressLevel: StressLevel?
     let focusAreas: [FocusArea]

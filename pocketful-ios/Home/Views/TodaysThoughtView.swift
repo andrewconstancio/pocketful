@@ -70,7 +70,7 @@ struct TodaysThoughtView: View {
             } label: {
                 Image("icon-share")
                     .resizable()
-                    .frame(width: 22, height: 24)
+                    .frame(width: 22, height: 22)
                     .foregroundStyle(.black)
                     .frame(width: 44, height: 44)
                     .background(.appGreen.opacity(0.1))

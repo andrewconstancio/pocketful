@@ -1,7 +1,7 @@
 import Foundation
 
 
-enum FocusArea: String, CaseIterable, Identifiable, Encodable {
+enum FocusArea: String, CaseIterable, Identifiable, Codable {
     case mentalHealth
     case physicalHealth
     case careerWork

@@ -71,11 +71,8 @@ private struct InsightRow: View {
         } label: {
             HStack(spacing: 12) {
                 Image(insight.icon.iconName)
-                    .font(.system(size: 18))
-                    .foregroundStyle(.textPrimary)
-                    .frame(width: 44, height: 44)
-                    .background(.appGreen.opacity(0.1))
-                    .clipShape(Circle())
+                    .resizable()
+                    .frame(width: 28, height: 28)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(insight.title)

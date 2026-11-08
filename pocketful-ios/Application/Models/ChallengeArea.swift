@@ -1,6 +1,6 @@
 import Foundation
 
-enum ChallengeArea: String, CaseIterable, Identifiable, Encodable {
+enum ChallengeArea: String, CaseIterable, Identifiable, Codable {
     case overthinking
     case findingMotivation
     case balancingWorkAndLife
