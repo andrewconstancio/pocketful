@@ -8,8 +8,8 @@ struct TodaysThoughtView: View {
             heading
             
             Group {
-                if let thought = homeViewModel.todaysThought {
-                    TodaysThoughtTextView(thought: thought, typesOut: homeViewModel.isTodaysThoughtNew)
+                if let quote = homeViewModel.todaysThought {
+                    TodaysThoughtTextView(quote: quote, typesOut: homeViewModel.isTodaysThoughtNew)
                 } else if !homeViewModel.hasLoadedTodaysThought {
                     TodaysThoughtPlaceholderView()
                 }
@@ -17,6 +17,11 @@ struct TodaysThoughtView: View {
             .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
                 width * 2 / 3
             }
+
+            if homeViewModel.todaysThought != nil {
+                zenQuotesCredit
+            }
+
             Spacer().frame(height: 60)
             actionButtons
         }
@@ -49,6 +54,16 @@ struct TodaysThoughtView: View {
         }
     }
     
+    /// ZenQuotes' free plan asks apps to credit them with a link.
+    @ViewBuilder
+    private var zenQuotesCredit: some View {
+        if let zenQuotesURL = URL(string: "https://zenquotes.io") {
+            Link("Quotes by ZenQuotes", destination: zenQuotesURL)
+                .font(.system(size: 12))
+                .foregroundStyle(.textPrimary.opacity(0.6))
+        }
+    }
+
     private var actionButtons: some View {
         HStack(spacing: 12) {
             // Bookmark button
@@ -99,6 +114,6 @@ struct TodaysThoughtView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), quoteService: PreviewQuoteService())
     TodaysThoughtView(homeViewModel: dependencies.makeHomeViewModel())
 }

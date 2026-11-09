@@ -28,14 +28,14 @@ struct HomeView: View {
                 Spacer().frame(height: 20)
                 TodaysThoughtView(homeViewModel: homeViewModel)
 
-                // Waits for the first load so "Add your first insight" doesn't flash before real insights arrive.
-                if homeViewModel.hasLoadedInsights {
-                    InsightsListView(insights: homeViewModel.insights) {
-                        HapticManager.shared.triggerImpact()
-                        isAddingInsight = true
-                    }
-                    .padding(.top, 12)
+                InsightsListView(
+                    isLoaded: homeViewModel.hasLoadedInsights,
+                    insights: homeViewModel.insights
+                ) {
+                    HapticManager.shared.triggerImpact()
+                    isAddingInsight = true
                 }
+                .padding(.top, 12)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding()
@@ -130,7 +130,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService(), quoteService: PreviewQuoteService())
     HomeView(dependencies: dependencies)
         .environment(
             SessionStore(

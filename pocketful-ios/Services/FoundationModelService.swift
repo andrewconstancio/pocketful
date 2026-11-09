@@ -1,14 +1,5 @@
 import FoundationModels
 
-@Generable
-struct Thought {
-    @Guide(description: "One short, gentle sentence, under 15 words")
-    let headline: String
-
-    @Guide(description: "Two sentences that expand on the headline")
-    let body: String
-}
-
 enum FoundationModelError: Error {
     /// Apple Intelligence is off or not supported on this device.
     case modelUnavailable
@@ -18,8 +9,6 @@ protocol FoundationModelServicing {
     var isAvailable: Bool { get }
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights
     func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight
-    func generateTodaysThought() async throws -> Thought
-    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error>
 }
 
 final class FoundationModelService: FoundationModelServicing {
@@ -48,18 +37,6 @@ final class FoundationModelService: FoundationModelServicing {
         Never give medical advice.
         """
     
-    private static let todaysThoughInstructions = """
-        You write one short daily reflection for a calm, encouraging app.
-        Be warm and simple. No clichés, no emojis, no exclamation marks. The headline of the reflection should be no more than two sentences max. The body of the reflection should be no more than thre sentences max. Can you pull this information 
-
-        Examples of the tone:
-        Headline: Progress doesn't always look like a big leap. Sometimes it's just showing up again.
-        Body: Small, consistent actions still move you forward. You don't have to have it all figured out to be proud of the effort you're putting in.
-
-        Headline: Rest is part of the work, not a break from it.
-        Body: Slowing down gives you room to notice what matters. You can pick things back up tomorrow.
-        """
-
     /// A higher temperature adds randomness, so the same answers don't always produce the same reminders.
     private static let insightsOptions = GenerationOptions(temperature: 0.9)
 
@@ -84,36 +61,6 @@ final class FoundationModelService: FoundationModelServicing {
         let session = LanguageModelSession(model: model, instructions: Self.singleInsightInstructions)
         let response = try await session.respond(to: prompt, generating: Insight.self, options: Self.insightsOptions)
         return response.content
-    }
-    
-    func generateTodaysThought() async throws -> Thought {
-        guard isAvailable else { throw FoundationModelError.modelUnavailable }
-
-        let session = LanguageModelSession(model: model, instructions: Self.todaysThoughInstructions)
-        let response = try await session.respond(to: "Write today's thought.", generating: Thought.self)
-        return response.content
-    }
-    
-    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error> {
-        AsyncThrowingStream { continuation in
-            let task = Task {
-                guard isAvailable else {
-                    continuation.finish(throwing: FoundationModelError.modelUnavailable)
-                    return
-                }
-                do {
-                    let session = LanguageModelSession(model: model, instructions: Self.todaysThoughInstructions)
-                    let responseStream = session.streamResponse(to: "Write today's thought.", generating: Thought.self)
-                    for try await snapshot in responseStream {
-                        continuation.yield(snapshot.content)
-                    }
-                    continuation.finish()
-                } catch {
-                    continuation.finish(throwing: error)
-                }
-            }
-            continuation.onTermination = { _ in task.cancel() }
-        }
     }
 }
 
@@ -166,37 +113,6 @@ final class PreviewFoundationModelService: FoundationModelServicing {
             icon: .leaf,
             reminder: "One thing at a time"
         )
-    }
-
-    func generateTodaysThought() async throws -> Thought { return Thought(headline: "Hi", body: "Hello") }
-    func streamTodaysThought() -> AsyncThrowingStream<Thought.PartiallyGenerated, Error> {
-        AsyncThrowingStream { continuation in
-            let task = Task {
-                if shouldFail {
-                    continuation.finish(throwing: FoundationModelError.modelUnavailable)
-                    return
-                }
-                let headlineWords = "Progress doesn't always look like a big leap.".split(separator: " ")
-                let bodyWords = "Small, consistent actions still move you forward.".split(separator: " ")
-                let headline = headlineWords.joined(separator: " ")
-                for count in 1...headlineWords.count {
-                    continuation.yield(
-                        Thought(headline: headlineWords.prefix(count).joined(separator: " "), body: "")
-                            .asPartiallyGenerated()
-                    )
-                    try? await Task.sleep(for: .milliseconds(150))
-                }
-                for count in 1...bodyWords.count {
-                    continuation.yield(
-                        Thought(headline: headline, body: bodyWords.prefix(count).joined(separator: " "))
-                            .asPartiallyGenerated()
-                    )
-                    try? await Task.sleep(for: .milliseconds(150))
-                }
-                continuation.finish()
-            }
-            continuation.onTermination = { _ in task.cancel() }
-        }
     }
 }
 #endif

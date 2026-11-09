@@ -1,29 +1,27 @@
 import SwiftUI
-import FoundationModels
 
-/// The home vview model.
+/// The home view model.
 @Observable
 final class HomeViewModel {
     /// The auth service for this app.
     private let authService: AuthServicing
-    
-    
+
+    /// Keeps today's quote on the device so it's only fetched once a day.
     private let thoughtStorage: ThoughtStorage
-    
-    /// The foundations model service for this app.
-    private let foundationModelService: FoundationModelServicing
-    
+
+    /// Fetches the quote of the day from ZenQuotes.
+    private let quoteService: QuoteServicing
+
     /// Reads the user's insights from Firestore.
     private let insightsService: InsightsServicing
-    
-    var todaysThought: Thought?
-    
-    var todaysThoughtPartial: Thought.PartiallyGenerated?
 
-    /// Whether today's thought was just generated rather than loaded from disk, so it gets typed out.
+    /// The quote shown in the "Today's Thought" card.
+    private(set) var todaysThought: Quote?
+
+    /// Whether today's quote was just fetched rather than loaded from disk, so it gets typed out.
     private(set) var isTodaysThoughtNew = false
 
-    /// Whether loading today's thought has finished, so the placeholder stops even if it failed.
+    /// Whether loading today's quote has finished, so the placeholder stops even if it failed.
     private(set) var hasLoadedTodaysThought = false
 
     /// The user's insights: the ones made at onboarding plus any they added.
@@ -32,64 +30,42 @@ final class HomeViewModel {
     /// Whether the first insights load has finished, even if it failed or found none.
     private(set) var hasLoadedInsights = false
 
-    /// How many times to try generating today's thought before using the backup.
-    private static let maxThoughtAttempts = 3
-
-    /// Shown when today's thought can't be generated, so the card is never blank.
-    private static let backupThought = Thought(
-        headline: "Progress doesn't always look like a big leap.",
-        body: "Small, consistent actions still move you forward. You don't have to have it all figured out."
+    /// Shown when the quote can't be fetched, so the card is never blank.
+    private static let backupQuote = Quote(
+        text: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
+        author: ""
     )
 
     init(
         authService: AuthServicing,
-        foundationModelService: FoundationModelServicing,
+        quoteService: QuoteServicing,
         thoughtStorage: ThoughtStorage,
         insightsService: InsightsServicing
     ) {
         self.authService = authService
-        self.foundationModelService = foundationModelService
+        self.quoteService = quoteService
         self.thoughtStorage = thoughtStorage
         self.insightsService = insightsService
     }
-    
+
+    /// Uses today's saved quote if there is one; otherwise fetches it from the API and saves it.
     func loadTodaysThought() async {
         defer { hasLoadedTodaysThought = true }
-        if let saved = thoughtStorage.loadTodaysThought() {
+        if let saved = thoughtStorage.loadTodaysQuote() {
             todaysThought = saved
             return
         }
-        for _ in 1...Self.maxThoughtAttempts {
-            do {
-                try await streamNewThought()
-                return
-            } catch LanguageModelSession.GenerationError.guardrailViolation {
-                // The safety filter often flags harmless text, so clear it and ask again.
-                todaysThought = nil
-            } catch {
-                print(error)
-                break
-            }
-        }
-        // Not saved, so the next launch tries generating a real one again.
         isTodaysThoughtNew = true
-        todaysThought = Self.backupThought
+        do {
+            let quote = try await quoteService.fetchTodaysQuote()
+            todaysThought = quote
+            try? thoughtStorage.save(quote)
+        } catch {
+            // The backup isn't saved, so the next launch tries the API again.
+            todaysThought = Self.backupQuote
+        }
     }
 
-    /// Streams a new thought into `todaysThought`, saving it once it's finished.
-    private func streamNewThought() async throws {
-        for try await partial in foundationModelService.streamTodaysThought() {
-            // Wait for the first words so the skeleton doesn't disappear into an empty card.
-            guard let headline = partial.headline, !headline.isEmpty else { continue }
-            isTodaysThoughtNew = true
-            todaysThought = Thought(headline: headline, body: partial.body ?? "")
-        }
-        // Only save once it's finished, so a half-written thought never gets stored.
-        if let finishedThought = todaysThought {
-            try? thoughtStorage.save(finishedThought)
-        }
-    }
-    
     /// Loads the user's insights once; skips if they're already loaded.
     func loadInsights() async {
         guard insights.isEmpty, let uid = authService.currentUserId else { return }

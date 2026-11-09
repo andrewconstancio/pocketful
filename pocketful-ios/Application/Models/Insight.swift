@@ -60,6 +60,21 @@ extension Insight: Decodable {
 enum InsightIcon: String, CaseIterable {
     case calm, heart, sun, leaf, sparkles, moon, mountain, people, music, focus
     
+    var systemName: String {
+        switch self {
+        case .calm: "wind"
+        case .heart: "heart"
+        case .sun: "sun.max"
+        case .leaf: "leaf"
+        case .sparkles: "sparkles"
+        case .moon: "moon.stars"
+        case .mountain: "mountain.2"
+        case .people: "person.2"
+        case .music: "music.note"
+        case .focus: "scope"
+        }
+    }
+    
     var iconName: String {
         switch self {
         case .calm: "icon-wind"

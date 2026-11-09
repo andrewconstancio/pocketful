@@ -22,9 +22,11 @@
 		1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D0308EE8800089119A /* AddInsightView.swift */; };
 		1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D2308EE8800089119A /* AddInsightViewModel.swift */; };
 		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
+		1C0125D7308EE8800089119A /* QuoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D6308EE8800089119A /* QuoteService.swift */; };
 		1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60D3090D43C00BF093F /* Alerts.swift */; };
 		1C54F6113092B09600BF093F /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6103092B09600BF093F /* TreeView.swift */; };
 		1C54F6163093735900BF093F /* Insight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6153093735800BF093F /* Insight.swift */; };
+		1C0125D5308EE8800089119A /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D4308EE8800089119A /* Quote.swift */; };
 		1C54F619309444A800BF093F /* ThoughtStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F618309444A000BF093F /* ThoughtStorage.swift */; };
 		1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */; };
 		1C54F61E3098CBAB00BF093F /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F61D3098CBAB00BF093F /* JournalView.swift */; };
@@ -97,9 +99,11 @@
 		1C0125D0308EE8800089119A /* AddInsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightView.swift; sourceTree = "<group>"; };
 		1C0125D2308EE8800089119A /* AddInsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightViewModel.swift; sourceTree = "<group>"; };
 		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
+		1C0125D6308EE8800089119A /* QuoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteService.swift; sourceTree = "<group>"; };
 		1C54F60D3090D43C00BF093F /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		1C54F6103092B09600BF093F /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		1C54F6153093735800BF093F /* Insight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insight.swift; sourceTree = "<group>"; };
+		1C0125D4308EE8800089119A /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		1C54F618309444A000BF093F /* ThoughtStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtStorage.swift; sourceTree = "<group>"; };
 		1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtView.swift; sourceTree = "<group>"; };
 		1C54F61D3098CBAB00BF093F /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				1C54F6153093735800BF093F /* Insight.swift */,
+				1C0125D4308EE8800089119A /* Quote.swift */,
 				1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */,
 				1CAC14543087976D005846CF /* HelpsBest.swift */,
 				1CAC145030864F9D005846CF /* ChallengeArea.swift */,
@@ -290,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
+				1C0125D6308EE8800089119A /* QuoteService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
 				1C0125B9308AC3860089119A /* FoundationModelService.swift */,
 				1CAC14283080A565005846CF /* AuthService.swift */,
@@ -544,6 +550,7 @@
 				1CAC144D30859CA5005846CF /* FocusArea.swift in Sources */,
 				1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */,
 				1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */,
+				1C0125D7308EE8800089119A /* QuoteService.swift in Sources */,
 				1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
 				1C67C773309A1CF900745118 /* Constants.swift in Sources */,
@@ -565,6 +572,7 @@
 				1C0125CD308EF18D0089119A /* StartupView.swift in Sources */,
 				1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */,
 				1C54F6163093735900BF093F /* Insight.swift in Sources */,
+				1C0125D5308EE8800089119A /* Quote.swift in Sources */,
 				1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */,
 				1C54F62130996DF000BF093F /* NotificationView.swift in Sources */,
 				1C54F619309444A800BF093F /* ThoughtStorage.swift in Sources */,

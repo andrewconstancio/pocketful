@@ -9,6 +9,7 @@ final class AppDependencies {
     let foundationModelService: FoundationModelServicing
     let userService: UserServicing
     let insightsService: InsightsServicing
+    let quoteService: QuoteServicing
     
     // MARK: - Stores
     
@@ -27,12 +28,14 @@ final class AppDependencies {
         foundationModelService: FoundationModelServicing = FoundationModelService(),
         userService: UserServicing = UserService(),
         insightsService: InsightsServicing = InsightsService(),
+        quoteService: QuoteServicing = QuoteService(),
         thoughtStorage: ThoughtStorage = ThoughtStorage()
     ) {
         self.authService                = authService
         self.foundationModelService     = foundationModelService
         self.userService                = userService
         self.insightsService            = insightsService
+        self.quoteService               = quoteService
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
@@ -52,7 +55,7 @@ final class AppDependencies {
     func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
             authService: authService,
-            foundationModelService: foundationModelService,
+            quoteService: quoteService,
             thoughtStorage: thoughtStorage,
             insightsService: insightsService
         )

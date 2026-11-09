@@ -72,7 +72,7 @@ struct AddInsightView: View {
                 if viewModel.isGenerating {
                     LottieView(animationName: "loading-ai", loopMode: .loop, speed: 1.0)
                         .frame(width: 25, height: 25)
-                    Text("Writing your insight...")
+                    Text("Creating your insight...")
                 } else {
                     Image(systemName: "sparkles")
                     Text("Generate with AI")
@@ -97,9 +97,9 @@ struct AddInsightView: View {
                         HapticManager.shared.triggerSelection()
                         viewModel.icon = option
                     } label: {
-                        Image(option.iconName)
+                        Image(systemName: option.systemName)
                             .resizable()
-                            .frame(width: 30, height: 30)
+                            .frame(width: 22, height: 22)
                             .frame(width: 52, height: 52)
                             .background(Circle().fill(.appGreen.opacity(viewModel.icon == option ? 0.25 : 0.05)))
                             .overlay(Circle().stroke(.appGreen, lineWidth: viewModel.icon == option ? 2 : 0))

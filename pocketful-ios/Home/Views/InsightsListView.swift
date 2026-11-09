@@ -2,6 +2,10 @@ import SwiftUI
 
 /// The user's insights on the home page, showing each one's icon, title and reminder.
 struct InsightsListView: View {
+    /// A flag if the insights haved loaded.
+    var isLoaded: Bool
+    
+    ///  The List of insights to show.
     let insights: [Insight]
 
     /// Called when the user taps the + button.
@@ -10,16 +14,21 @@ struct InsightsListView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
-
-            if insights.isEmpty {
-                Text("Add your first insight")
-                    .foregroundStyle(.textPrimary.opacity(0.7))
-                    .font(FontManager.CormorantGaramond.regular.font(size: 18))
-            } else {
-                // Indexes as IDs, since the model could repeat a title.
-                ForEach(insights.indices, id: \.self) { index in
-                    InsightRow(insight: insights[index])
+            
+            if isLoaded {
+                if insights.isEmpty {
+                    Text("Add your first insight")
+                        .foregroundStyle(.textPrimary.opacity(0.7))
+                        .font(FontManager.CormorantGaramond.regular.font(size: 18))
+                } else {
+                    // Indexes as IDs, since the model could repeat a title.
+                    ForEach(insights.indices, id: \.self) { index in
+                        InsightRow(insight: insights[index])
+                    }
                 }
+            }
+            else {
+                loading
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -28,6 +37,16 @@ struct InsightsListView: View {
             RoundedRectangle(cornerRadius: 24)
                 .fill(.white.opacity(0.7))
         )
+    }
+    
+    private var loading: some View {
+        ForEach(0..<3, id: \.self) { _ in
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Stay Present")
+                Text("Practice deep breathing or meditation for a few minutes each day. ")
+            }
+            .redacted(reason: .placeholder)
+        }
     }
 
     /// The "Your Insights" title with the + button on the right.
@@ -70,9 +89,9 @@ private struct InsightRow: View {
             router.homePath.append(HomeRoute.insightDetail(insight))
         } label: {
             HStack(spacing: 12) {
-                Image(insight.icon.iconName)
+                Image(systemName: insight.icon.systemName)
                     .resizable()
-                    .frame(width: 28, height: 28)
+                    .frame(width: 22, height: 22)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(insight.title)
@@ -97,7 +116,9 @@ private struct InsightRow: View {
 }
 
 #Preview {
-    InsightsListView(insights: [
+    InsightsListView(
+        isLoaded: true,
+        insights: [
         Insight(title: "Room to breathe", body: "", practice: "", icon: .calm, reminder: "Slow down"),
         Insight(title: "Your own best friend", body: "", practice: "", icon: .heart, reminder: "Be kind to yourself"),
         Insight(title: "Time in nature", body: "", practice: "", icon: .leaf, reminder: "Get outside")
