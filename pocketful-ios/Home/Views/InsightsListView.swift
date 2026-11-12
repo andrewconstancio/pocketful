@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 /// The user's insights on the home page, showing each one's icon, title and reminder.
 struct InsightsListView: View {
@@ -31,11 +32,11 @@ struct InsightsListView: View {
                 loading
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(.white.opacity(0.7))
+                .fill(.white)
         )
     }
     
@@ -52,9 +53,8 @@ struct InsightsListView: View {
     /// The "Your Insights" title with the + button on the right.
     private var header: some View {
         HStack {
-            Image(systemName: "sparkles")
-                .font(.system(size: 22))
-                .foregroundStyle(.textPrimary)
+            LottieView(animationName: "ai-movement", loopMode: .loop, speed: 0.5)
+                .frame(width: 30, height: 30)
             
             Text("Your Insights")
                 .font(.system(size: 16))
@@ -65,9 +65,9 @@ struct InsightsListView: View {
 
             Button(action: onAddInsight) {
                 Image(systemName: "plus")
-                    .font(.system(size: 18))
+                    .font(.system(size: 22))
                     .foregroundStyle(.textPrimary)
-                    .frame(width: 34, height: 34)
+                    .frame(width: 36, height: 36)
                     .background(.appGreen.opacity(0.1))
                     .clipShape(Circle())
             }
@@ -86,13 +86,16 @@ private struct InsightRow: View {
 
     var body: some View {
         Button {
+            HapticManager.shared.triggerImpact(style: .medium)
             router.homePath.append(HomeRoute.insightDetail(insight))
         } label: {
             HStack(spacing: 12) {
-                Image(systemName: insight.icon.systemName)
-                    .resizable()
-                    .frame(width: 22, height: 22)
-
+//                Image(systemName: insight.icon.systemName)
+//                    .font(.system(size: 24))
+                
+                LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
+                    .frame(width: 35, height: 35)
+                
                 VStack(alignment: .leading, spacing: 2) {
                     Text(insight.title)
                         .foregroundStyle(.textPrimary)
@@ -111,6 +114,16 @@ private struct InsightRow: View {
                     .font(.system(size: 20))
                     .foregroundStyle(.textPrimary)
             }
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .overlay(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(.appGreen.opacity(0.1))
+                    .strokeBorder(
+                        .black.opacity(0.4),
+                        style: StrokeStyle(lineWidth: 3, dash: [5, 4])
+                    )
+            )
         }
     }
 }

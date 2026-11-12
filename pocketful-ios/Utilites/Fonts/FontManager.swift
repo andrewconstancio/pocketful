@@ -7,6 +7,9 @@ struct FontManager {
         /// Regular.
         case regular = "CormorantGaramond-Regular"
         
+        /// Medium.
+        case medium = "CormorantGaramond-Medium"
+        
         /// Bold.
         case bold = "CormorantGaramond-Bold"
         

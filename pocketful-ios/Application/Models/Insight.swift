@@ -89,4 +89,19 @@ enum InsightIcon: String, CaseIterable {
         case .focus: "icon-scope"
         }
     }
+    
+    var lottieName: String {
+        switch self {
+        case .calm: "wind-blowing"
+        case .heart: "insight-heart"
+        case .sun: "insight-sun"
+        case .leaf: "wind-blowing"
+        case .sparkles: "wind-blowing"
+        case .moon: "wind-blowing"
+        case .mountain: "wind-blowing"
+        case .people: "wind-blowing"
+        case .music: "wind-blowing"
+        case .focus: "wind-blowing"
+        }
+    }
 }

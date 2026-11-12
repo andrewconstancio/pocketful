@@ -12,6 +12,9 @@ struct LottieView: UIViewRepresentable {
     /// Speed of the animation.
     let speed: CGFloat
 
+    /// Optional single color that replaces every color in the animation.
+    var tint: Color? = nil
+
     /// This animation view.
     let animationView = LottieAnimationView()
 
@@ -29,6 +32,7 @@ struct LottieView: UIViewRepresentable {
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = loopMode
         animationView.animationSpeed = speed
+        applyTint(colorScheme: context.environment.colorScheme)
         animationView.play()
 
         animationView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,5 +49,16 @@ struct LottieView: UIViewRepresentable {
     }
 
     /// UIViewRepresentable delegate method.
-    func updateUIView(_ uiView: UIView, context: Context) {}
+    func updateUIView(_ uiView: UIView, context: Context) {
+        applyTint(colorScheme: context.environment.colorScheme)
+    }
+
+    /// Overrides all fill and stroke colors with the tint, resolved for light or dark mode.
+    private func applyTint(colorScheme: ColorScheme) {
+        guard let tint else { return }
+        let traits = UITraitCollection(userInterfaceStyle: colorScheme == .dark ? .dark : .light)
+        let resolvedColor = UIColor(tint).resolvedColor(with: traits)
+        let provider = ColorValueProvider(resolvedColor.lottieColorValue)
+        animationView.setValueProvider(provider, keypath: AnimationKeypath(keypath: "**.Color"))
+    }
 }

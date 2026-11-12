@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 struct TodaysThoughtView: View {
     var homeViewModel: HomeViewModel
@@ -22,7 +23,7 @@ struct TodaysThoughtView: View {
                 zenQuotesCredit
             }
 
-            Spacer().frame(height: 60)
+            Spacer().frame(height: 20)
             actionButtons
         }
         .padding()
@@ -31,26 +32,24 @@ struct TodaysThoughtView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(.white.opacity(0.7))
+                .fill(.white)
         )
     }
     
     private var heading: some View {
         HStack(spacing: 2) {
-            Image("sun-icon")
-                .resizable()
-                .frame(width: 32, height: 32)
+            LottieView(animationName: "simple-sun", loopMode: .loop, speed: 1.0)
+                .frame(width: 45, height: 45)
             
             Text("Today's Thought")
-                .font(.system(size: 14))
+                .font(.system(size: 16))
                 .foregroundStyle(.textPrimary)
                 .fontWeight(.medium)
             
             Spacer()
             
             Image(systemName: "ellipsis")
-                .resizable()
-                .frame(width: 14, height: 3)
+                .font(.system(size: 18))
         }
     }
     
@@ -71,21 +70,8 @@ struct TodaysThoughtView: View {
                 
             } label: {
                 Image(systemName: "bookmark")
-                    .resizable()
-                    .frame(width: 16, height: 21)
-                    .foregroundStyle(.black)
-                    .frame(width: 44, height: 44)
-                    .background(.appGreen.opacity(0.1))
-                    .clipShape(Circle())
-            }
-            
-            // Share button
-            Button {
-                
-            } label: {
-                Image("icon-share")
-                    .resizable()
-                    .frame(width: 22, height: 22)
+                    .font(.system(size: 20))
+                    .fontWeight(.medium)
                     .foregroundStyle(.black)
                     .frame(width: 44, height: 44)
                     .background(.appGreen.opacity(0.1))

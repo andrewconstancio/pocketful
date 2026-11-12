@@ -31,7 +31,7 @@ struct InsightDetailView: View {
                 .padding()
         }
         .fullScreenCover(isPresented: $isRecordingReflection) {
-            VoiceReflectionView(insight: insight)
+            AddReflectionView(insight: insight)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -49,8 +49,7 @@ struct InsightDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 Image(systemName: insight.icon.systemName)
-                    .resizable()
-                    .frame(width: 24, height: 24)
+                    .font(.system(size: 24))
 
                 Text(insight.title)
                     .foregroundStyle(.textPrimary)

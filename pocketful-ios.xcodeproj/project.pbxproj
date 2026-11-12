@@ -21,12 +21,12 @@
 		1C0125CF308EE8800089119A /* HomeBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CE308EE8800089119A /* HomeBackgroundView.swift */; };
 		1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D0308EE8800089119A /* AddInsightView.swift */; };
 		1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D2308EE8800089119A /* AddInsightViewModel.swift */; };
-		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
+		1C0125D5308EE8800089119A /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D4308EE8800089119A /* Quote.swift */; };
 		1C0125D7308EE8800089119A /* QuoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D6308EE8800089119A /* QuoteService.swift */; };
+		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
 		1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60D3090D43C00BF093F /* Alerts.swift */; };
 		1C54F6113092B09600BF093F /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6103092B09600BF093F /* TreeView.swift */; };
 		1C54F6163093735900BF093F /* Insight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6153093735800BF093F /* Insight.swift */; };
-		1C0125D5308EE8800089119A /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D4308EE8800089119A /* Quote.swift */; };
 		1C54F619309444A800BF093F /* ThoughtStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F618309444A000BF093F /* ThoughtStorage.swift */; };
 		1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */; };
 		1C54F61E3098CBAB00BF093F /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F61D3098CBAB00BF093F /* JournalView.swift */; };
@@ -34,10 +34,12 @@
 		1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F62230996E6F00BF093F /* HomeRoute.swift */; };
 		1C54F6263099717700BF093F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6253099717700BF093F /* ProfileView.swift */; };
 		1C67C770309A137200745118 /* InsightDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C76F309A137200745118 /* InsightDetailView.swift */; };
-		1C67C772309A200000745118 /* VoiceReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C771309A200000745118 /* VoiceReflectionView.swift */; };
+		1C67C772309A200000745118 /* AddReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C771309A200000745118 /* AddReflectionView.swift */; };
 		1C67C773309A1CF900745118 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C772309A1CF500745118 /* Constants.swift */; };
 		1C67C77630A0FA9700745118 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1C67C77530A0FA9700745118 /* Lottie */; };
 		1C67C77A30A0FAA900745118 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C77930A0FAA500745118 /* LottieView.swift */; };
+		1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C77E30A2069800745118 /* MicrophoneService.swift */; };
+		1C67C78130A3560A00745118 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C78030A3560900745118 /* View.swift */; };
 		1CAC138630808BB6005846CF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC138530808BB6005846CF /* RootView.swift */; };
 		1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14223080A49D005846CF /* AppDependencies.swift */; };
 		1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */; };
@@ -98,12 +100,12 @@
 		1C0125CE308EE8800089119A /* HomeBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBackgroundView.swift; sourceTree = "<group>"; };
 		1C0125D0308EE8800089119A /* AddInsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightView.swift; sourceTree = "<group>"; };
 		1C0125D2308EE8800089119A /* AddInsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightViewModel.swift; sourceTree = "<group>"; };
-		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
+		1C0125D4308EE8800089119A /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		1C0125D6308EE8800089119A /* QuoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteService.swift; sourceTree = "<group>"; };
+		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
 		1C54F60D3090D43C00BF093F /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		1C54F6103092B09600BF093F /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		1C54F6153093735800BF093F /* Insight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insight.swift; sourceTree = "<group>"; };
-		1C0125D4308EE8800089119A /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		1C54F618309444A000BF093F /* ThoughtStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtStorage.swift; sourceTree = "<group>"; };
 		1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtView.swift; sourceTree = "<group>"; };
 		1C54F61D3098CBAB00BF093F /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -111,9 +113,11 @@
 		1C54F62230996E6F00BF093F /* HomeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoute.swift; sourceTree = "<group>"; };
 		1C54F6253099717700BF093F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		1C67C76F309A137200745118 /* InsightDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightDetailView.swift; sourceTree = "<group>"; };
-		1C67C771309A200000745118 /* VoiceReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceReflectionView.swift; sourceTree = "<group>"; };
+		1C67C771309A200000745118 /* AddReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReflectionView.swift; sourceTree = "<group>"; };
 		1C67C772309A1CF500745118 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1C67C77930A0FAA500745118 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		1C67C77E30A2069800745118 /* MicrophoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneService.swift; sourceTree = "<group>"; };
+		1C67C78030A3560900745118 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		1CAC138530808BB6005846CF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1CAC14223080A49D005846CF /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		1CAC14253080A4FE005846CF /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
@@ -278,7 +282,7 @@
 		1C67C774309A200000745118 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1C67C771309A200000745118 /* VoiceReflectionView.swift */,
+				1C67C771309A200000745118 /* AddReflectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -294,6 +298,7 @@
 		1CAC14273080A55C005846CF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1C67C77E30A2069800745118 /* MicrophoneService.swift */,
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
 				1C0125D6308EE8800089119A /* QuoteService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
@@ -442,6 +447,7 @@
 		1CC37626307E5ACC00173B34 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1C67C78030A3560900745118 /* View.swift */,
 				1CC37627307E5AD400173B34 /* Color.swift */,
 			);
 			path = Extensions;
@@ -537,6 +543,7 @@
 				1CAC14423082A000005846CF /* OnboardingFlowView.swift in Sources */,
 				1CC37625307E5A6200173B34 /* AppButtonStyle.swift in Sources */,
 				1C0125CB308EE8C30089119A /* HomeViewModel.swift in Sources */,
+				1C67C78130A3560A00745118 /* View.swift in Sources */,
 				1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */,
 				1CAC144F30864E9D005846CF /* OnboardingChallengingMostView.swift in Sources */,
 				1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */,
@@ -592,11 +599,12 @@
 				1CAC145530879771005846CF /* HelpsBest.swift in Sources */,
 				1C67C77A30A0FAA900745118 /* LottieView.swift in Sources */,
 				1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */,
+				1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 				1C67C770309A137200745118 /* InsightDetailView.swift in Sources */,
 				1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */,
-				1C67C772309A200000745118 /* VoiceReflectionView.swift in Sources */,
+				1C67C772309A200000745118 /* AddReflectionView.swift in Sources */,
 				1C0125C6308EDB880089119A /* UserService.swift in Sources */,
 				1CAC1446308519AA005846CF /* OnboardingStressLevelsView.swift in Sources */,
 			);
@@ -737,8 +745,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "pocketful-ios/Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app requires microphone access to record your voice.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -769,8 +779,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "pocketful-ios/Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app requires microphone access to record your voice.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
