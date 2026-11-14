@@ -19,6 +19,9 @@ struct TodaysThoughtTextView: View {
     /// The pause before each character is typed.
     private let characterDelay: Duration = .milliseconds(30)
 
+    /// The pause before typing starts, giving the screen time to settle.
+    private let startDelay: Duration = .milliseconds(500)
+
     private var authorLine: String { Self.authorLine(for: quote) }
 
     private var totalCount: Int { quote.text.count + authorLine.count }
@@ -65,6 +68,14 @@ struct TodaysThoughtTextView: View {
         if reduceMotion {
             typedCount = totalCount
             return
+        }
+        // Wait for Home to finish its first render, so the first letters don't stutter.
+        if typedCount == 0 {
+            do {
+                try await Task.sleep(for: startDelay)
+            } catch {
+                return
+            }
         }
         while typedCount < totalCount {
             typedCount += 1

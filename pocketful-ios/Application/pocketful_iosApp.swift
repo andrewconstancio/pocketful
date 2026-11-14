@@ -12,9 +12,17 @@ struct pocketful_iosApp: App {
         // Must run before any service touches Firebase.
         FirebaseApp.configure()
         let dependencies = AppDependencies()
-        // Fetch today's quote while the app is still starting up, so Home doesn't wait for it.
-        dependencies.todaysThoughtLoader.startLoading()
         _dependencies = State(initialValue: dependencies)
+        prefetchTodaysQuote(using: dependencies)
+    }
+    
+    /// Starts fetching today's quote while the app is still starting up, unless it's already saved on the device.
+    private func prefetchTodaysQuote(using dependencies: AppDependencies) {
+        guard dependencies.thoughtStorage.loadTodaysQuote() == nil else { return }
+        Task {
+            // A failure is ignored here; Home shows the backup quote when its own fetch fails.
+            _ = try? await dependencies.quoteService.fetchTodaysQuote()
+        }
     }
     
     var body: some Scene {
