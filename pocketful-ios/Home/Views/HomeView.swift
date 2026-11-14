@@ -49,24 +49,6 @@ struct HomeView: View {
                 .ignoresSafeArea()
         }
         .background(.appBackground)
-        
-        // Toolbar
-//        .toolbar {
-//            ToolbarItem(placement: .topBarLeading) {
-//                Text("Pocketful")
-//                    .foregroundStyle(.textPrimary)
-//                    .font(FontManager.CormorantGaramond.bold.font(size: 24))
-//            }
-//            
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//               Button(action: {
-//                   router.homePath.append(HomeRoute.notifications)
-//               }) {
-//                   Image(systemName: "bell")
-//               }
-//            }
-//        }
-        
         .sheet(isPresented: $isAddingInsight) {
             AddInsightView(viewModel: dependencies.makeAddInsightViewModel(
                 existingInsights: homeViewModel.insights,
@@ -108,8 +90,8 @@ struct HomeView: View {
             VStack {
                 Text(Date.now.formatted(date: .long, time: .omitted))
                     .foregroundStyle(.textPrimary.opacity(0.7))
-                    .font(.system(size: 16))
-                    .fontWeight(.medium)
+                    .font(.system(size: 14))
+                    .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if let name = session.userName {
@@ -121,30 +103,6 @@ struct HomeView: View {
             }
         }
     }
-
-    /// The main header for this view.
-//    private var header: some View {
-//        HStack {
-//            VStack(alignment: .leading) {
-//                Text(timeOfDayGreeting)
-//                    .foregroundStyle(.textPrimary)
-//                    .font(FontManager.CormorantGaramond.regular.font(size: 28))
-//                
-//                if let name = session.userName {
-//                    Text(name)
-//                        .foregroundStyle(.textPrimary)
-//                        .font(FontManager.CormorantGaramond.bold.font(size: 38))
-//                }	
-//                
-//                Text("A little more of what matters")
-//                    .foregroundStyle(.textPrimary)
-//                    .font(FontManager.CormorantGaramond.regular.font(size: 20))
-//            }
-//            
-//            Spacer()
-//            flowerImage
-//        }
-//    }
     
     /// The main flower image of this view.
     private var flowerImage: some View {

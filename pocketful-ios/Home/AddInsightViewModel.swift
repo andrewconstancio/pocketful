@@ -27,10 +27,10 @@ final class AddInsightViewModel {
     private let userService: UserServicing
 
     /// The insights the user already has, so the new one sorts last and the AI avoids repeats.
-    private let existingInsights: [Insight]
+    private let existingInsights: [SavedInsight]
 
     /// Called after a successful save so Home can show the new insight.
-    private let onInsightSaved: (Insight) -> Void
+    private let onInsightSaved: (SavedInsight) -> Void
 
     /// Cached after the first fetch so generating again doesn't re-read Firestore.
     private var onboardingAnswers: OnboardingAnswers?
@@ -45,8 +45,8 @@ final class AddInsightViewModel {
         foundationModelService: FoundationModelServicing,
         insightsService: InsightsServicing,
         userService: UserServicing,
-        existingInsights: [Insight],
-        onInsightSaved: @escaping (Insight) -> Void
+        existingInsights: [SavedInsight],
+        onInsightSaved: @escaping (SavedInsight) -> Void
     ) {
         self.authService = authService
         self.foundationModelService = foundationModelService
@@ -73,7 +73,7 @@ final class AddInsightViewModel {
                 activeAlert = AlertContext.customError("We couldn't find your onboarding answers to base an insight on.")
                 return
             }
-            let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: existingInsights)
+            let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: existingInsights.map(\.insight))
             title = insight.title
             reminder = insight.reminder
             insightBody = insight.body
@@ -106,8 +106,8 @@ final class AddInsightViewModel {
         )
 
         do {
-            try await insightsService.addInsight(insight, position: existingInsights.count, uid: uid)
-            onInsightSaved(insight)
+            let savedInsight = try await insightsService.addInsight(insight, position: existingInsights.count, uid: uid)
+            onInsightSaved(savedInsight)
             HapticManager.shared.triggerNotification(type: .success)
             return true
         } catch {

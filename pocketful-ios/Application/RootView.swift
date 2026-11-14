@@ -13,14 +13,11 @@ struct RootView: View {
     
     var body: some View {
         @Bindable var session = session
-        
-        AddReflectionView(insight: Insight(title: "Test", body: "Test", practice: "Test Practice", icon: InsightIcon.calm, reminder: "Slow Down"))
-
-//        content
-//            .task {
-//                await session.observeAuthChanges()
-//            }
-//            .appAlert(alert: $session.activeAlert)
+        content
+            .task {
+                await session.observeAuthChanges()
+            }
+            .appAlert(alert: $session.activeAlert)
     }
     
     @ViewBuilder
@@ -47,8 +44,8 @@ struct RootView: View {
                             case .notifications:
                                 NotificationView()
                                 
-                            case .insightDetail(let insight):
-                                InsightDetailView(insight: insight)
+                            case .insightDetail(let savedInsight):
+                                InsightDetailView(savedInsight: savedInsight)
                             }
                         }
                 }

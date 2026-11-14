@@ -3,7 +3,9 @@ import AVFoundation
 
 /// Listens to a voice reflection on one insight.
 struct AddReflectionView: View {
-    let insight: Insight
+    let savedInsight: SavedInsight
+
+    private var insight: Insight { savedInsight.insight }
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
@@ -15,7 +17,6 @@ struct AddReflectionView: View {
         VStack(spacing: 12) {
             header
             titles
-            Spacer()
             if permission == .granted {
                 recordButton
             } else {
@@ -62,13 +63,29 @@ struct AddReflectionView: View {
         }
     }
 
+    /// Green when idle, red while listening.
+    private var buttonColor: Color {
+        microphone.isRecording ? .recordingRed : .appGreen
+    }
+
+    /// "Tap to start" when idle, or "Recording… 0:08" with a timer that counts up by itself.
+    private var statusLabel: Text {
+        if let startedAt = microphone.recordingStartedAt {
+            Text("Recording\u{2026} \(Text(startedAt, style: .timer))")
+        } else {
+            Text("Tap to start")
+        }
+    }
+
     private var recordButton: some View {
-        VStack(spacing: 40) {
-            Text(microphone.isRecording ? "Listening..." : "Tap to start")
+        VStack(spacing: 20) {
+            statusLabel
                 .font(.headline)
-                .foregroundStyle(microphone.isRecording ? .appGreen : .textPrimary.opacity(0.7))
+                .monospacedDigit()
+                .foregroundStyle(microphone.isRecording ? .recordingRed : .textPrimary.opacity(0.7))
 
             Button {
+                HapticManager.shared.triggerImpact(style: .heavy)
                 if microphone.isRecording {
                     microphone.stopListening()
                 } else {
@@ -77,28 +94,53 @@ struct AddReflectionView: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(.appGreen.opacity(0.05))
+                        .fill(buttonColor.opacity(0.05))
                         .frame(width: 175, height: 175)
                         .scaleEffect(1 + CGFloat(microphone.audioLevel) * 0.3)
 
                     Circle()
-                        .fill(.appGreen.opacity(0.4))
-                        .frame(width: 120, height: 120)
+                        .fill(buttonColor.opacity(0.4))
+                        .frame(width: 135, height: 135)
                         .scaleEffect(1 + CGFloat(microphone.audioLevel) * 0.15)
 
                     Circle()
-                        .fill(.appGreen)
-                        .frame(width: 100, height: 100)
+                        .fill(buttonColor)
+                        .frame(width: 110, height: 110)
 
                     Image(systemName: microphone.isRecording ? "stop.fill" : "mic.fill")
-                        .font(.system(size: 56))
+                        .font(.system(size: 44))
                         .foregroundStyle(.white)
                 }
                 .animation(.interactiveSpring(response: 0.15, dampingFraction: 0.6), value: microphone.audioLevel)
+                .animation(.easeInOut(duration: 0.25), value: microphone.isRecording)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(microphone.isRecording ? "Stop listening" : "Start listening")
+
+            waveform
         }
+    }
+
+    /// A row of bars showing the last few seconds of mic volume, newest on the right.
+    private var waveform: some View {
+        HStack(spacing: 3) {
+            ForEach(microphone.recentLevels.indices, id: \.self) { index in
+                Capsule()
+                    .fill(buttonColor)
+                    .frame(width: 3, height: max(3, CGFloat(microphone.recentLevels[index]) * 60))
+            }
+        }
+        .frame(height: 60)
+        // Fades the bars out toward the left and right edges.
+        .mask {
+            LinearGradient(
+                colors: [.clear, .black, .black, .clear],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        }
+        .animation(.easeOut(duration: 0.1), value: microphone.recentLevels)
+        .accessibilityHidden(true)
     }
 
     private var permissionPrompt: some View {
@@ -130,11 +172,11 @@ struct AddReflectionView: View {
 }
 
 #Preview {
-    AddReflectionView(insight: Insight(
+    AddReflectionView(savedInsight: SavedInsight(id: "1", insight: Insight(
         title: "Room to breathe",
         body: "",
         practice: "",
         icon: .calm,
         reminder: "Slow down"
-    ))
+    )))
 }

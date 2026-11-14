@@ -7,7 +7,7 @@ struct InsightsListView: View {
     var isLoaded: Bool
     
     ///  The List of insights to show.
-    let insights: [Insight]
+    let insights: [SavedInsight]
 
     /// Called when the user taps the + button.
     let onAddInsight: () -> Void
@@ -22,9 +22,8 @@ struct InsightsListView: View {
                         .foregroundStyle(.textPrimary.opacity(0.7))
                         .font(FontManager.CormorantGaramond.regular.font(size: 18))
                 } else {
-                    // Indexes as IDs, since the model could repeat a title.
-                    ForEach(insights.indices, id: \.self) { index in
-                        InsightRow(insight: insights[index])
+                    ForEach(insights) { savedInsight in
+                        InsightRow(savedInsight: savedInsight)
                     }
                 }
             }
@@ -54,7 +53,7 @@ struct InsightsListView: View {
     private var header: some View {
         HStack {
             LottieView(animationName: "ai-movement", loopMode: .loop, speed: 0.5)
-                .frame(width: 30, height: 30)
+                .frame(width: 25, height: 25)
             
             Text("Your Insights")
                 .font(.system(size: 16))
@@ -82,17 +81,16 @@ private struct InsightRow: View {
     /// App navigation, which holds the onboarding flow's path.
     @Environment(AppRouter.self) private var router
     
-    let insight: Insight
+    let savedInsight: SavedInsight
+
+    private var insight: Insight { savedInsight.insight }
 
     var body: some View {
         Button {
             HapticManager.shared.triggerImpact(style: .medium)
-            router.homePath.append(HomeRoute.insightDetail(insight))
+            router.homePath.append(HomeRoute.insightDetail(savedInsight))
         } label: {
             HStack(spacing: 12) {
-//                Image(systemName: insight.icon.systemName)
-//                    .font(.system(size: 24))
-                
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
                     .frame(width: 35, height: 35)
                 
@@ -132,9 +130,9 @@ private struct InsightRow: View {
     InsightsListView(
         isLoaded: true,
         insights: [
-        Insight(title: "Room to breathe", body: "", practice: "", icon: .calm, reminder: "Slow down"),
-        Insight(title: "Your own best friend", body: "", practice: "", icon: .heart, reminder: "Be kind to yourself"),
-        Insight(title: "Time in nature", body: "", practice: "", icon: .leaf, reminder: "Get outside")
+        SavedInsight(id: "1", insight: Insight(title: "Room to breathe", body: "", practice: "", icon: .calm, reminder: "Slow down")),
+        SavedInsight(id: "2", insight: Insight(title: "Your own best friend", body: "", practice: "", icon: .heart, reminder: "Be kind to yourself")),
+        SavedInsight(id: "3", insight: Insight(title: "Time in nature", body: "", practice: "", icon: .leaf, reminder: "Get outside"))
     ], onAddInsight: {})
     .padding()
     .background(.appBackground)

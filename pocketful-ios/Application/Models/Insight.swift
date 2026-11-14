@@ -1,5 +1,11 @@
 import FoundationModels
 
+/// An insight that has been saved, plus its Firestore document ID.
+struct SavedInsight: Identifiable, Equatable, Hashable {
+    let id: String
+    let insight: Insight
+}
+
 /// The insights the model creates from the onboarding answers.
 @Generable
 struct OnboardingInsights {
@@ -95,7 +101,7 @@ enum InsightIcon: String, CaseIterable {
         case .calm: "wind-blowing"
         case .heart: "insight-heart"
         case .sun: "insight-sun"
-        case .leaf: "wind-blowing"
+        case .leaf: "insight-leaf"
         case .sparkles: "wind-blowing"
         case .moon: "wind-blowing"
         case .mountain: "wind-blowing"

@@ -6,11 +6,8 @@ final class HomeViewModel {
     /// The auth service for this app.
     private let authService: AuthServicing
 
-    /// Keeps today's quote on the device so it's only fetched once a day.
-    private let thoughtStorage: ThoughtStorage
-
-    /// Fetches the quote of the day from ZenQuotes.
-    private let quoteService: QuoteServicing
+    /// Loads today's quote, which starts fetching at app launch.
+    private let todaysThoughtLoader: TodaysThoughtLoader
 
     /// Reads the user's insights from Firestore.
     private let insightsService: InsightsServicing
@@ -25,45 +22,27 @@ final class HomeViewModel {
     private(set) var hasLoadedTodaysThought = false
 
     /// The user's insights: the ones made at onboarding plus any they added.
-    var insights: [Insight] = []
+    var insights: [SavedInsight] = []
 
     /// Whether the first insights load has finished, even if it failed or found none.
     private(set) var hasLoadedInsights = false
 
-    /// Shown when the quote can't be fetched, so the card is never blank.
-    private static let backupQuote = Quote(
-        text: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
-        author: ""
-    )
-
     init(
         authService: AuthServicing,
-        quoteService: QuoteServicing,
-        thoughtStorage: ThoughtStorage,
+        todaysThoughtLoader: TodaysThoughtLoader,
         insightsService: InsightsServicing
     ) {
         self.authService = authService
-        self.quoteService = quoteService
-        self.thoughtStorage = thoughtStorage
+        self.todaysThoughtLoader = todaysThoughtLoader
         self.insightsService = insightsService
     }
 
-    /// Uses today's saved quote if there is one; otherwise fetches it from the API and saves it.
+    /// Shows today's quote, which is usually ready already because it starts loading at launch.
     func loadTodaysThought() async {
-        defer { hasLoadedTodaysThought = true }
-        if let saved = thoughtStorage.loadTodaysQuote() {
-            todaysThought = saved
-            return
-        }
-        isTodaysThoughtNew = true
-        do {
-            let quote = try await quoteService.fetchTodaysQuote()
-            todaysThought = quote
-            try? thoughtStorage.save(quote)
-        } catch {
-            // The backup isn't saved, so the next launch tries the API again.
-            todaysThought = Self.backupQuote
-        }
+        let loaded = await todaysThoughtLoader.load()
+        isTodaysThoughtNew = loaded.isNew
+        todaysThought = loaded.quote
+        hasLoadedTodaysThought = true
     }
 
     /// Loads the user's insights once; skips if they're already loaded.
@@ -78,8 +57,8 @@ final class HomeViewModel {
     }
     
     /// Adds an insight the user just saved to the end of the home list.
-    func appendInsight(_ insight: Insight) {
-        insights.append(insight)
+    func appendInsight(_ savedInsight: SavedInsight) {
+        insights.append(savedInsight)
     }
 
     func signOut() {

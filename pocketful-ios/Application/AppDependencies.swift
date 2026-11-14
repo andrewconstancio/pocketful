@@ -23,6 +23,9 @@ final class AppDependencies {
     // MARK: - Storage
     let thoughtStorage: ThoughtStorage
     
+    /// Loads today's quote once and shares it.
+    let todaysThoughtLoader: TodaysThoughtLoader
+    
     init(
         authService: AuthServicing = AuthService(),
         foundationModelService: FoundationModelServicing = FoundationModelService(),
@@ -40,6 +43,7 @@ final class AppDependencies {
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
         self.thoughtStorage             = thoughtStorage
+        self.todaysThoughtLoader        = TodaysThoughtLoader(quoteService: quoteService, thoughtStorage: thoughtStorage)
     }
     
     // MARK: - Feature view models
@@ -55,13 +59,12 @@ final class AppDependencies {
     func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
             authService: authService,
-            quoteService: quoteService,
-            thoughtStorage: thoughtStorage,
+            todaysThoughtLoader: todaysThoughtLoader,
             insightsService: insightsService
         )
     }
 
-    func makeAddInsightViewModel(existingInsights: [Insight], onInsightSaved: @escaping (Insight) -> Void) -> AddInsightViewModel {
+    func makeAddInsightViewModel(existingInsights: [SavedInsight], onInsightSaved: @escaping (SavedInsight) -> Void) -> AddInsightViewModel {
         AddInsightViewModel(
             authService: authService,
             foundationModelService: foundationModelService,

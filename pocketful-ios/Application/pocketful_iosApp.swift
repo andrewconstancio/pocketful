@@ -11,7 +11,10 @@ struct pocketful_iosApp: App {
     init() {
         // Must run before any service touches Firebase.
         FirebaseApp.configure()
-        _dependencies = State(initialValue: AppDependencies())
+        let dependencies = AppDependencies()
+        // Fetch today's quote while the app is still starting up, so Home doesn't wait for it.
+        dependencies.todaysThoughtLoader.startLoading()
+        _dependencies = State(initialValue: dependencies)
     }
     
     var body: some Scene {

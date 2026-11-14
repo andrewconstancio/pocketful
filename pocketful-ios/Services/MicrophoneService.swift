@@ -7,6 +7,18 @@ class MicrophoneService {
     
     var isRecording = false
     var audioLevel: Float = 0.0 // Useful for UI visualizers
+
+    /// When the current recording started; nil when not recording.
+    var recordingStartedAt: Date?
+
+    /// How many bars the waveform shows.
+    static let waveformBarCount = 45
+
+    /// The most recent mic levels (0 to 1), oldest first, one per waveform bar.
+    var recentLevels = [Float](repeating: 0, count: waveformBarCount)
+
+    /// Counts audio buffers so the waveform only takes every third one.
+    private var bufferCount = 0
     
     /// Requests explicit microphone access from the user
     func requestPermission(completion: @escaping (Bool) -> Void) {
@@ -41,6 +53,7 @@ class MicrophoneService {
             // 3. Start the engine
             try audioEngine.start()
             self.isRecording = true
+            self.recordingStartedAt = Date()
             
         } catch {
             print("Failed to set up or start audio engine: \(error.localizedDescription)")
@@ -52,7 +65,9 @@ class MicrophoneService {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
         self.isRecording = false
+        self.recordingStartedAt = nil
         self.audioLevel = 0.0
+        self.recentLevels = [Float](repeating: 0, count: Self.waveformBarCount)
     }
     
     /// Processes raw PCM audio buffers (e.g., for volume metering or text transcription)
@@ -68,12 +83,24 @@ class MicrophoneService {
         }
         rms = sqrt(rms / Float(frameLength))
         
-        // Convert to decibel-like scalar scale (0.0 to 1.0) for easy SwiftUI visualization
-        let meterValue = rms * 10
+        // Convert to decibels, then map quiet (-50 dB) through loud (-15 dB) speech onto 0 to 1.
+        let decibels = 20 * log10(max(rms, 0.000_01))
+        let quietestDecibels: Float = -50
+        let loudestDecibels: Float = -15
+        let meterValue = (decibels - quietestDecibels) / (loudestDecibels - quietestDecibels)
         
         DispatchQueue.main.async {
             // Smooth out the audio metric changes slightly for the UI
-            self.audioLevel = max(0.0, min(1.0, meterValue))
+            guard self.isRecording else { return }
+            let level = max(0.0, min(1.0, meterValue))
+            self.audioLevel = level
+
+            // Buffers arrive ~45 times a second; taking every third keeps the waveform scrolling at a readable speed.
+            self.bufferCount += 1
+            if self.bufferCount % 3 == 0 {
+                self.recentLevels.removeFirst()
+                self.recentLevels.append(level)
+            }
         }
     }
 }
