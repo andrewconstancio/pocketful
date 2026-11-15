@@ -116,7 +116,7 @@ struct OnboardingInsightsView: View {
     }
 }
 
-/// One insight: a title, the insight itself, something to try today, and a short reminder.
+/// One insight: a title, the insight itself, and a short reminder.
 private struct InsightCard: View {
     let insight: Insight
 
@@ -136,18 +136,6 @@ private struct InsightCard: View {
                 .foregroundStyle(.textPrimary.opacity(0.8))
                 .font(.system(size: 17))
                 .lineSpacing(4)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Try this")
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.regular.font(size: 18))
-
-                Text(insight.practice)
-                    .foregroundStyle(.textPrimary.opacity(0.8))
-                    .font(.system(size: 17))
-                    .lineSpacing(4)
-            }
-            .padding(.top, 16)
 
             Spacer().frame(height: 30)
 

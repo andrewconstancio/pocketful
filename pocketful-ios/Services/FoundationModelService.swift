@@ -1,3 +1,4 @@
+import Foundation
 import FoundationModels
 
 enum FoundationModelError: Error {
@@ -19,8 +20,9 @@ final class FoundationModelService: FoundationModelServicing {
         You are a warm, supportive wellness guide. Using the user's onboarding answers, \
         write thoughtful, in-depth insights about them, each with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
-        Base each insight on a different one of their answers, such as their stress level, a life goal, \
-        what challenges them, what helps them feel best, or their own words. \
+        Each insight should connect one thing that challenges them, or their stress level, with one of their life goals, \
+        and each insight should use a different pairing. \
+        If they described a more fulfilled version of themselves, at least one insight must build on their own words. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
@@ -30,8 +32,8 @@ final class FoundationModelService: FoundationModelServicing {
         You are a warm, supportive wellness guide. Using the user's onboarding answers, \
         write one thoughtful, in-depth insight about them, with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
-        Base it on one of their answers, such as their stress level, a life goal, \
-        what challenges them, what helps them feel best, or their own words. \
+        Connect one thing that challenges them, or their stress level, with one of their life goals. \
+        If they described a more fulfilled version of themselves, build on their own words when it fits. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
@@ -47,7 +49,7 @@ final class FoundationModelService: FoundationModelServicing {
 
         let session = LanguageModelSession(model: model, instructions: Self.insightsInstructions)
         let response = try await session.respond(to: answers.promptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
-        return response.content
+        return OnboardingInsights(insights: response.content.insights.map(keepingFirstReminderPhrase))
     }
 
     /// Writes one new insight, steering away from the titles the user already has so it isn't a repeat.
@@ -60,7 +62,16 @@ final class FoundationModelService: FoundationModelServicing {
         }
         let session = LanguageModelSession(model: model, instructions: Self.singleInsightInstructions)
         let response = try await session.respond(to: prompt, generating: Insight.self, options: Self.insightsOptions)
-        return response.content
+        return keepingFirstReminderPhrase(response.content)
+    }
+
+    /// Cuts the reminder at its first comma or full stop, since the model sometimes tacks on a second phrase.
+    private func keepingFirstReminderPhrase(_ insight: Insight) -> Insight {
+        let firstPhrase = insight.reminder
+            .prefix { !",.;:—".contains($0) }
+            .trimmingCharacters(in: .whitespaces)
+        guard !firstPhrase.isEmpty else { return insight }
+        return Insight(title: insight.title, body: insight.body, reminder: firstPhrase, icon: insight.icon)
     }
 }
 
@@ -83,23 +94,20 @@ final class PreviewFoundationModelService: FoundationModelServicing {
             Insight(
                 title: "Room to breathe",
                 body: "You shared that your stress has been high lately. That tells us you care deeply about doing things well. Giving yourself small pauses can help that care feel lighter, and leave more energy for what matters to you.",
-                practice: "Take three slow breaths before you open your next message or email.",
-                icon: .calm,
-                reminder: "Slow down"
+                reminder: "Slow down",
+                icon: .calm
             ),
             Insight(
                 title: "Your own best friend",
                 body: "You named overthinking as something you're working through. That shows how thoughtful you are. Meeting your thoughts with the same kindness you'd give a friend can make them easier to carry.",
-                practice: "When a hard thought comes up, ask what you'd say to a friend who had it.",
-                icon: .heart,
-                reminder: "Be kind to yourself"
+                reminder: "Be kind to yourself",
+                icon: .heart
             ),
             Insight(
                 title: "Time in nature",
                 body: "You said time in nature helps you feel your best. That's a wonderful thing to know about yourself. Even a few minutes outside can bring back the calm you're looking for.",
-                practice: "Step outside for five minutes today and notice three things you can hear.",
-                icon: .leaf,
-                reminder: "Get outside"
+                reminder: "Get outside",
+                icon: .leaf
             )
         ])
     }
@@ -109,9 +117,8 @@ final class PreviewFoundationModelService: FoundationModelServicing {
         return Insight(
             title: "Small steps count",
             body: "You said you want more peace in your days. Noticing that is already a step toward it. Small, quiet moments can add up to the calm you're looking for.",
-            practice: "Pick one task today and do it slowly, without rushing to the next.",
-            icon: .leaf,
-            reminder: "One thing at a time"
+            reminder: "One thing at a time",
+            icon: .leaf
         )
     }
 }

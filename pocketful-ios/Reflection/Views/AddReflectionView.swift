@@ -175,8 +175,7 @@ struct AddReflectionView: View {
     AddReflectionView(savedInsight: SavedInsight(id: "1", insight: Insight(
         title: "Room to breathe",
         body: "",
-        practice: "",
-        icon: .calm,
-        reminder: "Slow down"
+        reminder: "Slow down",
+        icon: .calm
     )))
 }

@@ -18,29 +18,26 @@ struct Insight: Encodable, Equatable, Hashable {
     @Guide(description: "A short, warm title of a few words that names this insight.")
     let title: String
 
-    @Guide(description: "One or two short, uplifting sentences, under 30 words total, speaking to the user as 'you'. Name the answer this insight comes from and why focusing on it helps them.")
+    @Guide(description: "Two or three short, uplifting sentences, under 50 words total, speaking to the user as 'you'. Name the answers this insight connects and why focusing on them helps, and mention one of the things that helps them feel best when it fits.")
     let body: String
 
-    @Guide(description: "One small, concrete thing the user can try today based on this insight, in one or two sentences.")
-    let practice: String
+    // Before `icon`, so the icon's name can't leak into the reminder's wording.
+    @Guide(description: "One plain, positive instruction of one to four words that the user can repeat to themselves during the day, like 'Slow down' or 'Get outside'. A single phrase: no comma and no second part.")
+    let reminder: String
 
     @Guide(description: "The icon that best matches the feeling of this reminder.")
     let icon: InsightIcon
-    
-    @Guide(description: "A short, positive phrase of one to four words that the user can repeat to themselves during the day, written in fresh words that fit this insight.")
-    let reminder: String
 
     // Manual Encodable conformance because @Generable synthesizes
     // hidden stored properties that aren't Encodable.
     private enum CodingKeys: String, CodingKey {
-        case title, body, practice, icon, reminder
+        case title, body, icon, reminder
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
-        try container.encode(practice, forKey: .practice)
         try container.encode(icon.rawValue, forKey: .icon)
         try container.encode(reminder, forKey: .reminder)
     }
@@ -54,9 +51,8 @@ extension Insight: Decodable {
         self.init(
             title: try container.decode(String.self, forKey: .title),
             body: try container.decode(String.self, forKey: .body),
-            practice: try container.decode(String.self, forKey: .practice),
-            icon: InsightIcon(rawValue: iconName) ?? .sparkles,
-            reminder: try container.decode(String.self, forKey: .reminder)
+            reminder: try container.decode(String.self, forKey: .reminder),
+            icon: InsightIcon(rawValue: iconName) ?? .sparkles
         )
     }
 }
@@ -116,11 +112,11 @@ enum InsightIcon: String, CaseIterable {
         switch self {
         case .sparkles: 1.8
         case .focus: 1.65
-        case .music: 1.3
+        case .music: 1.5
         case .calm: 1.25
-        case .moon: 1.15
         case .leaf: 1.3
-        case .heart, .sun, .mountain, .people: 1.0
+        case .sun: 2.0
+        case .heart, .mountain, .people, .moon: 1.0
         }
     }
 }

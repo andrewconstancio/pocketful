@@ -7,7 +7,6 @@ final class AddInsightViewModel {
     var title = ""
     var reminder = ""
     var insightBody = ""
-    var practice = ""
     var icon: InsightIcon = .sparkles
 
     /// True while the save is in flight, to block double taps.
@@ -35,7 +34,7 @@ final class AddInsightViewModel {
     /// Cached after the first fetch so generating again doesn't re-read Firestore.
     private var onboardingAnswers: OnboardingAnswers?
 
-    /// Title, reminder and body are required; practice is optional.
+    /// Title, reminder and body are all required.
     var canSave: Bool {
         !trimmed(title).isEmpty && !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating
     }
@@ -77,7 +76,6 @@ final class AddInsightViewModel {
             title = insight.title
             reminder = insight.reminder
             insightBody = insight.body
-            practice = insight.practice
             icon = insight.icon
             HapticManager.shared.triggerNotification(type: .success)
         } catch FoundationModelError.modelUnavailable {
@@ -100,9 +98,8 @@ final class AddInsightViewModel {
         let insight = Insight(
             title: trimmed(title),
             body: trimmed(insightBody),
-            practice: trimmed(practice),
-            icon: icon,
-            reminder: trimmed(reminder)
+            reminder: trimmed(reminder),
+            icon: icon
         )
 
         do {

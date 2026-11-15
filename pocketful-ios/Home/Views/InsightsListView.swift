@@ -131,9 +131,9 @@ private struct InsightRow: View {
     InsightsListView(
         isLoaded: true,
         insights: [
-        SavedInsight(id: "1", insight: Insight(title: "Room to breathe", body: "", practice: "", icon: .calm, reminder: "Slow down")),
-        SavedInsight(id: "2", insight: Insight(title: "Your own best friend", body: "", practice: "", icon: .heart, reminder: "Be kind to yourself")),
-        SavedInsight(id: "3", insight: Insight(title: "Time in nature", body: "", practice: "", icon: .leaf, reminder: "Get outside"))
+        SavedInsight(id: "1", insight: Insight(title: "Room to breathe", body: "", reminder: "Slow down", icon: .calm)),
+        SavedInsight(id: "2", insight: Insight(title: "Your own best friend", body: "", reminder: "Be kind to yourself", icon: .heart)),
+        SavedInsight(id: "3", insight: Insight(title: "Time in nature", body: "", reminder: "Get outside", icon: .leaf))
     ], onAddInsight: {})
     .padding()
     .background(.appBackground)

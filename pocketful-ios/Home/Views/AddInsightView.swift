@@ -33,10 +33,6 @@ struct AddInsightView: View {
                     field("What it means") {
                         OnboardingTextBox(placeholder: "Why this matters to you...", text: $viewModel.insightBody, height: 160)
                     }
-
-                    field("Try this today", hint: "Optional") {
-                        OnboardingTextBox(placeholder: "One small thing you can do...", text: $viewModel.practice, height: 120)
-                    }
                 }
                 .padding()
             }
