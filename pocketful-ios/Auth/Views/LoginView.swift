@@ -59,7 +59,7 @@ struct LoginView: View {
             HStack(spacing: 8) {
                 Image(systemName: "g.circle.fill")
                     .resizable()
-                    .frame(width: 24, height: 24)
+                    .frame(width: 30, height: 30)
                 
                 Text("Sign in with Google")
             }

@@ -56,6 +56,7 @@ struct InsightDetailView: View {
                 
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
                     .frame(width: 44, height: 44)
+                    .scaleEffect(insight.icon.lottieScale)
 
                 Text(insight.title)
                     .foregroundStyle(.textPrimary)

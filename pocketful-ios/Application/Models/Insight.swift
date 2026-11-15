@@ -18,7 +18,7 @@ struct Insight: Encodable, Equatable, Hashable {
     @Guide(description: "A short, warm title of a few words that names this insight.")
     let title: String
 
-    @Guide(description: "Three to five uplifting sentences, speaking to the user as 'you'. Name the specific answer this insight comes from, explain what it shows about them, and why focusing on it can help them feel more fulfilled.")
+    @Guide(description: "One or two short, uplifting sentences, under 30 words total, speaking to the user as 'you'. Name the answer this insight comes from and why focusing on it helps them.")
     let body: String
 
     @Guide(description: "One small, concrete thing the user can try today based on this insight, in one or two sentences.")
@@ -98,16 +98,29 @@ enum InsightIcon: String, CaseIterable {
     
     var lottieName: String {
         switch self {
-        case .calm: "wind-blowing"
+        case .calm: "insight-wind"
         case .heart: "insight-heart"
         case .sun: "insight-sun"
         case .leaf: "insight-leaf"
-        case .sparkles: "wind-blowing"
-        case .moon: "wind-blowing"
-        case .mountain: "wind-blowing"
-        case .people: "wind-blowing"
-        case .music: "wind-blowing"
-        case .focus: "wind-blowing"
+        case .sparkles: "insight-sparkle"
+        case .moon: "insight-moon"
+        case .mountain: "insight-mountain"
+        case .people: "insight-people"
+        case .music: "insight-music"
+        case .focus: "insight-focus"
+        }
+    }
+
+    /// How much to enlarge the animation so every icon's artwork looks the same size, since some files have more empty space around the drawing.
+    var lottieScale: Double {
+        switch self {
+        case .sparkles: 1.8
+        case .focus: 1.65
+        case .music: 1.3
+        case .calm: 1.25
+        case .moon: 1.15
+        case .leaf: 1.3
+        case .heart, .sun, .mountain, .people: 1.0
         }
     }
 }

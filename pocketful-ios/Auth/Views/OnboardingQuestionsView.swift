@@ -45,16 +45,12 @@ struct OnboardingQuestionsView: View {
             OnboardingLifeGoalsView()
         case .stressLevel:
             OnboardingStressLevelsView()
-        case .areasOfFocus:
-            OnboardingAreasOfFocusView()
         case .challengingMost:
             OnboardingChallengingMostView()
         case .helpsTheBest:
             OnboardingHelpsTheBestView()
         case .fulfilledVersion:
             OnboardingFulfilledVersionView()
-        case .additionalThoughts:
-            OnboardingAdditionalThoughtsView()
         }
     }
 

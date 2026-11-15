@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "insight-people.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

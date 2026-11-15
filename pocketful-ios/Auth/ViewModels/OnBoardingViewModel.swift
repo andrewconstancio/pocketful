@@ -13,9 +13,6 @@ final class OnBoardingViewModel {
     /// The selected stress level for the user.
     private(set) var selectedStressLevel: StressLevel?
     
-    /// The areas of focus the user has selected.
-    private(set) var selectedFocusAreas: Set<FocusArea> = []
-    
     /// The users selected challenge areas.
     private(set) var selectedChallengeArea: Set<ChallengeArea> = []
 
@@ -27,9 +24,6 @@ final class OnBoardingViewModel {
 
     /// What a more fulfilled version of the user looks like, in their own words.
     var fulfilledVersionText = ""
-
-    /// Anything else the user wants to share.
-    var additionalThoughtsText = ""
 
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
@@ -60,11 +54,9 @@ final class OnBoardingViewModel {
         case .name: !trimmedName.isEmpty
         case .lifeGoals: !selectedLifeGoals.isEmpty
         case .stressLevel: selectedStressLevel != nil
-        case .areasOfFocus: !selectedFocusAreas.isEmpty
         case .challengingMost: !selectedChallengeArea.isEmpty
         case .helpsTheBest: !selectedHelpsBest.isEmpty
         case .fulfilledVersion: true
-        case .additionalThoughts: true
         }
     }
 
@@ -87,11 +79,9 @@ final class OnBoardingViewModel {
         let answers = OnboardingAnswers(
             lifeGoals: Array(selectedLifeGoals),
             stressLevel: selectedStressLevel,
-            focusAreas: Array(selectedFocusAreas),
             challengeAreas: Array(selectedChallengeArea),
             helpsBest: Array(selectedHelpsBest),
-            fulfilledVersion: fulfilledVersionText,
-            additionalThoughts: additionalThoughtsText
+            fulfilledVersion: fulfilledVersionText
         )
         do {
             let generated = try await foundationModelService.generateInsights(from: answers)
@@ -139,15 +129,6 @@ final class OnBoardingViewModel {
     /// Selects the stress level
     func selectStressLevel(_ level: StressLevel) {
         selectedStressLevel = level
-    }
-    
-    /// Selects a focus area, or deselects it if it's already picked.
-    func toggleFocusArea(_ area: FocusArea) {
-        if selectedFocusAreas.contains(area) {
-            selectedFocusAreas.remove(area)
-        } else {
-            selectedFocusAreas.insert(area)
-        }
     }
     
     /// Selects a challenge area, or deselects it if it's already picked.

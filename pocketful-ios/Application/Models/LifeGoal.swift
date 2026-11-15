@@ -8,7 +8,6 @@ enum LifeGoal: String, CaseIterable, Identifiable, Codable {
     case confidence
     case creativity
     case purpose
-    case other
 
     var id: Self { self }
 
@@ -21,7 +20,6 @@ enum LifeGoal: String, CaseIterable, Identifiable, Codable {
         case .confidence: "More confidence"
         case .creativity: "Time for hobbies and creativity"
         case .purpose: "A stronger sense of purpose"
-        case .other: "Other"
         }
     }
 
@@ -34,7 +32,6 @@ enum LifeGoal: String, CaseIterable, Identifiable, Codable {
         case .confidence: "heart"
         case .creativity: "paintpalette"
         case .purpose: "mountain.2"
-        case .other: "questionmark"
         }
     }
 }

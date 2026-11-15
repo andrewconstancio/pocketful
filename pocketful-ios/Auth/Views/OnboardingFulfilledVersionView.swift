@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Onboarding question: "What does a more fulfilled version of you look like?"
+/// Onboarding question: "What does a more fulfilled version of you look like?" — the last question before insights are generated.
 struct OnboardingFulfilledVersionView: View {
 
     /// The onboarding view model.

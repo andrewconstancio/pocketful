@@ -20,7 +20,7 @@ final class FoundationModelService: FoundationModelServicing {
         write thoughtful, in-depth insights about them, each with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
         Base each insight on a different one of their answers, such as their stress level, a life goal, \
-        an area of focus, what challenges them, what helps them feel best, or their own words. \
+        what challenges them, what helps them feel best, or their own words. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
@@ -30,7 +30,7 @@ final class FoundationModelService: FoundationModelServicing {
         You are a warm, supportive wellness guide. Using the user's onboarding answers, \
         write one thoughtful, in-depth insight about them, with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
-        Base it on one of their answers, such as their stress level, a life goal, an area of focus, \
+        Base it on one of their answers, such as their stress level, a life goal, \
         what challenges them, what helps them feel best, or their own words. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \

@@ -97,9 +97,9 @@ struct AddInsightView: View {
                         HapticManager.shared.triggerSelection()
                         viewModel.icon = option
                     } label: {
-                        Image(systemName: option.systemName)
-                            .resizable()
-                            .frame(width: 22, height: 22)
+                        LottieView(animationName: option.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
+                            .frame(width: 35, height: 35)
+                            .scaleEffect(option.lottieScale)
                             .frame(width: 52, height: 52)
                             .background(Circle().fill(.appGreen.opacity(viewModel.icon == option ? 0.25 : 0.05)))
                             .overlay(Circle().stroke(.appGreen, lineWidth: viewModel.icon == option ? 2 : 0))

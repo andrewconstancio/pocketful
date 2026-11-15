@@ -109,11 +109,9 @@ final class PreviewUserService: UserServicing {
         OnboardingAnswers(
             lifeGoals: [.peace],
             stressLevel: .moderate,
-            focusAreas: [.mentalHealth],
             challengeAreas: [.overthinking],
             helpsBest: [.timeInNature],
-            fulfilledVersion: "",
-            additionalThoughts: ""
+            fulfilledVersion: ""
         )
     }
 }

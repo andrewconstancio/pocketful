@@ -93,6 +93,7 @@ private struct InsightRow: View {
             HStack(spacing: 12) {
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
                     .frame(width: 35, height: 35)
+                    .scaleEffect(insight.icon.lottieScale)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(insight.title)

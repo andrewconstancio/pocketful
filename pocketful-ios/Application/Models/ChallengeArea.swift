@@ -6,7 +6,6 @@ enum ChallengeArea: String, CaseIterable, Identifiable, Codable {
     case balancingWorkAndLife
     case feelingDisconnected
     case managingAnxietyOrStress
-    case other
     
     var id: Self { self }
     
@@ -22,8 +21,6 @@ enum ChallengeArea: String, CaseIterable, Identifiable, Codable {
             "Feeling disconnected"
         case .managingAnxietyOrStress:
             "Managing anxiety or stress"
-        case .other:
-            "Other"
         }
     }
 }

@@ -3,9 +3,6 @@ import SwiftUI
 /// A small preview page before getting started with the onboarding process.
 struct OnboardingGetToKnowView: View {
 
-    /// App navigation, which holds the onboarding flow's path.
-    @Environment(AppRouter.self) private var router
-
     var body: some View {
         VStack {
             Spacer().frame(height: 10)
@@ -23,7 +20,7 @@ struct OnboardingGetToKnowView: View {
     
     /// The main title for this view.
     private var title: some View {
-        Text("Lets get to know you a little.")
+        Text("Let's get to know you a little.")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.bold.font(size: 28))
     }
@@ -51,24 +48,8 @@ struct OnboardingGetToKnowView: View {
                 )
             )
     }
-    
-    /// The next button for this view. 
-    private var nextButton: some View {
-        Button("Next") {
-            HapticManager.shared.triggerImpact(style: .heavy)
-            router.onboardingPath.append(AuthRoute.questions)
-        }
-        .buttonStyle(AppButtonStyle(
-            backgroundColor: .appGreen,
-            foregroundColor: .textOffWhite,
-            borderColor: .textOffWhite,
-            borderWidth: 2,
-            cornerRadius: 30,
-        ))
-    }
 }
 
 #Preview {
     OnboardingGetToKnowView()
-        .environment(AppRouter())
 }

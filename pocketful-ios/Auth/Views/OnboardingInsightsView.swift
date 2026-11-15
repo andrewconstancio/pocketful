@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 /// Shows the insights made from the user's onboarding answers.
 struct OnboardingInsightsView: View {
@@ -26,6 +27,7 @@ struct OnboardingInsightsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(.appBackground)
         .ignoresSafeArea(.all)
         .navigationBarBackButtonHidden()
         .safeAreaInset(edge: .bottom) {
@@ -72,11 +74,14 @@ struct OnboardingInsightsView: View {
     }
 
     private var failureMessage: some View {
-        Text("We couldn't create your insights right now. Check your internet connection and make sure Apple Intelligence is turned on in Settings.")
-            .foregroundStyle(.textPrimary.opacity(0.8))
-            .font(.system(size: 17))
-            .lineSpacing(4)
-            .frame(maxHeight: .infinity, alignment: .top)
+        VStack {
+            Spacer()
+            Text("We couldn't create your insights right now. Check your internet connection and make sure Apple Intelligence is turned on in Settings.")
+                .foregroundStyle(.textPrimary.opacity(0.8))
+                .font(.system(size: 17))
+                .lineSpacing(4)
+            Spacer()
+        }
     }
 
     private var finishButton: some View {
@@ -108,7 +113,6 @@ struct OnboardingInsightsView: View {
             cornerRadius: 30
         ))
         .padding()
-        .background(.appBackground)
     }
 }
 
@@ -119,10 +123,9 @@ private struct InsightCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
-                Image(insight.icon.iconName)
-                    .resizable()
-                    .frame(width: 25, height: 25)
-                    .foregroundStyle(.textPrimary)
+                LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
+                    .frame(width: 35, height: 35)
+                    .scaleEffect(insight.icon.lottieScale)
 
                 Text(insight.title)
                     .foregroundStyle(.textPrimary)

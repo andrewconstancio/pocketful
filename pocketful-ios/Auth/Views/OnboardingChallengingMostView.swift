@@ -8,6 +8,8 @@ struct OnboardingChallengingMostView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             title
+            subtitle
+                .padding(.top, 8)
                 .padding(.bottom, 24)
             
             ScrollView {
@@ -30,9 +32,15 @@ struct OnboardingChallengingMostView: View {
     }
     
     private var title: some View {
-        Text("What's currently challenging you the most")
+        Text("What's currently challenging you the most?")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.bold.font(size: 34))
+    }
+
+    private var subtitle: some View {
+        Text("Select all that apply.")
+            .foregroundStyle(.textPrimary.opacity(0.7))
+            .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }
 }
 
