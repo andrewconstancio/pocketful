@@ -1,9 +1,21 @@
 import Foundation
 import AVFoundation
 
+/// A finished voice recording saved on the device.
+struct VoiceRecording {
+    let fileURL: URL
+    let duration: TimeInterval
+
+    /// The volume (0 to 1) across the whole recording, squeezed into a fixed number of bars.
+    let waveform: [Float]
+}
+
 @Observable
 class MicrophoneService {
     private let audioEngine = AVAudioEngine()
+
+    /// The file the current recording is being written to; nil when not recording.
+    private var audioFile: AVAudioFile?
     
     var isRecording = false
     var audioLevel: Float = 0.0 // Useful for UI visualizers
@@ -16,6 +28,12 @@ class MicrophoneService {
 
     /// The most recent mic levels (0 to 1), oldest first, one per waveform bar.
     var recentLevels = [Float](repeating: 0, count: waveformBarCount)
+
+    /// How many bars a saved recording's waveform has.
+    static let savedWaveformBarCount = 40
+
+    /// Every mic level of the current recording, used to build its saved waveform.
+    @ObservationIgnored private var recordedLevels: [Float] = []
 
     /// Counts audio buffers so the waveform only takes every third one.
     private var bufferCount = 0
@@ -44,8 +62,20 @@ class MicrophoneService {
             
             // It is safe to clear previous taps before installing a new one
             inputNode.removeTap(onBus: 0)
+
+            // A compressed .m4a file in the temporary folder, matching the mic's sample rate and channels.
+            let fileURL = FileManager.default.temporaryDirectory.appending(path: "\(UUID().uuidString).m4a")
+            let file = try AVAudioFile(forWriting: fileURL, settings: [
+                AVFormatIDKey: kAudioFormatMPEG4AAC,
+                AVSampleRateKey: recordingFormat.sampleRate,
+                AVNumberOfChannelsKey: recordingFormat.channelCount,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ])
+            audioFile = file
+            recordedLevels = []
             
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] (buffer, time) in
+                try? file.write(from: buffer)
                 guard let self = self else { return }
                 self.processAudioBuffer(buffer)
             }
@@ -56,21 +86,55 @@ class MicrophoneService {
             self.recordingStartedAt = Date()
             
         } catch {
+            audioFile = nil
             print("Failed to set up or start audio engine: \(error.localizedDescription)")
         }
     }
     
-    /// Stops the microphone and audio engine safely
-    func stopListening() {
+    /// Stops the microphone and returns the finished recording, or nil if nothing was recorded.
+    func stopListening() -> VoiceRecording? {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: 0)
+
+        var recording: VoiceRecording?
+        if let audioFile, let recordingStartedAt {
+            // Closing finishes writing the file so it can be played and uploaded.
+            audioFile.close()
+            recording = VoiceRecording(
+                fileURL: audioFile.url,
+                duration: Date().timeIntervalSince(recordingStartedAt),
+                waveform: savedWaveform()
+            )
+        }
+        audioFile = nil
+
         self.isRecording = false
         self.recordingStartedAt = nil
         self.audioLevel = 0.0
         self.recentLevels = [Float](repeating: 0, count: Self.waveformBarCount)
+        return recording
+    }
+
+    /// Averages the recorded levels into `savedWaveformBarCount` bars.
+    private func savedWaveform() -> [Float] {
+        guard !recordedLevels.isEmpty else { return [] }
+        let levelCount = recordedLevels.count
+        return (0..<Self.savedWaveformBarCount).map { bar in
+            let start = bar * levelCount / Self.savedWaveformBarCount
+            let end = max(start + 1, (bar + 1) * levelCount / Self.savedWaveformBarCount)
+            let slice = recordedLevels[start..<min(end, levelCount)]
+            return slice.reduce(0, +) / Float(slice.count)
+        }
+    }
+
+    /// Stops the microphone and deletes what was recorded.
+    func cancelListening() {
+        if let recording = stopListening() {
+            try? FileManager.default.removeItem(at: recording.fileURL)
+        }
     }
     
-    /// Processes raw PCM audio buffers (e.g., for volume metering or text transcription)
+    /// Processes raw PCM audio buffers for volume metering
     private func processAudioBuffer(_ buffer: AVAudioPCMBuffer) {
         guard let channelData = buffer.floatChannelData else { return }
         let channelDataValue = channelData[0]
@@ -94,6 +158,7 @@ class MicrophoneService {
             guard self.isRecording else { return }
             let level = max(0.0, min(1.0, meterValue))
             self.audioLevel = level
+            self.recordedLevels.append(level)
 
             // Buffers arrive ~45 times a second; taking every third keeps the waveform scrolling at a readable speed.
             self.bufferCount += 1

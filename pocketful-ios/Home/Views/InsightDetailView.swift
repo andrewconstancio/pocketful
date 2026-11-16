@@ -3,12 +3,21 @@ import Lottie
 
 /// One insight in full: its body and a button to record a voice reflection on it.
 struct InsightDetailView: View {
-    let savedInsight: SavedInsight
+    private let savedInsight: SavedInsight
+    private let dependencies: AppDependencies
+
+    @State private var reflectionsViewModel: InsightReflectionsViewModel
 
     private var insight: Insight { savedInsight.insight }
 
     /// Whether the voice reflection screen is showing.
     @State private var isRecordingReflection = false
+
+    init(savedInsight: SavedInsight, dependencies: AppDependencies) {
+        self.savedInsight = savedInsight
+        self.dependencies = dependencies
+        _reflectionsViewModel = State(initialValue: dependencies.makeInsightReflectionsViewModel(insightID: savedInsight.id))
+    }
 
     var body: some View {
         ScrollView {
@@ -16,6 +25,7 @@ struct InsightDetailView: View {
                 header
                 reminderCard
                 meaningCard
+                reflectionsCard
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
@@ -26,8 +36,18 @@ struct InsightDetailView: View {
             reflectButton
                 .padding()
         }
-        .fullScreenCover(isPresented: $isRecordingReflection) {
-            AddReflectionView(savedInsight: savedInsight)
+        .task {
+            await reflectionsViewModel.loadReflections()
+        }
+        .onDisappear {
+            reflectionsViewModel.stopPlayback()
+        }
+        .appAlert(alert: $reflectionsViewModel.activeAlert)
+        // Reloads when the recorder closes so a new reflection shows up right away.
+        .fullScreenCover(isPresented: $isRecordingReflection, onDismiss: {
+            Task { await reflectionsViewModel.loadReflections() }
+        }) {
+            AddReflectionView(viewModel: dependencies.makeAddReflectionViewModel(savedInsight: savedInsight))
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -71,6 +91,12 @@ struct InsightDetailView: View {
         }
     }
 
+    private var reflectionsCard: some View {
+        sectionCard("Your reflections", fill: .textOffWhite.opacity(0.7), border: .textPrimary.opacity(0.15)) {
+            InsightReflectionsView(viewModel: reflectionsViewModel)
+        }
+    }
+
     /// A bordered, rounded box with a small label above its content.
     private func sectionCard(_ label: String, fill: Color, border: Color, @ViewBuilder content: () -> some View) -> some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -89,9 +115,10 @@ struct InsightDetailView: View {
 
     private var reflectButton: some View {
         Button {
+            reflectionsViewModel.stopPlayback()
             isRecordingReflection = true
         } label: {
-            Label("Reflect on this", systemImage: "mic")
+            Label("Reflect on this")
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appGreen,
@@ -108,6 +135,6 @@ struct InsightDetailView: View {
             body: "You said slowing down helps you most. Giving yourself space between tasks lets you notice what you need before you're running on empty.",
             reminder: "Slow down",
             icon: .calm
-        )))
+        )), dependencies: AppDependencies(authService: PreviewAuthService(), reflectionsService: PreviewReflectionsService()))
     }
 }

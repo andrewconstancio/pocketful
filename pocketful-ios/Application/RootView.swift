@@ -45,7 +45,7 @@ struct RootView: View {
                                 NotificationView()
                                 
                             case .insightDetail(let savedInsight):
-                                InsightDetailView(savedInsight: savedInsight)
+                                InsightDetailView(savedInsight: savedInsight, dependencies: dependencies)
                             }
                         }
                 }

@@ -8,5 +8,6 @@ enum Constants {
         static let users = "users"
         static let insights = "insights"
         static let onboarding = "onboarding"
+        static let reflections = "reflections"
     }
 }

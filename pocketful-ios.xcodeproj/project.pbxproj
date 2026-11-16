@@ -39,6 +39,11 @@
 		1C67C77630A0FA9700745118 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1C67C77530A0FA9700745118 /* Lottie */; };
 		1C67C77A30A0FAA900745118 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C77930A0FAA500745118 /* LottieView.swift */; };
 		1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C77E30A2069800745118 /* MicrophoneService.swift */; };
+		1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */; };
+		1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */; };
+		1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00530B0000100AA0001 /* Reflection.swift */; };
+		1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */; };
+		1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00130B0000100AA0001 /* ReflectionsService.swift */; };
 		1C67C78130A3560A00745118 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C78030A3560900745118 /* View.swift */; };
 		1CAC138630808BB6005846CF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC138530808BB6005846CF /* RootView.swift */; };
 		1CAC14233080A4A4005846CF /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14223080A49D005846CF /* AppDependencies.swift */; };
@@ -114,6 +119,11 @@
 		1C67C772309A1CF500745118 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1C67C77930A0FAA500745118 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		1C67C77E30A2069800745118 /* MicrophoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneService.swift; sourceTree = "<group>"; };
+		1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsView.swift; sourceTree = "<group>"; };
+		1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsViewModel.swift; sourceTree = "<group>"; };
+		1CF0A00530B0000100AA0001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
+		1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReflectionViewModel.swift; sourceTree = "<group>"; };
+		1CF0A00130B0000100AA0001 /* ReflectionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionsService.swift; sourceTree = "<group>"; };
 		1C67C78030A3560900745118 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		1CAC138530808BB6005846CF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		1CAC14223080A49D005846CF /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
@@ -181,6 +191,7 @@
 				1C54F6123092B14600BF093F /* Views */,
 				1C54F62230996E6F00BF093F /* HomeRoute.swift */,
 				1C0125CA308EE8BE0089119A /* HomeViewModel.swift */,
+				1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */,
 				1C0125D2308EE8800089119A /* AddInsightViewModel.swift */,
 			);
 			path = Home;
@@ -203,6 +214,7 @@
 				1C0125CC308EE8800089119A /* InsightsListView.swift */,
 				1C0125CE308EE8800089119A /* HomeBackgroundView.swift */,
 				1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */,
+				1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */,
 				1C67C76F309A137200745118 /* InsightDetailView.swift */,
 				1C0125D0308EE8800089119A /* AddInsightView.swift */,
 			);
@@ -212,6 +224,7 @@
 		1C54F614309372F200BF093F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1CF0A00530B0000100AA0001 /* Reflection.swift */,
 				1C54F6153093735800BF093F /* Insight.swift */,
 				1C0125D4308EE8800089119A /* Quote.swift */,
 				1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */,
@@ -267,6 +280,7 @@
 		1C67C773309A200000745118 /* Reflection */ = {
 			isa = PBXGroup;
 			children = (
+				1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */,
 				1C67C774309A200000745118 /* Views */,
 			);
 			path = Reflection;
@@ -292,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				1C67C77E30A2069800745118 /* MicrophoneService.swift */,
+				1CF0A00130B0000100AA0001 /* ReflectionsService.swift */,
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
 				1C0125D6308EE8800089119A /* QuoteService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
@@ -588,6 +603,11 @@
 				1C67C77A30A0FAA900745118 /* LottieView.swift in Sources */,
 				1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */,
 				1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */,
+				1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */,
+				1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */,
+				1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */,
+				1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */,
+				1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 				1C67C770309A137200745118 /* InsightDetailView.swift in Sources */,

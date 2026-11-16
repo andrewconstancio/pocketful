@@ -1,23 +1,34 @@
 import SwiftUI
 import AVFoundation
+import Lottie
 
-/// Listens to a voice reflection on one insight.
+/// Records a voice reflection on one insight and saves it.
 struct AddReflectionView: View {
-    let savedInsight: SavedInsight
-
-    private var insight: Insight { savedInsight.insight }
-
+    private var insight: Insight { viewModel.savedInsight.insight }
+    
     @Environment(\.dismiss) private var dismiss
+    
     @Environment(\.openURL) private var openURL
-
+    
+    @State private var viewModel: AddReflectionViewModel
+    
     @State private var microphone = MicrophoneService()
+    
     @State private var permission = AVAudioApplication.shared.recordPermission
+
+    init(viewModel: AddReflectionViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
 
     var body: some View {
         VStack(spacing: 12) {
             header
             titles
-            if permission == .granted {
+            if viewModel.isSaving {
+                savingIndicator
+            } else if let unsavedRecording = viewModel.unsavedRecording {
+                retryPrompt(for: unsavedRecording)
+            } else if permission == .granted {
                 recordButton
             } else {
                 permissionPrompt
@@ -27,11 +38,49 @@ struct AddReflectionView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.appBackground)
+        .appAlert(alert: $viewModel.activeAlert)
         .onDisappear {
             if microphone.isRecording {
-                microphone.stopListening()
+                microphone.cancelListening()
+            }
+            viewModel.discardUnsavedRecording()
+        }
+    }
+
+    /// Uploads the recording and closes the screen if it worked.
+    private func save(_ recording: VoiceRecording) {
+        Task {
+            if await viewModel.saveReflection(recording) {
+                dismiss()
             }
         }
+    }
+
+    /// Saving indicator.
+    private var savingIndicator: some View {
+        VStack(spacing: 4) {
+            LottieView(animationName: "loading-reflection", loopMode: .loop, speed: 0.5)
+                .frame(width: 200, height: 200)
+            Text("Saving your reflection...")
+                .foregroundStyle(.textPrimary.opacity(0.7))
+                .font(.headline)
+        }
+    }
+
+    /// Shown after a failed save so the recording isn't lost.
+    private func retryPrompt(for recording: VoiceRecording) -> some View {
+        VStack(spacing: 16) {
+            Text("Your reflection hasn't been saved yet.")
+                .foregroundStyle(.textPrimary.opacity(0.7))
+                .font(.headline)
+
+            Button("Try Again") {
+                save(recording)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.appGreen)
+        }
+        .padding(.top, 40)
     }
 
     private var header: some View {
@@ -87,7 +136,9 @@ struct AddReflectionView: View {
             Button {
                 HapticManager.shared.triggerImpact(style: .heavy)
                 if microphone.isRecording {
-                    microphone.stopListening()
+                    if let recording = microphone.stopListening() {
+                        save(recording)
+                    }
                 } else {
                     microphone.startListening()
                 }
@@ -115,7 +166,7 @@ struct AddReflectionView: View {
                 .animation(.easeInOut(duration: 0.25), value: microphone.isRecording)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(microphone.isRecording ? "Stop listening" : "Start listening")
+            .accessibilityLabel(microphone.isRecording ? "Stop and save" : "Start recording")
 
             waveform
         }
@@ -172,10 +223,14 @@ struct AddReflectionView: View {
 }
 
 #Preview {
-    AddReflectionView(savedInsight: SavedInsight(id: "1", insight: Insight(
-        title: "Room to breathe",
-        body: "",
-        reminder: "Slow down",
-        icon: .calm
-    )))
+    AddReflectionView(viewModel: AddReflectionViewModel(
+        savedInsight: SavedInsight(id: "1", insight: Insight(
+            title: "Room to breathe",
+            body: "",
+            reminder: "Slow down",
+            icon: .calm
+        )),
+        authService: PreviewAuthService(),
+        reflectionsService: PreviewReflectionsService()
+    ))
 }

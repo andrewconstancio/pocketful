@@ -9,6 +9,7 @@ final class AppDependencies {
     let foundationModelService: FoundationModelServicing
     let userService: UserServicing
     let insightsService: InsightsServicing
+    let reflectionsService: ReflectionsServicing
     let quoteService: QuoteServicing
     
     // MARK: - Stores
@@ -28,6 +29,7 @@ final class AppDependencies {
         foundationModelService: FoundationModelServicing = FoundationModelService(),
         userService: UserServicing = UserService(),
         insightsService: InsightsServicing = InsightsService(),
+        reflectionsService: ReflectionsServicing = ReflectionsService(),
         quoteService: QuoteServicing = QuoteService(),
         thoughtStorage: ThoughtStorage = ThoughtStorage()
     ) {
@@ -35,6 +37,7 @@ final class AppDependencies {
         self.foundationModelService     = foundationModelService
         self.userService                = userService
         self.insightsService            = insightsService
+        self.reflectionsService         = reflectionsService
         self.quoteService               = quoteService
         
         self.router                     = AppRouter()
@@ -69,6 +72,22 @@ final class AppDependencies {
             userService: userService,
             existingInsights: existingInsights,
             onInsightSaved: onInsightSaved
+        )
+    }
+
+    func makeInsightReflectionsViewModel(insightID: String) -> InsightReflectionsViewModel {
+        InsightReflectionsViewModel(
+            insightID: insightID,
+            authService: authService,
+            reflectionsService: reflectionsService
+        )
+    }
+
+    func makeAddReflectionViewModel(savedInsight: SavedInsight) -> AddReflectionViewModel {
+        AddReflectionViewModel(
+            savedInsight: savedInsight,
+            authService: authService,
+            reflectionsService: reflectionsService
         )
     }
 }
