@@ -17,7 +17,8 @@ struct OnboardingChallengingMostView: View {
                     ForEach(ChallengeArea.allCases) { area in
                         ChallengeRow(
                             area: area,
-                            isSelected: viewModel.selectedChallengeArea.contains(area)
+                            isSelected: viewModel.selectedChallengeArea.contains(area),
+                            isDisabled: !viewModel.canSelectChallengeArea(area)
                         ) {
                             HapticManager.shared.triggerImpact(style: .light)
                             viewModel.toggleChallengeArea(area)
@@ -38,7 +39,7 @@ struct OnboardingChallengingMostView: View {
     }
 
     private var subtitle: some View {
-        Text("Select all that apply.")
+        Text("Select up to \(OnBoardingViewModel.maxSelections).")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }
@@ -47,6 +48,7 @@ struct OnboardingChallengingMostView: View {
 private struct ChallengeRow: View {
     let area: ChallengeArea
     let isSelected: Bool
+    let isDisabled: Bool
     let onTap: () -> Void
 
     var body: some View {
@@ -85,6 +87,8 @@ private struct ChallengeRow: View {
             .shadow(color: .textPrimary.opacity(0.05), radius: 4, y: 2)
         }
         .buttonStyle(.plain)
+        .disabled(isDisabled)
+        .opacity(isDisabled ? 0.5 : 1)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
     

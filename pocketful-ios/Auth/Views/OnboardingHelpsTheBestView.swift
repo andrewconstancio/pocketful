@@ -17,7 +17,8 @@ struct OnboardingHelpsTheBestView: View {
                     ForEach(HelpsBest.allCases) { item in
                         HelpsBestRow(
                             item: item,
-                            isSelected: viewModel.selectedHelpsBest.contains(item)
+                            isSelected: viewModel.selectedHelpsBest.contains(item),
+                            isDisabled: !viewModel.canSelectHelpsBest(item)
                         ) {
                             HapticManager.shared.triggerImpact(style: .light)
                             viewModel.toggleHelpsBest(item)
@@ -38,7 +39,7 @@ struct OnboardingHelpsTheBestView: View {
     }
 
     private var subtitle: some View {
-        Text("Select all that apply")
+        Text("Select up to \(OnBoardingViewModel.maxSelections).")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }
@@ -48,6 +49,7 @@ struct OnboardingHelpsTheBestView: View {
 private struct HelpsBestRow: View {
     let item: HelpsBest
     let isSelected: Bool
+    let isDisabled: Bool
     let onTap: () -> Void
 
     var body: some View {
@@ -83,6 +85,8 @@ private struct HelpsBestRow: View {
             .shadow(color: .textPrimary.opacity(0.05), radius: 4, y: 2)
         }
         .buttonStyle(.plain)
+        .disabled(isDisabled)
+        .opacity(isDisabled ? 0.5 : 1)
         .animation(.easeInOut(duration: 0.15), value: isSelected)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }

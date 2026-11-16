@@ -31,6 +31,8 @@ struct OnboardingFlowView: View {
                 }
         }
         .environment(onboardingViewModel)
+        // On the whole flow, so every onboarding screen shows the view model's alerts.
+        .appAlert(alert: $onboardingViewModel.activeAlert)
     }
 
     /// Signed-in users who haven't finished setup skip login and go straight to the questions.

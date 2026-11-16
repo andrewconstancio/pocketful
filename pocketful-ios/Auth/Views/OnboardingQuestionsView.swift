@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 /// Hosts every onboarding question: the header and Next button stay put while the question between them slides.
 struct OnboardingQuestionsView: View {
@@ -65,9 +66,8 @@ struct OnboardingQuestionsView: View {
         } label: {
             if viewModel.currentQuestion.next == nil {
                 HStack(spacing: 4) {
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 26, weight: .light))
-                        .foregroundStyle(.textOffWhite)
+                    LottieView(animationName: "loading-ai", loopMode: .loop, speed: 1.0)
+                        .frame(width: 35, height: 35)
                     Text("Generate My Insights")
                 }
             } else {
@@ -75,7 +75,7 @@ struct OnboardingQuestionsView: View {
             }
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: .appGreen,
+            backgroundColor: viewModel.currentQuestion == .fulfilledVersion ? .black : .appGreen,
             foregroundColor: .textOffWhite,
             borderColor: .textOffWhite,
             borderWidth: 2,

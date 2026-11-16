@@ -40,9 +40,13 @@ struct OnboardingInsightsView: View {
     }
 
     private var title: some View {
-        Text("Your insights")
-            .foregroundStyle(.textPrimary)
-            .font(FontManager.CormorantGaramond.bold.font(size: 34))
+        HStack(spacing: 4) {
+            LottieView(animationName: "ai-movement", loopMode: .loop, speed: 0.5)
+                .frame(width: 40, height: 40)
+            Text("Your insights")
+                .foregroundStyle(.textPrimary)
+                .font(FontManager.CormorantGaramond.bold.font(size: 34))
+        }
     }
 
     private var subtitle: some View {
@@ -64,10 +68,19 @@ struct OnboardingInsightsView: View {
             VStack(spacing: 12) {
                 // Indexes as IDs, since the model could repeat a title.
                 ForEach(insights.insights.indices, id: \.self) { index in
-                    InsightCard(insight: insights.insights[index])
+                    InsightCard(
+                        insight: insights.insights[index],
+                        regenerationsLeft: viewModel.regenerationsLeft(at: index),
+                        isRegenerating: viewModel.regeneratingInsightIndex == index,
+                        isRegenerateDisabled: isBusy
+                    ) {
+                        HapticManager.shared.triggerImpact(style: .light)
+                        Task { await viewModel.regenerateInsight(at: index) }
+                    }
                 }
             }
             .padding(.vertical, 4)
+            .animation(.easeInOut(duration: 0.25), value: insights.insights)
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
@@ -84,10 +97,20 @@ struct OnboardingInsightsView: View {
         }
     }
 
+    /// True while an insight is being rewritten or the Finish save is running, so nothing else can be tapped.
+    private var isBusy: Bool {
+        viewModel.regeneratingInsightIndex != nil || viewModel.isCompletingOnboarding
+    }
+
+    /// Saves the insights, then leaves onboarding if the save worked.
     private var finishButton: some View {
         Button {
             HapticManager.shared.triggerImpact(style: .heavy)
-            session.setUsersAutthToAuthenticated()
+            Task {
+                if await viewModel.completeOnboarding() {
+                    session.setUsersAutthToAuthenticated()
+                }
+            }
         } label: {
             Text("Finish")
         }
@@ -96,6 +119,7 @@ struct OnboardingInsightsView: View {
             foregroundColor: .textOffWhite,
             cornerRadius: 30
         ))
+        .disabled(isBusy)
         .padding()
     }
 
@@ -116,15 +140,26 @@ struct OnboardingInsightsView: View {
     }
 }
 
-/// One insight: a title, the insight itself, and a short reminder.
+/// One insight: a title, the insight itself, a short reminder, and a button to swap it for a new one.
 private struct InsightCard: View {
     let insight: Insight
+
+    /// How many more times this insight can be regenerated; the button hides at zero.
+    let regenerationsLeft: Int
+
+    /// True while this card's insight is being rewritten.
+    let isRegenerating: Bool
+
+    /// True while any card is busy, so only one insight is rewritten at a time.
+    let isRegenerateDisabled: Bool
+
+    let onRegenerate: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
-                    .frame(width: 35, height: 35)
+                    .frame(width: 50, height: 50)
                     .scaleEffect(insight.icon.lottieScale)
 
                 Text(insight.title)
@@ -137,21 +172,48 @@ private struct InsightCard: View {
                 .font(.system(size: 17))
                 .lineSpacing(4)
 
-            Spacer().frame(height: 30)
+            Spacer().frame(height: 10)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Reminder")
                     .foregroundStyle(.textPrimary)
                     .font(FontManager.CormorantGaramond.regular.font(size: 18))
-                
+
                 Text(insight.reminder)
                     .foregroundStyle(.textPrimary)
                     .font(FontManager.CormorantGaramond.bold.font(size: 22))
+            }
+
+            if regenerationsLeft > 0 {
+                regenerateButton
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
         .background(.textPrimary.opacity(0.06), in: .rect(cornerRadius: 20))
+    }
+
+    /// Shows a spinner in place of the arrow while the new insight is being written.
+    private var regenerateButton: some View {
+        Button(action: onRegenerate) {
+            HStack(spacing: 6) {
+                if isRegenerating {
+                    ProgressView()
+                        .controlSize(.small)
+                } else {
+                    Image(systemName: "arrow.clockwise")
+                }
+                Text(isRegenerating ? "Writing a new one..." : "Regenerate (\(regenerationsLeft) left)")
+            }
+            .font(.system(size: 15, weight: .medium))
+            .foregroundStyle(.textPrimary.opacity(0.7))
+            .frame(minHeight: 44)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .disabled(isRegenerateDisabled)
+        .opacity(isRegenerateDisabled && !isRegenerating ? 0.4 : 1)
     }
 }
 

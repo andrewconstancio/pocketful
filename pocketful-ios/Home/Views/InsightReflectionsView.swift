@@ -4,11 +4,11 @@ import SwiftUI
 struct InsightReflectionsView: View {
     let viewModel: InsightReflectionsViewModel
 
-    /// The reflection the user swiped to delete, waiting on the confirmation pop-up.
-    @State private var reflectionPendingDeletion: Reflection?
+    /// Whether each row shows its delete button.
+    let isEditing: Bool
 
-    /// Height of one row including its spacing; the list needs a fixed height because it sits inside a scroll view.
-    private let rowHeight: CGFloat = 68
+    /// The reflection the user tapped delete on, waiting on the confirmation pop-up.
+    @State private var reflectionPendingDeletion: Reflection?
 
     var body: some View {
         Group {
@@ -44,33 +44,37 @@ struct InsightReflectionsView: View {
         }
     }
 
-    /// A List (rather than a VStack) because only List rows support swipe actions.
     private var reflectionsList: some View {
-        List {
+        VStack(spacing: 12) {
             ForEach(viewModel.reflections) { reflection in
-                row(for: reflection)
-                    .frame(height: rowHeight - 12)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                        Button {
-                            reflectionPendingDeletion = reflection
-                        } label: {
-                            Label("Delete", systemImage: "trash")
-                        }
-                        .tint(.recordingRed)
+                HStack(spacing: 12) {
+                    playbackRow(for: reflection)
+
+                    if isEditing {
+                        deleteButton(for: reflection)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
+                }
+                .frame(height: 56)
             }
         }
-        .listStyle(.plain)
-        .scrollDisabled(true)
-        .scrollContentBackground(.hidden)
-        .environment(\.defaultMinListRowHeight, 0)
-        .frame(height: CGFloat(viewModel.reflections.count) * rowHeight)
     }
 
-    private func row(for reflection: Reflection) -> some View {
+    /// Asks for confirmation before deleting, so a stray tap can't remove a recording.
+    private func deleteButton(for reflection: Reflection) -> some View {
+        Button {
+            reflectionPendingDeletion = reflection
+        } label: {
+            Image(systemName: "trash")
+                .font(.system(size: 18))
+                .foregroundStyle(.recordingRed)
+                .frame(width: 44, height: 44)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Delete reflection")
+    }
+
+    private func playbackRow(for reflection: Reflection) -> some View {
         let isPlaying = viewModel.playingReflectionID == reflection.id
 
         return Button {
@@ -132,10 +136,13 @@ struct InsightReflectionsView: View {
 }
 
 #Preview {
-    InsightReflectionsView(viewModel: InsightReflectionsViewModel(
-        insightID: "1",
-        authService: PreviewAuthService(),
-        reflectionsService: PreviewReflectionsService()
-    ))
+    InsightReflectionsView(
+        viewModel: InsightReflectionsViewModel(
+            insightID: "1",
+            authService: PreviewAuthService(),
+            reflectionsService: PreviewReflectionsService()
+        ),
+        isEditing: true
+    )
     .padding()
 }

@@ -40,7 +40,7 @@ struct OnboardingLifeGoalsView: View {
     }
 
     private var subtitle: some View {
-        Text("Select up to \(OnBoardingViewModel.maxLifeGoals).")
+        Text("Select up to \(OnBoardingViewModel.maxSelections).")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }

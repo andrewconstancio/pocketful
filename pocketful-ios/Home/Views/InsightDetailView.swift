@@ -13,6 +13,9 @@ struct InsightDetailView: View {
     /// Whether the voice reflection screen is showing.
     @State private var isRecordingReflection = false
 
+    /// Whether the reflections list is showing its delete buttons.
+    @State private var isEditingReflections = false
+
     init(savedInsight: SavedInsight, dependencies: AppDependencies) {
         self.savedInsight = savedInsight
         self.dependencies = dependencies
@@ -49,13 +52,10 @@ struct InsightDetailView: View {
         }) {
             AddReflectionView(viewModel: dependencies.makeAddReflectionViewModel(savedInsight: savedInsight))
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-               Button(action: {
-                  print("PRESSED EDIT")
-               }) {
-                   Image(systemName: "ellipsis")
-               }
+        // Leaves edit mode once the last reflection is deleted, since the Edit button is hidden then.
+        .onChange(of: reflectionsViewModel.reflections.isEmpty) { _, isEmpty in
+            if isEmpty {
+                isEditingReflections = false
             }
         }
     }
@@ -93,8 +93,28 @@ struct InsightDetailView: View {
 
     private var reflectionsCard: some View {
         sectionCard("Your reflections", fill: .textOffWhite.opacity(0.7), border: .textPrimary.opacity(0.15)) {
-            InsightReflectionsView(viewModel: reflectionsViewModel)
+            InsightReflectionsView(viewModel: reflectionsViewModel, isEditing: isEditingReflections)
         }
+        // Sits in the card's top-right corner, level with the "Your reflections" label.
+        .overlay(alignment: .topTrailing) {
+            if !reflectionsViewModel.reflections.isEmpty {
+                editReflectionsButton
+                    .padding(.top, 6)
+                    .padding(.trailing, 20)
+            }
+        }
+    }
+
+    /// Shows or hides the delete buttons on the reflections.
+    private var editReflectionsButton: some View {
+        Button(isEditingReflections ? "Done" : "Edit") {
+            withAnimation {
+                isEditingReflections.toggle()
+            }
+        }
+        .font(.system(size: 15, weight: .medium))
+        .foregroundStyle(.appGreen)
+        .frame(height: 44)
     }
 
     /// A bordered, rounded box with a small label above its content.
