@@ -53,7 +53,7 @@ struct RootView: View {
             Tab("My Tree", systemImage: "tree") {
                 TreeView()
             }
-            Tab("Jounal", systemImage: "book.pages") {
+            Tab("Journal",systemImage: "book.pages") {
                 JournalView()
             }
             Tab("Profile", systemImage: "person") {
