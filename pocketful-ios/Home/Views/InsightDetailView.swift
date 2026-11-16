@@ -118,7 +118,8 @@ struct InsightDetailView: View {
             reflectionsViewModel.stopPlayback()
             isRecordingReflection = true
         } label: {
-            Label("Reflect on this")
+//            Label("Reflect on this")
+            Text("Reflect on this")
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: .appGreen,
