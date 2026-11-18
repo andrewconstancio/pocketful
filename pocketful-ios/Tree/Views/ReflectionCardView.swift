@@ -35,7 +35,7 @@ struct ReflectionCardView: View {
 }
 
 #Preview {
-    let insight = Insight(reminder: "Keep going", body: "", icon: .sparkles)
+    let insight = Insight(reminder: "Keep going", body: "", reflectionPrompt: "", icon: .sparkles)
     ReflectionCardView(reflection: TreeReflection(id: "1", createdAt: .now, savedInsight: SavedInsight(id: "1", insight: insight), treeSlot: 0))
         .padding()
         .background(.leafGreen)

@@ -10,15 +10,21 @@ protocol ReflectionsServicing {
     func deleteReflection(_ reflection: Reflection, insightID: String, uid: String) async throws
     func fetchTreeSlotCount(uid: String) async throws -> Int
     func assignTreeSlots(to reflections: [ReflectionLocation], uid: String) async throws -> [String: Int]
+    func fetchWaterPoints(uid: String) async throws -> Int
 }
 
 /// Uploads voice reflections to Cloud Storage and records each reflection (voice or typed) at `users/{uid}/insights/{insightID}/reflections` in Firestore.
 ///
 /// Each reflection also gets a tree slot (which branch of the user's tree it sits on). The user document keeps a count of
 /// slots handed out so far, which only ever goes up, so deleting a reflection never moves the others or shrinks the tree.
+/// Every saved reflection also earns water points, kept as a running total on the user document that deleting never lowers.
 final class ReflectionsService: ReflectionsServicing {
     nonisolated private static let treeSlotField = "tree_slot"
     nonisolated private static let treeSlotCountField = "tree_slot_count"
+    nonisolated private static let waterPointsField = "water_points"
+
+    /// How many water points one new reflection earns.
+    nonisolated static let waterPointsPerReflection = 10
 
     /// Lazy so they resolve after `FirebaseApp.configure()` runs.
     private var db: Firestore { Firestore.firestore() }
@@ -131,6 +137,12 @@ final class ReflectionsService: ReflectionsServicing {
         return result as? [String: Int] ?? [:]
     }
 
+    /// The user's running total of water points; 0 if they haven't earned any yet.
+    func fetchWaterPoints(uid: String) async throws -> Int {
+        let snapshot = try await userDocument(uid: uid).getDocument()
+        return snapshot.data()?[Self.waterPointsField] as? Int ?? 0
+    }
+
     // The two builders below are nonisolated because Firestore runs transaction blocks on a background thread.
     // A transaction re-runs if another device changes the same documents, so two saves can never get the same slot.
 
@@ -146,7 +158,10 @@ final class ReflectionsService: ReflectionsServicing {
                 var data = reflectionData
                 data[treeSlotField] = nextSlot
                 transaction.setData(data, forDocument: reflectionDocument)
-                transaction.setData([treeSlotCountField: nextSlot + 1], forDocument: userDocument, merge: true)
+                transaction.setData([
+                    treeSlotCountField: nextSlot + 1,
+                    waterPointsField: FieldValue.increment(Int64(waterPointsPerReflection))
+                ], forDocument: userDocument, merge: true)
             } catch {
                 errorPointer?.pointee = error as NSError
             }
@@ -212,5 +227,6 @@ final class PreviewReflectionsService: ReflectionsServicing {
     func deleteReflection(_ reflection: Reflection, insightID: String, uid: String) async throws {}
     func fetchTreeSlotCount(uid: String) async throws -> Int { 0 }
     func assignTreeSlots(to reflections: [ReflectionLocation], uid: String) async throws -> [String: Int] { [:] }
+    func fetchWaterPoints(uid: String) async throws -> Int { 120 }
 }
 #endif

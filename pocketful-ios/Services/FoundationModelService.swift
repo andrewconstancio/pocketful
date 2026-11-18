@@ -71,7 +71,7 @@ final class FoundationModelService: FoundationModelServicing {
             .prefix { !",.;:—".contains($0) }
             .trimmingCharacters(in: .whitespaces)
         guard !firstPhrase.isEmpty else { return insight }
-        return Insight(reminder: firstPhrase, body: insight.body, icon: insight.icon)
+        return Insight(reminder: firstPhrase, body: insight.body, reflectionPrompt: insight.reflectionPrompt, icon: insight.icon)
     }
 }
 
@@ -94,16 +94,19 @@ final class PreviewFoundationModelService: FoundationModelServicing {
             Insight(
                 reminder: "Slow down",
                 body: "You shared that your stress has been high lately. That tells us you care deeply about doing things well. Giving yourself small pauses can help that care feel lighter, and leave more energy for what matters to you.",
+                reflectionPrompt: "What gave you a moment to pause today?",
                 icon: .calm
             ),
             Insight(
                 reminder: "Be kind to yourself",
                 body: "You named overthinking as something you're working through. That shows how thoughtful you are. Meeting your thoughts with the same kindness you'd give a friend can make them easier to carry.",
+                reflectionPrompt: "When were you kind to yourself today?",
                 icon: .heart
             ),
             Insight(
                 reminder: "Get outside",
                 body: "You said time in nature helps you feel your best. That's a wonderful thing to know about yourself. Even a few minutes outside can bring back the calm you're looking for.",
+                reflectionPrompt: "How did time outside feel today?",
                 icon: .leaf
             )
         ])
@@ -114,6 +117,7 @@ final class PreviewFoundationModelService: FoundationModelServicing {
         return Insight(
             reminder: "One thing at a time",
             body: "You said you want more peace in your days. Noticing that is already a step toward it. Small, quiet moments can add up to the calm you're looking for.",
+            reflectionPrompt: "What small, quiet moment did you notice today?",
             icon: .leaf
         )
     }

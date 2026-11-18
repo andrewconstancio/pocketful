@@ -6,6 +6,7 @@ final class AddInsightViewModel {
 
     var reminder = ""
     var insightBody = ""
+    var reflectionPrompt = ""
     var icon: InsightIcon = .sparkles
 
     /// True while the save is in flight, to block double taps.
@@ -74,6 +75,7 @@ final class AddInsightViewModel {
             let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: existingInsights.map(\.insight))
             reminder = insight.reminder
             insightBody = insight.body
+            reflectionPrompt = insight.reflectionPrompt
             icon = insight.icon
             HapticManager.shared.triggerNotification(type: .success)
         } catch FoundationModelError.modelUnavailable {
@@ -96,6 +98,7 @@ final class AddInsightViewModel {
         let insight = Insight(
             reminder: trimmed(reminder),
             body: trimmed(insightBody),
+            reflectionPrompt: trimmed(reflectionPrompt),
             icon: icon
         )
 

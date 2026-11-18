@@ -69,6 +69,7 @@ struct RootView: View {
             }
         }
         .tint(.appGreen)
+        .toast(from: dependencies.toastCenter)
     }
 }
 

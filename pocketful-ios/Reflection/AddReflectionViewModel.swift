@@ -29,11 +29,13 @@ final class AddReflectionViewModel {
 
     private let authService: AuthServicing
     private let reflectionsService: ReflectionsServicing
+    private let toastCenter: ToastCenter
 
-    init(savedInsight: SavedInsight, authService: AuthServicing, reflectionsService: ReflectionsServicing) {
+    init(savedInsight: SavedInsight, authService: AuthServicing, reflectionsService: ReflectionsServicing, toastCenter: ToastCenter) {
         self.savedInsight = savedInsight
         self.authService = authService
         self.reflectionsService = reflectionsService
+        self.toastCenter = toastCenter
     }
 
     /// Uploads the recording; returns true if it worked, so the screen knows to close.
@@ -52,6 +54,7 @@ final class AddReflectionViewModel {
             unsavedRecording = nil
             deleteLocalFile(of: recording)
             HapticManager.shared.triggerNotification(type: .success)
+            showPointsEarnedToast()
             return true
         } catch {
             unsavedRecording = recording
@@ -74,6 +77,7 @@ final class AddReflectionViewModel {
         do {
             try await reflectionsService.saveTextReflection(text, insightID: savedInsight.id, uid: uid)
             HapticManager.shared.triggerNotification(type: .success)
+            showPointsEarnedToast()
             return true
         } catch {
             activeAlert = AlertContext.customError("We couldn't save your reflection. Check your connection and try again.")
@@ -86,6 +90,10 @@ final class AddReflectionViewModel {
         guard !isSaving, let unsavedRecording else { return }
         deleteLocalFile(of: unsavedRecording)
         self.unsavedRecording = nil
+    }
+
+    private func showPointsEarnedToast() {
+        toastCenter.show(Toast(message: "Your tree got some water!", points: ReflectionsService.waterPointsPerReflection))
     }
 
     private func deleteLocalFile(of recording: VoiceRecording) {

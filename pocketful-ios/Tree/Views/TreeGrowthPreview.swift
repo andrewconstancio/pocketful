@@ -12,6 +12,7 @@ struct TreeGrowthPreview: View {
     private static let sampleInsight = SavedInsight(id: "preview", insight: Insight(
         reminder: "Keep going",
         body: "",
+        reflectionPrompt: "What kept you going today?",
         icon: .sparkles
     ))
 

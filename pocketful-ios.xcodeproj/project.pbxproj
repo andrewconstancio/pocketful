@@ -99,6 +99,8 @@
 		1CA7EE1430C0000100AA0001 /* SeededRandomGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE1330C0000100AA0001 /* SeededRandomGenerator.swift */; };
 		1CA7EE2130C0000100AA0001 /* TreeGrowthPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE2030C0000100AA0001 /* TreeGrowthPreview.swift */; };
 		1CA7EE2330C0000100AA0001 /* TreeBark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE2230C0000100AA0001 /* TreeBark.swift */; };
+		1CD0A0023100000000AA0001 /* ToastCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0A0013100000000AA0001 /* ToastCenter.swift */; };
+		1CD0A0023100000000AA0002 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0A0013100000000AA0002 /* ToastView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +192,8 @@
 		1CA7EE1330C0000100AA0001 /* SeededRandomGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededRandomGenerator.swift; sourceTree = "<group>"; };
 		1CA7EE2030C0000100AA0001 /* TreeGrowthPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeGrowthPreview.swift; sourceTree = "<group>"; };
 		1CA7EE2230C0000100AA0001 /* TreeBark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBark.swift; sourceTree = "<group>"; };
+		1CD0A0013100000000AA0001 /* ToastCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastCenter.swift; sourceTree = "<group>"; };
+		1CD0A0013100000000AA0002 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				1CAC142B3080A772005846CF /* SessionStore.swift */,
+				1CD0A0013100000000AA0001 /* ToastCenter.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 			children = (
 				1C67C77930A0FAA500745118 /* LottieView.swift */,
 				1C54F60D3090D43C00BF093F /* Alerts.swift */,
+				1CD0A0013100000000AA0002 /* ToastView.swift */,
 				1CAC144130851272005846CF /* HapticManager.swift */,
 			);
 			path = UIHelpers;
@@ -637,8 +643,10 @@
 				1C0125D7308EE8800089119A /* QuoteService.swift in Sources */,
 				1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
+				1CD0A0023100000000AA0001 /* ToastCenter.swift in Sources */,
 				1C67C773309A1CF900745118 /* Constants.swift in Sources */,
 				1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */,
+				1CD0A0023100000000AA0002 /* ToastView.swift in Sources */,
 				1C0125C9308EE8800089119A /* HomeView.swift in Sources */,
 				1C0125CB308EE8800089119A /* TodaysThoughtTextView.swift in Sources */,
 				7A3F91E2B4C5D6E7F8091A2C /* TodaysThoughtPlaceholderView.swift in Sources */,

@@ -10,6 +10,9 @@ final class TreeViewModel {
     /// The shapes to draw. Starts as a sapling until reflections load.
     private(set) var layout = TreeLayout(seedText: "", reflections: [], grownSlotCount: 0)
 
+    /// Total water points earned from reflections.
+    private(set) var waterPoints = 0
+
     /// An alert to present to the user.
     var activeAlert: AppAlert?
 
@@ -55,6 +58,7 @@ final class TreeViewModel {
             let highestSlot = reflections.map(\.treeSlot).max() ?? -1
             // The user ID is the seed, so each person gets their own tree shape that stays the same between launches.
             layout = TreeLayout(seedText: uid, reflections: reflections, grownSlotCount: max(savedSlotCount, highestSlot + 1))
+            waterPoints = try await reflectionsService.fetchWaterPoints(uid: uid)
         } catch {
             activeAlert = AlertContext.customError("We couldn't load your tree. Check your connection and try again.")
         }

@@ -29,6 +29,10 @@ struct AddInsightView: View {
                     field("What it means") {
                         OnboardingTextBox(placeholder: "Why this matters to you...", text: $viewModel.insightBody, height: 160)
                     }
+
+                    field("Reflection prompt", hint: "Optional. A question to answer when you reflect.") {
+                        textField("What helped you slow down today?", text: $viewModel.reflectionPrompt)
+                    }
                 }
                 .padding()
             }

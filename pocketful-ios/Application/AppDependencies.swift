@@ -19,6 +19,9 @@ final class AppDependencies {
     
     /// The state of the users current session.
     let session: SessionStore
+
+    /// The toast shown at the top of the app.
+    let toastCenter: ToastCenter
     
     
     // MARK: - Storage
@@ -42,6 +45,7 @@ final class AppDependencies {
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
+        self.toastCenter                = ToastCenter()
         self.thoughtStorage             = thoughtStorage
     }
     
@@ -95,7 +99,8 @@ final class AppDependencies {
         AddReflectionViewModel(
             savedInsight: savedInsight,
             authService: authService,
-            reflectionsService: reflectionsService
+            reflectionsService: reflectionsService,
+            toastCenter: toastCenter
         )
     }
 }

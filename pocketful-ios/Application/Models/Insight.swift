@@ -22,13 +22,16 @@ struct Insight: Encodable, Equatable, Hashable {
     @Guide(description: "Two or three short, uplifting sentences, under 50 words total, speaking to the user as 'you'. Name the answers this insight connects and why focusing on them helps, and mention one of the things that helps them feel best when it fits.")
     let body: String
 
+    @Guide(description: "One short, open question, under 15 words, that invites the user to reflect on how this insight showed up in their day, like 'What helped you slow down today?'")
+    let reflectionPrompt: String
+
     @Guide(description: "The icon that best matches the feeling of this reminder.")
     let icon: InsightIcon
 
     // Manual Encodable conformance because @Generable synthesizes
     // hidden stored properties that aren't Encodable.
     private enum CodingKeys: String, CodingKey {
-        case body, icon, reminder
+        case body, icon, reminder, reflectionPrompt
     }
 
     func encode(to encoder: Encoder) throws {
@@ -36,10 +39,11 @@ struct Insight: Encodable, Equatable, Hashable {
         try container.encode(body, forKey: .body)
         try container.encode(icon.rawValue, forKey: .icon)
         try container.encode(reminder, forKey: .reminder)
+        try container.encode(reflectionPrompt, forKey: .reflectionPrompt)
     }
 }
 
-// In an extension so the automatic `Insight(reminder:body:icon:)` init still exists.
+// In an extension so the automatic `Insight(reminder:body:reflectionPrompt:icon:)` init still exists.
 extension Insight: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -47,6 +51,8 @@ extension Insight: Decodable {
         self.init(
             reminder: try container.decode(String.self, forKey: .reminder),
             body: try container.decode(String.self, forKey: .body),
+            // Insights saved before prompts existed don't have one.
+            reflectionPrompt: try container.decodeIfPresent(String.self, forKey: .reflectionPrompt) ?? "",
             icon: InsightIcon(rawValue: iconName) ?? .sparkles
         )
     }

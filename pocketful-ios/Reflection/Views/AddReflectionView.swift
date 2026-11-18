@@ -154,7 +154,9 @@ struct AddReflectionView: View {
                 .foregroundStyle(.textPrimary)
                 .font(FontManager.CormorantGaramond.bold.font(size: 34))
 
-            Text("\u{201C}\(insight.reminder).\u{201D} It's also great to just repeat this phrase to yourself.")
+            Text(insight.reflectionPrompt.isEmpty
+                 ? "\u{201C}\(insight.reminder).\u{201D} It's also great to just repeat this phrase to yourself."
+                 : insight.reflectionPrompt)
                 .foregroundStyle(.textPrimary.opacity(0.7))
                 .font(.system(size: 16))
                 .multilineTextAlignment(.center)
@@ -277,9 +279,11 @@ struct AddReflectionView: View {
         savedInsight: SavedInsight(id: "1", insight: Insight(
             reminder: "Slow down",
             body: "",
+            reflectionPrompt: "What helped you slow down today?",
             icon: .calm
         )),
         authService: PreviewAuthService(),
-        reflectionsService: PreviewReflectionsService()
+        reflectionsService: PreviewReflectionsService(),
+        toastCenter: ToastCenter()
     ))
 }

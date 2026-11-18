@@ -146,6 +146,7 @@ struct InsightDetailView: View {
         InsightDetailView(savedInsight: SavedInsight(id: "1", insight: Insight(
             reminder: "Slow down",
             body: "You said slowing down helps you most. Giving yourself space between tasks lets you notice what you need before you're running on empty.",
+            reflectionPrompt: "What helped you slow down today?",
             icon: .calm
         )), dependencies: AppDependencies(authService: PreviewAuthService(), reflectionsService: PreviewReflectionsService()))
     }

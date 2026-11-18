@@ -52,9 +52,12 @@ struct TreeView: View {
                     .padding(.bottom, 90)
                 }
                 .overlay(alignment: .topLeading) {
-                    reflectionCount
-                        .padding(.horizontal)
-                        .padding(.top, 4)
+                    VStack(alignment: .leading, spacing: 6) {
+                        reflectionCount
+                        waterPointsTotal
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 4)
                 }
             }
             .clipped()
@@ -82,6 +85,19 @@ struct TreeView: View {
                 .foregroundStyle(.leafShade)
             Text(count == 0 ? "Record a reflection to grow your tree" : "\(count) \(count == 1 ? "Reflection" : "Reflections")")
                 .foregroundStyle(.textPrimary.opacity(0.7))
+        }
+        .font(.system(size: 14, weight: .medium))
+        .allowsHitTesting(false)
+    }
+
+    private var waterPointsTotal: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "drop.fill")
+                .foregroundStyle(.waterBlue)
+            Text("\(viewModel.waterPoints) Water Points")
+                .foregroundStyle(.textPrimary.opacity(0.7))
+                .contentTransition(.numericText())
+                .animation(.default, value: viewModel.waterPoints)
         }
         .font(.system(size: 14, weight: .medium))
         .allowsHitTesting(false)
