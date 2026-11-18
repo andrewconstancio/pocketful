@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The list of saved voice reflections on one insight, each with a play button.
+/// The list of saved reflections on one insight: voice ones get a play button, typed ones show their text.
 struct InsightReflectionsView: View {
     let viewModel: InsightReflectionsViewModel
 
@@ -16,20 +16,20 @@ struct InsightReflectionsView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
             } else if viewModel.reflections.isEmpty {
-                Text("No reflections yet. Tap \u{201C}Reflect on this\u{201D} to record your first one.")
+                Text("No reflections yet. Tap \u{201C}Reflect on this\u{201D} to add your first one.")
                     .foregroundStyle(.textPrimary.opacity(0.7))
                     .font(.system(size: 16))
             } else {
                 reflectionsList
             }
         }
-        .alert("Delete Recording?", isPresented: isConfirmingDeletion, presenting: reflectionPendingDeletion) { reflection in
+        .alert("Delete Reflection?", isPresented: isConfirmingDeletion, presenting: reflectionPendingDeletion) { reflection in
             Button("Delete", role: .destructive) {
                 Task { await viewModel.deleteReflection(reflection) }
             }
             Button("Cancel", role: .cancel) {}
         } message: { _ in
-            Text("Are you sure you want to delete this recording? This can't be undone.")
+            Text("Are you sure you want to delete this reflection? This can't be undone.")
         }
     }
 
@@ -48,19 +48,23 @@ struct InsightReflectionsView: View {
         VStack(spacing: 12) {
             ForEach(viewModel.reflections) { reflection in
                 HStack(spacing: 12) {
-                    playbackRow(for: reflection)
+                    switch reflection.content {
+                    case .voice(let clip):
+                        playbackRow(for: reflection, clip: clip)
+                    case .text(let text):
+                        textRow(for: reflection, text: text)
+                    }
 
                     if isEditing {
                         deleteButton(for: reflection)
                             .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
                 }
-                .frame(height: 56)
             }
         }
     }
 
-    /// Asks for confirmation before deleting, so a stray tap can't remove a recording.
+    /// Asks for confirmation before deleting, so a stray tap can't remove a reflection.
     private func deleteButton(for reflection: Reflection) -> some View {
         Button {
             reflectionPendingDeletion = reflection
@@ -74,7 +78,26 @@ struct InsightReflectionsView: View {
         .accessibilityLabel("Delete reflection")
     }
 
-    private func playbackRow(for reflection: Reflection) -> some View {
+    private func textRow(for reflection: Reflection, text: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            dateLabel(for: reflection)
+
+            Text(text)
+                .foregroundStyle(.textPrimary.opacity(0.8))
+                .font(.system(size: 15))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 6)
+    }
+
+    private func dateLabel(for reflection: Reflection) -> some View {
+        Text(reflection.createdAt.formatted(date: .abbreviated, time: .shortened))
+            .foregroundStyle(.textPrimary)
+            .font(.system(size: 14))
+            .fontWeight(.semibold)
+    }
+
+    private func playbackRow(for reflection: Reflection, clip: VoiceClip) -> some View {
         let isPlaying = viewModel.playingReflectionID == reflection.id
 
         return Button {
@@ -96,18 +119,15 @@ struct InsightReflectionsView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(reflection.createdAt.formatted(date: .abbreviated, time: .shortened))
-                        .foregroundStyle(.textPrimary)
-                        .font(.system(size: 14))
-                        .fontWeight(.semibold)
+                    dateLabel(for: reflection)
 
-                    if !reflection.waveform.isEmpty {
-                        waveform(for: reflection)
+                    if !clip.waveform.isEmpty {
+                        waveform(for: clip)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(Duration.seconds(reflection.duration).formatted(.time(pattern: .minuteSecond)))
+                Text(Duration.seconds(clip.duration).formatted(.time(pattern: .minuteSecond)))
                     .foregroundStyle(.textPrimary.opacity(0.6))
                     .font(.system(size: 14))
                     .monospacedDigit()
@@ -115,19 +135,20 @@ struct InsightReflectionsView: View {
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
+        .frame(height: 56)
         .accessibilityLabel(isPlaying ? "Stop reflection" : "Play reflection")
     }
 
     /// A row of bars showing how loud the recording was from start to end.
-    private func waveform(for reflection: Reflection) -> some View {
+    private func waveform(for clip: VoiceClip) -> some View {
         let maxBarHeight: CGFloat = 28
 
         return HStack(spacing: 2) {
-            ForEach(reflection.waveform.indices, id: \.self) { index in
+            ForEach(clip.waveform.indices, id: \.self) { index in
                 Capsule()
                     .fill(.appGreen)
                     .frame(maxWidth: .infinity)
-                    .frame(height: max(3, CGFloat(reflection.waveform[index]) * maxBarHeight))
+                    .frame(height: max(3, CGFloat(clip.waveform[index]) * maxBarHeight))
             }
         }
         .frame(height: maxBarHeight)

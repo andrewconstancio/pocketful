@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 import Lottie
 
-/// Records a voice reflection on one insight and saves it.
+/// Lets the user record or type a reflection on one insight and saves it.
 struct AddReflectionView: View {
     private var insight: Insight { viewModel.savedInsight.insight }
     
@@ -28,10 +28,18 @@ struct AddReflectionView: View {
                 savingIndicator
             } else if let unsavedRecording = viewModel.unsavedRecording {
                 retryPrompt(for: unsavedRecording)
-            } else if permission == .granted {
-                recordButton
             } else {
-                permissionPrompt
+                modePicker
+                switch viewModel.mode {
+                case .voice:
+                    if permission == .granted {
+                        recordButton
+                    } else {
+                        permissionPrompt
+                    }
+                case .write:
+                    writeSection
+                }
             }
             Spacer()
         }
@@ -50,9 +58,51 @@ struct AddReflectionView: View {
     /// Uploads the recording and closes the screen if it worked.
     private func save(_ recording: VoiceRecording) {
         Task {
-            if await viewModel.saveReflection(recording) {
+            if await viewModel.saveVoiceReflection(recording) {
                 dismiss()
             }
+        }
+    }
+
+    /// Saves the typed reflection and closes the screen if it worked.
+    private func saveText() {
+        Task {
+            if await viewModel.saveTextReflection() {
+                dismiss()
+            }
+        }
+    }
+
+    /// Switches between recording and typing; locked while a recording is in progress.
+    private var modePicker: some View {
+        Picker("Reflection type", selection: $viewModel.mode) {
+            ForEach(ReflectionMode.allCases) { mode in
+                Text(mode.rawValue).tag(mode)
+            }
+        }
+        .pickerStyle(.segmented)
+        .disabled(microphone.isRecording)
+        .padding(.horizontal, 40)
+        .padding(.vertical, 12)
+    }
+
+    private var writeSection: some View {
+        VStack(spacing: 20) {
+            OnboardingTextBox(
+                placeholder: "What's on your mind?",
+                text: $viewModel.reflectionText,
+                height: 220
+            )
+
+            Button("Save Reflection") {
+                saveText()
+            }
+            .buttonStyle(AppButtonStyle(
+                backgroundColor: viewModel.canSaveText ? .appGreen : .appGreen.opacity(0.4),
+                foregroundColor: .textOffWhite,
+                cornerRadius: 30
+            ))
+            .disabled(!viewModel.canSaveText)
         }
     }
 

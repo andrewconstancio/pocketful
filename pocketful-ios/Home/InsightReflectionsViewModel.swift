@@ -1,7 +1,7 @@
 import SwiftUI
 import AVFoundation
 
-/// The view model for the reflections section of an insight: loads the saved reflections and plays them back.
+/// The view model for the reflections section of an insight: loads the saved reflections and plays back voice ones.
 @Observable
 final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
 
@@ -55,6 +55,7 @@ final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
 
     /// Plays the reflection, or stops it if it is already playing.
     func togglePlayback(of reflection: Reflection) async {
+        guard case .voice(let clip) = reflection.content else { return }
         let wasPlaying = playingReflectionID == reflection.id
         stopPlayback()
         guard !wasPlaying, preparingReflectionID == nil else { return }
@@ -63,7 +64,7 @@ final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
         defer { preparingReflectionID = nil }
 
         do {
-            let fileURL = try await reflectionsService.downloadAudio(for: reflection)
+            let fileURL = try await reflectionsService.downloadAudio(clip, reflectionID: reflection.id)
 
             // The recorder leaves the audio session in record mode, so switch it back to playback.
             let audioSession = AVAudioSession.sharedInstance()
@@ -96,7 +97,7 @@ final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
                 reflections.removeAll { $0.id == reflection.id }
             }
         } catch {
-            activeAlert = AlertContext.customError("We couldn't delete this recording. Check your connection and try again.")
+            activeAlert = AlertContext.customError("We couldn't delete this reflection. Check your connection and try again.")
         }
     }
 
