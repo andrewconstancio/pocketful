@@ -4,7 +4,6 @@ import SwiftUI
 @Observable
 final class AddInsightViewModel {
 
-    var title = ""
     var reminder = ""
     var insightBody = ""
     var icon: InsightIcon = .sparkles
@@ -34,9 +33,9 @@ final class AddInsightViewModel {
     /// Cached after the first fetch so generating again doesn't re-read Firestore.
     private var onboardingAnswers: OnboardingAnswers?
 
-    /// Title, reminder and body are all required.
+    /// Reminder and body are both required.
     var canSave: Bool {
-        !trimmed(title).isEmpty && !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating
+        !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating
     }
 
     init(
@@ -73,7 +72,6 @@ final class AddInsightViewModel {
                 return
             }
             let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: existingInsights.map(\.insight))
-            title = insight.title
             reminder = insight.reminder
             insightBody = insight.body
             icon = insight.icon
@@ -96,9 +94,8 @@ final class AddInsightViewModel {
         defer { isSaving = false }
 
         let insight = Insight(
-            title: trimmed(title),
-            body: trimmed(insightBody),
             reminder: trimmed(reminder),
+            body: trimmed(insightBody),
             icon: icon
         )
 

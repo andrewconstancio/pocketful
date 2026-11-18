@@ -10,9 +10,8 @@ struct TreeGrowthPreview: View {
     private static let fullyGrownCount = 229
 
     private static let sampleInsight = SavedInsight(id: "preview", insight: Insight(
-        title: "Consistency builds the life you want.",
-        body: "",
         reminder: "Keep going",
+        body: "",
         icon: .sparkles
     ))
 

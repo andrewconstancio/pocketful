@@ -162,7 +162,7 @@ private struct InsightCard: View {
                     .frame(width: 50, height: 50)
                     .scaleEffect(insight.icon.lottieScale)
 
-                Text(insight.title)
+                Text(insight.reminder)
                     .foregroundStyle(.textPrimary)
                     .font(FontManager.CormorantGaramond.bold.font(size: 24))
             }
@@ -173,16 +173,6 @@ private struct InsightCard: View {
                 .lineSpacing(4)
 
             Spacer().frame(height: 10)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Reminder")
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.regular.font(size: 18))
-
-                Text(insight.reminder)
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.bold.font(size: 22))
-            }
 
             if regenerationsLeft > 0 {
                 regenerateButton

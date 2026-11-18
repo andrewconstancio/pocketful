@@ -26,7 +26,6 @@ struct InsightDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 header
-                reminderCard
                 meaningCard
                 reflectionsCard
             }
@@ -60,25 +59,16 @@ struct InsightDetailView: View {
         }
     }
 
-    /// The insight's icon and title.
+    /// The insight's icon and reminder.
     private var header: some View {
         HStack(spacing: 8) {
             LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
                 .frame(width: 44, height: 44)
                 .scaleEffect(insight.icon.lottieScale)
 
-            Text(insight.title)
-                .foregroundStyle(.textPrimary)
-                .font(FontManager.CormorantGaramond.bold.font(size: 32))
-        }
-    }
-
-    /// Tinted green so the phrase to repeat stands out as the main takeaway.
-    private var reminderCard: some View {
-        sectionCard("Reminder", fill: .appGreen.opacity(0.1), border: .appGreen.opacity(0.4)) {
             Text(insight.reminder)
                 .foregroundStyle(.textPrimary)
-                .font(FontManager.CormorantGaramond.bold.font(size: 28))
+                .font(FontManager.CormorantGaramond.bold.font(size: 32))
         }
     }
 
@@ -154,9 +144,8 @@ struct InsightDetailView: View {
 #Preview {
     NavigationStack {
         InsightDetailView(savedInsight: SavedInsight(id: "1", insight: Insight(
-            title: "Room to breathe",
-            body: "You said slowing down helps you most. Giving yourself space between tasks lets you notice what you need before you're running on empty.",
             reminder: "Slow down",
+            body: "You said slowing down helps you most. Giving yourself space between tasks lets you notice what you need before you're running on empty.",
             icon: .calm
         )), dependencies: AppDependencies(authService: PreviewAuthService(), reflectionsService: PreviewReflectionsService()))
     }

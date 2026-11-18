@@ -1,11 +1,11 @@
 import SwiftUI
 
-/// The card shown on the tree for one reflection: when it was made, which insight it was on, and that it was added.
+/// The card shown on the tree for one reflection: when it was made and that it was added.
 struct ReflectionCardView: View {
     let reflection: TreeReflection
 
     /// Fixed so the tree can tell ahead of time whether two cards would overlap.
-    static let size = CGSize(width: 240, height: 112)
+    static let size = CGSize(width: 240, height: 88)
 
     var body: some View {
         HStack(spacing: 12) {
@@ -18,10 +18,6 @@ struct ReflectionCardView: View {
                         .foregroundStyle(.textPrimary)
                         .font(.system(size: 17, weight: .medium))
                 }
-                Text(reflection.savedInsight.insight.title)
-                    .foregroundStyle(.textPrimary)
-                    .font(.system(size: 17))
-                    .lineLimit(1)
                 Label("Reflection added", systemImage: "mic.fill")
                     .foregroundStyle(.appGreen)
                     .font(.system(size: 14, weight: .medium))
@@ -39,7 +35,7 @@ struct ReflectionCardView: View {
 }
 
 #Preview {
-    let insight = Insight(title: "Consistency builds the life you want.", body: "", reminder: "Keep going", icon: .sparkles)
+    let insight = Insight(reminder: "Keep going", body: "", icon: .sparkles)
     ReflectionCardView(reflection: TreeReflection(id: "1", createdAt: .now, savedInsight: SavedInsight(id: "1", insight: insight), treeSlot: 0))
         .padding()
         .background(.leafGreen)

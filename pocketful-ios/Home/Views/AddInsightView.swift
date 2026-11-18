@@ -22,10 +22,6 @@ struct AddInsightView: View {
 
                     iconPicker
 
-                    field("Title") {
-                        textField("Room to breathe", text: $viewModel.title)
-                    }
-
                     field("Reminder", hint: "A short phrase to repeat to yourself.") {
                         textField("Slow down", text: $viewModel.reminder)
                     }

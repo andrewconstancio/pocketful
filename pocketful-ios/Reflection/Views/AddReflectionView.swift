@@ -104,7 +104,7 @@ struct AddReflectionView: View {
                 .foregroundStyle(.textPrimary)
                 .font(FontManager.CormorantGaramond.bold.font(size: 34))
 
-            Text("Speak about \u{201C}\(insight.title).\u{201D} It's also great to just repeat this phrase to yourself.")
+            Text("\u{201C}\(insight.reminder).\u{201D} It's also great to just repeat this phrase to yourself.")
                 .foregroundStyle(.textPrimary.opacity(0.7))
                 .font(.system(size: 16))
                 .multilineTextAlignment(.center)
@@ -225,9 +225,8 @@ struct AddReflectionView: View {
 #Preview {
     AddReflectionView(viewModel: AddReflectionViewModel(
         savedInsight: SavedInsight(id: "1", insight: Insight(
-            title: "Room to breathe",
-            body: "",
             reminder: "Slow down",
+            body: "",
             icon: .calm
         )),
         authService: PreviewAuthService(),

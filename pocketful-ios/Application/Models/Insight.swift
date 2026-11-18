@@ -15,15 +15,12 @@ struct OnboardingInsights {
 
 @Generable
 struct Insight: Encodable, Equatable, Hashable {
-    @Guide(description: "A short, warm title of a few words that names this insight.")
-    let title: String
-
-    @Guide(description: "Two or three short, uplifting sentences, under 50 words total, speaking to the user as 'you'. Name the answers this insight connects and why focusing on them helps, and mention one of the things that helps them feel best when it fits.")
-    let body: String
-
     // Before `icon`, so the icon's name can't leak into the reminder's wording.
     @Guide(description: "One plain, positive instruction of one to four words that the user can repeat to themselves during the day, like 'Slow down' or 'Get outside'. A single phrase: no comma and no second part.")
     let reminder: String
+
+    @Guide(description: "Two or three short, uplifting sentences, under 50 words total, speaking to the user as 'you'. Name the answers this insight connects and why focusing on them helps, and mention one of the things that helps them feel best when it fits.")
+    let body: String
 
     @Guide(description: "The icon that best matches the feeling of this reminder.")
     let icon: InsightIcon
@@ -31,27 +28,25 @@ struct Insight: Encodable, Equatable, Hashable {
     // Manual Encodable conformance because @Generable synthesizes
     // hidden stored properties that aren't Encodable.
     private enum CodingKeys: String, CodingKey {
-        case title, body, icon, reminder
+        case body, icon, reminder
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
         try container.encode(icon.rawValue, forKey: .icon)
         try container.encode(reminder, forKey: .reminder)
     }
 }
 
-// In an extension so the automatic `Insight(title:body:...)` init still exists.
+// In an extension so the automatic `Insight(reminder:body:icon:)` init still exists.
 extension Insight: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let iconName = try container.decode(String.self, forKey: .icon)
         self.init(
-            title: try container.decode(String.self, forKey: .title),
-            body: try container.decode(String.self, forKey: .body),
             reminder: try container.decode(String.self, forKey: .reminder),
+            body: try container.decode(String.self, forKey: .body),
             icon: InsightIcon(rawValue: iconName) ?? .sparkles
         )
     }

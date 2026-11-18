@@ -52,13 +52,13 @@ final class FoundationModelService: FoundationModelServicing {
         return OnboardingInsights(insights: response.content.insights.map(keepingFirstReminderPhrase))
     }
 
-    /// Writes one new insight, steering away from the titles the user already has so it isn't a repeat.
+    /// Writes one new insight, steering away from the reminders the user already has so it isn't a repeat.
     func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
         var prompt = answers.promptText
         if !existing.isEmpty {
-            prompt += "\n\nThey already have insights titled: \(existing.map(\.title).joined(separator: ", ")). Write about something different."
+            prompt += "\n\nThey already have these reminders:\(existing.map(\.reminder).joined(separator: ", ")). Write about something different."
         }
         let session = LanguageModelSession(model: model, instructions: Self.singleInsightInstructions)
         let response = try await session.respond(to: prompt, generating: Insight.self, options: Self.insightsOptions)
@@ -71,7 +71,7 @@ final class FoundationModelService: FoundationModelServicing {
             .prefix { !",.;:—".contains($0) }
             .trimmingCharacters(in: .whitespaces)
         guard !firstPhrase.isEmpty else { return insight }
-        return Insight(title: insight.title, body: insight.body, reminder: firstPhrase, icon: insight.icon)
+        return Insight(reminder: firstPhrase, body: insight.body, icon: insight.icon)
     }
 }
 
@@ -92,21 +92,18 @@ final class PreviewFoundationModelService: FoundationModelServicing {
         if shouldFail { throw FoundationModelError.modelUnavailable }
         return OnboardingInsights(insights: [
             Insight(
-                title: "Room to breathe",
-                body: "You shared that your stress has been high lately. That tells us you care deeply about doing things well. Giving yourself small pauses can help that care feel lighter, and leave more energy for what matters to you.",
                 reminder: "Slow down",
+                body: "You shared that your stress has been high lately. That tells us you care deeply about doing things well. Giving yourself small pauses can help that care feel lighter, and leave more energy for what matters to you.",
                 icon: .calm
             ),
             Insight(
-                title: "Your own best friend",
-                body: "You named overthinking as something you're working through. That shows how thoughtful you are. Meeting your thoughts with the same kindness you'd give a friend can make them easier to carry.",
                 reminder: "Be kind to yourself",
+                body: "You named overthinking as something you're working through. That shows how thoughtful you are. Meeting your thoughts with the same kindness you'd give a friend can make them easier to carry.",
                 icon: .heart
             ),
             Insight(
-                title: "Time in nature",
-                body: "You said time in nature helps you feel your best. That's a wonderful thing to know about yourself. Even a few minutes outside can bring back the calm you're looking for.",
                 reminder: "Get outside",
+                body: "You said time in nature helps you feel your best. That's a wonderful thing to know about yourself. Even a few minutes outside can bring back the calm you're looking for.",
                 icon: .leaf
             )
         ])
@@ -115,9 +112,8 @@ final class PreviewFoundationModelService: FoundationModelServicing {
     func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight {
         if shouldFail { throw FoundationModelError.modelUnavailable }
         return Insight(
-            title: "Small steps count",
-            body: "You said you want more peace in your days. Noticing that is already a step toward it. Small, quiet moments can add up to the calm you're looking for.",
             reminder: "One thing at a time",
+            body: "You said you want more peace in your days. Noticing that is already a step toward it. Small, quiet moments can add up to the calm you're looking for.",
             icon: .leaf
         )
     }

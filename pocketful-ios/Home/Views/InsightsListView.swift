@@ -95,17 +95,10 @@ private struct InsightRow: View {
                     .frame(width: 35, height: 35)
                     .scaleEffect(insight.icon.lottieScale)
                 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(insight.title)
-                        .foregroundStyle(.textPrimary)
-                        .font(FontManager.CormorantGaramond.bold.font(size: 20))
-                        .multilineTextAlignment(.leading)
-
-                    Text(insight.reminder)
-                        .foregroundStyle(.textPrimary.opacity(0.7))
-                        .font(FontManager.CormorantGaramond.regular.font(size: 18))
-                        .multilineTextAlignment(.leading)
-                }
+                Text(insight.reminder)
+                    .foregroundStyle(.textPrimary)
+                    .font(FontManager.CormorantGaramond.bold.font(size: 20))
+                    .multilineTextAlignment(.leading)
                 
                 Spacer()
                 
@@ -131,9 +124,9 @@ private struct InsightRow: View {
     InsightsListView(
         isLoaded: true,
         insights: [
-        SavedInsight(id: "1", insight: Insight(title: "Room to breathe", body: "", reminder: "Slow down", icon: .calm)),
-        SavedInsight(id: "2", insight: Insight(title: "Your own best friend", body: "", reminder: "Be kind to yourself", icon: .heart)),
-        SavedInsight(id: "3", insight: Insight(title: "Time in nature", body: "", reminder: "Get outside", icon: .leaf))
+        SavedInsight(id: "1", insight: Insight(reminder: "Slow down", body: "", icon: .calm)),
+        SavedInsight(id: "2", insight: Insight(reminder: "Be kind to yourself", body: "", icon: .heart)),
+        SavedInsight(id: "3", insight: Insight(reminder: "Get outside", body: "", icon: .leaf))
     ], onAddInsight: {})
     .padding()
     .background(.appBackground)
