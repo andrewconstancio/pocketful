@@ -51,7 +51,15 @@ struct RootView: View {
                 }
             }
             Tab("My Tree", systemImage: "tree") {
-                TreeView()
+                NavigationStack(path: Bindable(router).treePath) {
+                    TreeView(dependencies: dependencies)
+                        .navigationDestination(for: TreeRoute.self) { route in
+                            switch route {
+                            case .insightDetail(let savedInsight):
+                                InsightDetailView(savedInsight: savedInsight, dependencies: dependencies)
+                            }
+                        }
+                }
             }
             Tab("Journal",systemImage: "book.pages") {
                 JournalView()

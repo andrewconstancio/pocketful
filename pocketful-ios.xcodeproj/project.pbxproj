@@ -87,6 +87,18 @@
 		1CC37628307E5AD600173B34 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC37627307E5AD400173B34 /* Color.swift */; };
 		1CF1A0023090000000ABCDEF /* OnboardingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */; };
 		7A3F91E2B4C5D6E7F8091A2C /* TodaysThoughtPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F91E2B4C5D6E7F8091A2B /* TodaysThoughtPlaceholderView.swift */; };
+		1CA7EE0230C0000100AA0001 /* TreeReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0130C0000100AA0001 /* TreeReflection.swift */; };
+		1CA7EE0430C0000100AA0001 /* TreeSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0330C0000100AA0001 /* TreeSkeleton.swift */; };
+		1CA7EE0630C0000100AA0001 /* TreeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0530C0000100AA0001 /* TreeLayout.swift */; };
+		1CA7EE0830C0000100AA0001 /* TreeCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0730C0000100AA0001 /* TreeCamera.swift */; };
+		1CA7EE0A30C0000100AA0001 /* TreeCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0930C0000100AA0001 /* TreeCanvasView.swift */; };
+		1CA7EE0C30C0000100AA0001 /* TreeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0B30C0000100AA0001 /* TreeRoute.swift */; };
+		1CA7EE0E30C0000100AA0001 /* ReflectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0D30C0000100AA0001 /* ReflectionCardView.swift */; };
+		1CA7EE1030C0000100AA0001 /* TreeZoomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE0F30C0000100AA0001 /* TreeZoomControls.swift */; };
+		1CA7EE1230C0000100AA0001 /* TreeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE1130C0000100AA0001 /* TreeViewModel.swift */; };
+		1CA7EE1430C0000100AA0001 /* SeededRandomGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE1330C0000100AA0001 /* SeededRandomGenerator.swift */; };
+		1CA7EE2130C0000100AA0001 /* TreeGrowthPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE2030C0000100AA0001 /* TreeGrowthPreview.swift */; };
+		1CA7EE2330C0000100AA0001 /* TreeBark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE2230C0000100AA0001 /* TreeBark.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,6 +178,18 @@
 		1CC37627307E5AD400173B34 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		1CF1A0013090000000ABCDEF /* OnboardingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInsightsView.swift; sourceTree = "<group>"; };
 		7A3F91E2B4C5D6E7F8091A2B /* TodaysThoughtPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysThoughtPlaceholderView.swift; sourceTree = "<group>"; };
+		1CA7EE0130C0000100AA0001 /* TreeReflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeReflection.swift; sourceTree = "<group>"; };
+		1CA7EE0330C0000100AA0001 /* TreeSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeSkeleton.swift; sourceTree = "<group>"; };
+		1CA7EE0530C0000100AA0001 /* TreeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeLayout.swift; sourceTree = "<group>"; };
+		1CA7EE0730C0000100AA0001 /* TreeCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeCamera.swift; sourceTree = "<group>"; };
+		1CA7EE0930C0000100AA0001 /* TreeCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeCanvasView.swift; sourceTree = "<group>"; };
+		1CA7EE0B30C0000100AA0001 /* TreeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeRoute.swift; sourceTree = "<group>"; };
+		1CA7EE0D30C0000100AA0001 /* ReflectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionCardView.swift; sourceTree = "<group>"; };
+		1CA7EE0F30C0000100AA0001 /* TreeZoomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeZoomControls.swift; sourceTree = "<group>"; };
+		1CA7EE1130C0000100AA0001 /* TreeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewModel.swift; sourceTree = "<group>"; };
+		1CA7EE1330C0000100AA0001 /* SeededRandomGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededRandomGenerator.swift; sourceTree = "<group>"; };
+		1CA7EE2030C0000100AA0001 /* TreeGrowthPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeGrowthPreview.swift; sourceTree = "<group>"; };
+		1CA7EE2230C0000100AA0001 /* TreeBark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBark.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,7 +224,10 @@
 		1C54F60F3092B07C00BF093F /* Tree */ = {
 			isa = PBXGroup;
 			children = (
-				1C54F6103092B09600BF093F /* TreeView.swift */,
+				1CA7EE1530C0000100AA0001 /* Models */,
+				1CA7EE1630C0000100AA0001 /* Views */,
+				1CA7EE1130C0000100AA0001 /* TreeViewModel.swift */,
+				1CA7EE0B30C0000100AA0001 /* TreeRoute.swift */,
 			);
 			path = Tree;
 			sourceTree = "<group>";
@@ -429,6 +456,7 @@
 				1CC37626307E5ACC00173B34 /* Extensions */,
 				1CC37623307E5A5500173B34 /* Styles */,
 				1CC3761D307AF11B00173B34 /* Fonts */,
+				1CA7EE1730C0000100AA0001 /* Random */,
 			);
 			path = Utilites;
 			sourceTree = "<group>";
@@ -457,6 +485,38 @@
 				1CC37627307E5AD400173B34 /* Color.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1CA7EE1530C0000100AA0001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1CA7EE0130C0000100AA0001 /* TreeReflection.swift */,
+				1CA7EE0330C0000100AA0001 /* TreeSkeleton.swift */,
+				1CA7EE0530C0000100AA0001 /* TreeLayout.swift */,
+				1CA7EE2230C0000100AA0001 /* TreeBark.swift */,
+				1CA7EE0730C0000100AA0001 /* TreeCamera.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1CA7EE1630C0000100AA0001 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1C54F6103092B09600BF093F /* TreeView.swift */,
+				1CA7EE0930C0000100AA0001 /* TreeCanvasView.swift */,
+				1CA7EE0D30C0000100AA0001 /* ReflectionCardView.swift */,
+				1CA7EE0F30C0000100AA0001 /* TreeZoomControls.swift */,
+				1CA7EE2030C0000100AA0001 /* TreeGrowthPreview.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1CA7EE1730C0000100AA0001 /* Random */ = {
+			isa = PBXGroup;
+			children = (
+				1CA7EE1330C0000100AA0001 /* SeededRandomGenerator.swift */,
+			);
+			path = Random;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -556,6 +616,18 @@
 				1CAC145130864FA8005846CF /* ChallengeArea.swift in Sources */,
 				1CAC14293080A56B005846CF /* AuthService.swift in Sources */,
 				1C54F6113092B09600BF093F /* TreeView.swift in Sources */,
+				1CA7EE0230C0000100AA0001 /* TreeReflection.swift in Sources */,
+				1CA7EE0430C0000100AA0001 /* TreeSkeleton.swift in Sources */,
+				1CA7EE0630C0000100AA0001 /* TreeLayout.swift in Sources */,
+				1CA7EE2330C0000100AA0001 /* TreeBark.swift in Sources */,
+				1CA7EE0830C0000100AA0001 /* TreeCamera.swift in Sources */,
+				1CA7EE0A30C0000100AA0001 /* TreeCanvasView.swift in Sources */,
+				1CA7EE0C30C0000100AA0001 /* TreeRoute.swift in Sources */,
+				1CA7EE0E30C0000100AA0001 /* ReflectionCardView.swift in Sources */,
+				1CA7EE1030C0000100AA0001 /* TreeZoomControls.swift in Sources */,
+				1CA7EE2130C0000100AA0001 /* TreeGrowthPreview.swift in Sources */,
+				1CA7EE1230C0000100AA0001 /* TreeViewModel.swift in Sources */,
+				1CA7EE1430C0000100AA0001 /* SeededRandomGenerator.swift in Sources */,
 				1CAC142E3080A8DA005846CF /* AuthState.swift in Sources */,
 				1CAC144230851276005846CF /* HapticManager.swift in Sources */,
 				1CAC138630808BB6005846CF /* RootView.swift in Sources */,

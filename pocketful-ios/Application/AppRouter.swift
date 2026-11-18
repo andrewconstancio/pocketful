@@ -13,10 +13,14 @@ final class AppRouter {
     /// The home flow's navigation path.
     var homePath = NavigationPath()
 
+    /// The tree flow's navigation path.
+    var treePath = NavigationPath()
+
     /// Returns every flow to its root, e.g. after signing out.
     func reset() {
         selectedTab = .home
         onboardingPath = NavigationPath()
         homePath = NavigationPath()
+        treePath = NavigationPath()
     }
 }

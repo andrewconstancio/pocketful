@@ -133,19 +133,21 @@ struct InsightDetailView: View {
         .overlay(RoundedRectangle(cornerRadius: 24).stroke(border, lineWidth: 1))
     }
 
+    /// Turns into a "come back tomorrow" note once the user has reflected on this insight today.
     private var reflectButton: some View {
-        Button {
+        let canReflect = reflectionsViewModel.hasLoadedReflections && !reflectionsViewModel.hasReflectedToday
+        return Button {
             reflectionsViewModel.stopPlayback()
             isRecordingReflection = true
         } label: {
-//            Label("Reflect on this")
-            Text("Reflect on this")
+            Text(reflectionsViewModel.hasReflectedToday ? "Reflected today. Come back tomorrow" : "Reflect on this")
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: .appGreen,
+            backgroundColor: canReflect ? .appGreen : .appGreen.opacity(0.4),
             foregroundColor: .textOffWhite,
             cornerRadius: 30
         ))
+        .disabled(!canReflect)
     }
 }
 

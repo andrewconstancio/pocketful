@@ -17,6 +17,14 @@ final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
     /// The reflection whose audio is downloading before it plays, if any.
     private(set) var preparingReflectionID: String?
 
+    /// False until the reflections have loaded, so the reflect button can't be used before we know about today's.
+    private(set) var hasLoadedReflections = false
+
+    /// Only one reflection per insight is allowed each day.
+    var hasReflectedToday: Bool {
+        reflections.contains { Calendar.current.isDateInToday($0.createdAt) }
+    }
+
     /// An alert to present to the user.
     var activeAlert: AppAlert?
 
@@ -39,6 +47,7 @@ final class InsightReflectionsViewModel: NSObject, AVAudioPlayerDelegate {
 
         do {
             reflections = try await reflectionsService.fetchReflections(insightID: insightID, uid: uid)
+            hasLoadedReflections = true
         } catch {
             activeAlert = AlertContext.customError("We couldn't load your reflections. Check your connection and try again.")
         }

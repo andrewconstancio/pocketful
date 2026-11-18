@@ -15,4 +15,13 @@ struct Reflection: Identifiable, Equatable {
 
     /// Volume bars (0 to 1) for drawing the recording's shape; empty for older reflections saved without one.
     let waveform: [Float]
+
+    /// Which branch of the user's tree this reflection sits on; nil for reflections saved before tree slots existed.
+    let treeSlot: Int?
+}
+
+/// Where a reflection's Firestore document lives.
+struct ReflectionLocation {
+    let reflectionID: String
+    let insightID: String
 }
