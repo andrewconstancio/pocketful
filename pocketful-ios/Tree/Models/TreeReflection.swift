@@ -8,4 +8,6 @@ struct TreeReflection: Identifiable, Equatable {
     let savedInsight: SavedInsight
     /// Which branch this reflection sits on, saved in Firestore so it never moves.
     let treeSlot: Int
+    /// How many water points this reflection earned, shown on its card.
+    let waterPoints: Int
 }

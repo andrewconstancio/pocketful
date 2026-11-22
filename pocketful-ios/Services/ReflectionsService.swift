@@ -13,6 +13,29 @@ protocol ReflectionsServicing {
     func fetchWaterPoints(uid: String) async throws -> Int
 }
 
+extension ReflectionsServicing {
+    /// Fetches the reflections on every given insight at the same time instead of one after another, oldest first.
+    func fetchReflections(for insights: [SavedInsight], uid: String) async throws -> [InsightReflection] {
+        let reflectionsByInsight = try await withThrowingTaskGroup(of: (SavedInsight, [Reflection]).self) { group in
+            for savedInsight in insights {
+                group.addTask {
+                    try await (savedInsight, self.fetchReflections(insightID: savedInsight.id, uid: uid))
+                }
+            }
+            var results: [(SavedInsight, [Reflection])] = []
+            for try await result in group {
+                results.append(result)
+            }
+            return results
+        }
+        return reflectionsByInsight
+            .flatMap { savedInsight, reflections in
+                reflections.map { InsightReflection(reflection: $0, savedInsight: savedInsight) }
+            }
+            .sorted { $0.reflection.createdAt < $1.reflection.createdAt }
+    }
+}
+
 /// Uploads voice reflections to Cloud Storage and records each reflection (voice or typed) at `users/{uid}/insights/{insightID}/reflections` in Firestore.
 ///
 /// Each reflection also gets a tree slot (which branch of the user's tree it sits on). The user document keeps a count of
@@ -79,7 +102,9 @@ final class ReflectionsService: ReflectionsServicing {
                 id: document.documentID,
                 content: content,
                 createdAt: createdAt.dateValue(),
-                treeSlot: data[Self.treeSlotField] as? Int
+                treeSlot: data[Self.treeSlotField] as? Int,
+                // Reflections saved before this was stored all earned the standard amount.
+                waterPoints: data[Self.waterPointsField] as? Int ?? Self.waterPointsPerReflection
             )
         }
     }
@@ -157,6 +182,7 @@ final class ReflectionsService: ReflectionsServicing {
                 let nextSlot = userSnapshot.data()?[treeSlotCountField] as? Int ?? 0
                 var data = reflectionData
                 data[treeSlotField] = nextSlot
+                data[waterPointsField] = waterPointsPerReflection
                 transaction.setData(data, forDocument: reflectionDocument)
                 transaction.setData([
                     treeSlotCountField: nextSlot + 1,

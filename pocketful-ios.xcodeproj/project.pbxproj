@@ -101,6 +101,15 @@
 		1CA7EE2330C0000100AA0001 /* TreeBark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA7EE2230C0000100AA0001 /* TreeBark.swift */; };
 		1CD0A0023100000000AA0001 /* ToastCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0A0013100000000AA0001 /* ToastCenter.swift */; };
 		1CD0A0023100000000AA0002 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0A0013100000000AA0002 /* ToastView.swift */; };
+		1CB0A0013100000100AA0002 /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0001 /* JournalViewModel.swift */; };
+		1CB0A0013100000100AA0012 /* JournalDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0011 /* JournalDay.swift */; };
+		1CB0A0013100000100AA0022 /* JournalRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0021 /* JournalRoute.swift */; };
+		1CB0A0013100000100AA0032 /* JournalItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0031 /* JournalItemRow.swift */; };
+		1CB0A0013100000100AA0202 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0201 /* JournalEntry.swift */; };
+		1CB0A0013100000100AA0212 /* JournalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0211 /* JournalService.swift */; };
+		1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0221 /* JournalItem.swift */; };
+		1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */; };
+		1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +203,15 @@
 		1CA7EE2230C0000100AA0001 /* TreeBark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBark.swift; sourceTree = "<group>"; };
 		1CD0A0013100000000AA0001 /* ToastCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastCenter.swift; sourceTree = "<group>"; };
 		1CD0A0013100000000AA0002 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0001 /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0011 /* JournalDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDay.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0021 /* JournalRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalRoute.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0031 /* JournalItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalItemRow.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0201 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0211 /* JournalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalService.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0221 /* JournalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryViewModel.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				1CF0A00530B0000100AA0001 /* Reflection.swift */,
+				1CB0A0013100000100AA0201 /* JournalEntry.swift */,
 				1C54F6153093735800BF093F /* Insight.swift */,
 				1C0125D4308EE8800089119A /* Quote.swift */,
 				1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */,
@@ -279,9 +298,24 @@
 		1C54F61C3098CB8B00BF093F /* Journal */ = {
 			isa = PBXGroup;
 			children = (
-				1C54F61D3098CBAB00BF093F /* JournalView.swift */,
+				1CB0A0013100000100AA0101 /* Views */,
+				1CB0A0013100000100AA0001 /* JournalViewModel.swift */,
+				1CB0A0013100000100AA0011 /* JournalDay.swift */,
+				1CB0A0013100000100AA0021 /* JournalRoute.swift */,
+				1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */,
+				1CB0A0013100000100AA0221 /* JournalItem.swift */,
 			);
 			path = Journal;
+			sourceTree = "<group>";
+		};
+		1CB0A0013100000100AA0101 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1C54F61D3098CBAB00BF093F /* JournalView.swift */,
+				1CB0A0013100000100AA0031 /* JournalItemRow.swift */,
+				1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		1C54F61F30996DB500BF093F /* Notifications */ = {
@@ -338,6 +372,7 @@
 			children = (
 				1C67C77E30A2069800745118 /* MicrophoneService.swift */,
 				1CF0A00130B0000100AA0001 /* ReflectionsService.swift */,
+				1CB0A0013100000100AA0211 /* JournalService.swift */,
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
 				1C0125D6308EE8800089119A /* QuoteService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
@@ -679,6 +714,15 @@
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
 				1C54F61E3098CBAB00BF093F /* JournalView.swift in Sources */,
+				1CB0A0013100000100AA0202 /* JournalEntry.swift in Sources */,
+				1CB0A0013100000100AA0212 /* JournalService.swift in Sources */,
+				1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */,
+				1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */,
+				1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */,
+				1CB0A0013100000100AA0002 /* JournalViewModel.swift in Sources */,
+				1CB0A0013100000100AA0012 /* JournalDay.swift in Sources */,
+				1CB0A0013100000100AA0022 /* JournalRoute.swift in Sources */,
+				1CB0A0013100000100AA0032 /* JournalItemRow.swift in Sources */,
 				1CAC145530879771005846CF /* HelpsBest.swift in Sources */,
 				1C67C77A30A0FAA900745118 /* LottieView.swift in Sources */,
 				1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */,

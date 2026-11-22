@@ -23,7 +23,8 @@ struct TreeGrowthPreview: View {
                 id: "\(slot)",
                 createdAt: Date.now.addingTimeInterval(Double(slot - count) * 86_400),
                 savedInsight: Self.sampleInsight,
-                treeSlot: slot
+                treeSlot: slot,
+                waterPoints: 10
             )
         }
         return TreeLayout(seedText: "preview-user", reflections: reflections, grownSlotCount: count)

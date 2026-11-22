@@ -18,6 +18,7 @@ struct RootView: View {
                 await session.observeAuthChanges()
             }
             .appAlert(alert: $session.activeAlert)
+            .preferredColorScheme(.light)
     }
     
     @ViewBuilder
@@ -34,9 +35,19 @@ struct RootView: View {
         }
     }
     
+    /// The selected tab, with a light tap felt each time the user picks one. Code changing the tab (like signing out) stays silent.
+    private var tabSelection: Binding<AppTab> {
+        Binding {
+            router.selectedTab
+        } set: { tab in
+            HapticManager.shared.triggerImpact(style: .light)
+            router.selectedTab = tab
+        }
+    }
+
     private var mainContent: some View {
-        TabView {
-            Tab("Home", systemImage: "house") {
+        TabView(selection: tabSelection) {
+            Tab("Home", systemImage: "house", value: .home) {
                 NavigationStack(path: Bindable(router).homePath) {
                     HomeView(dependencies: dependencies)
                         .navigationDestination(for: HomeRoute.self) { route in
@@ -50,7 +61,7 @@ struct RootView: View {
                         }
                 }
             }
-            Tab("My Tree", systemImage: "tree") {
+            Tab("My Tree", systemImage: "tree", value: .tree) {
                 NavigationStack(path: Bindable(router).treePath) {
                     TreeView(dependencies: dependencies)
                         .navigationDestination(for: TreeRoute.self) { route in
@@ -61,14 +72,22 @@ struct RootView: View {
                         }
                 }
             }
-            Tab("Journal",systemImage: "book.pages") {
-                JournalView()
+            Tab("Journal", systemImage: "book.pages", value: .journal) {
+                NavigationStack(path: Bindable(router).journalPath) {
+                    JournalView(dependencies: dependencies)
+                        .navigationDestination(for: JournalRoute.self) { route in
+                            switch route {
+                            case .insightDetail(let savedInsight, let highlightedReflectionID):
+                                InsightDetailView(savedInsight: savedInsight, highlightedReflectionID: highlightedReflectionID, dependencies: dependencies)
+                            }
+                        }
+                }
             }
-            Tab("Profile", systemImage: "person") {
+            Tab("Profile", systemImage: "person", value: .profile) {
                ProfileView()
             }
         }
-        .tint(.appGreen)
+        .tint(.textPrimary)
         .toast(from: dependencies.toastCenter)
     }
 }

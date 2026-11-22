@@ -11,6 +11,17 @@ struct Reflection: Identifiable, Equatable {
 
     /// Which branch of the user's tree this reflection sits on; nil for reflections saved before tree slots existed.
     let treeSlot: Int?
+
+    /// How many water points this reflection earned.
+    let waterPoints: Int
+}
+
+/// A reflection together with the insight it was about.
+struct InsightReflection: Identifiable {
+    let reflection: Reflection
+    let savedInsight: SavedInsight
+
+    var id: String { reflection.id }
 }
 
 /// What the user left as their reflection.

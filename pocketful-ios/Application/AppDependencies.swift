@@ -11,6 +11,7 @@ final class AppDependencies {
     let insightsService: InsightsServicing
     let reflectionsService: ReflectionsServicing
     let quoteService: QuoteServicing
+    let journalService: JournalServicing
     
     // MARK: - Stores
     
@@ -34,6 +35,7 @@ final class AppDependencies {
         insightsService: InsightsServicing = InsightsService(),
         reflectionsService: ReflectionsServicing = ReflectionsService(),
         quoteService: QuoteServicing = QuoteService(),
+        journalService: JournalServicing = JournalService(),
         thoughtStorage: ThoughtStorage = ThoughtStorage()
     ) {
         self.authService                = authService
@@ -42,6 +44,7 @@ final class AppDependencies {
         self.insightsService            = insightsService
         self.reflectionsService         = reflectionsService
         self.quoteService               = quoteService
+        self.journalService             = journalService
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
@@ -93,6 +96,23 @@ final class AppDependencies {
             authService: authService,
             insightsService: insightsService,
             reflectionsService: reflectionsService
+        )
+    }
+
+    func makeJournalViewModel() -> JournalViewModel {
+        JournalViewModel(
+            authService: authService,
+            insightsService: insightsService,
+            reflectionsService: reflectionsService,
+            journalService: journalService
+        )
+    }
+
+    func makeAddJournalEntryViewModel(onEntrySaved: @escaping (JournalEntry) -> Void) -> AddJournalEntryViewModel {
+        AddJournalEntryViewModel(
+            authService: authService,
+            journalService: journalService,
+            onEntrySaved: onEntrySaved
         )
     }
 

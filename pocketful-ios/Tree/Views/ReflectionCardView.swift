@@ -9,7 +9,7 @@ struct ReflectionCardView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 8) {
                     Image(systemName: "sun.max")
                         .font(.system(size: 18))
@@ -21,6 +21,9 @@ struct ReflectionCardView: View {
                 Text("Reflection added")
                     .foregroundStyle(.appGreen)
                     .font(.system(size: 14, weight: .medium))
+                Label("+\(reflection.waterPoints) water points", systemImage: "drop.fill")
+                    .foregroundStyle(.waterBlue)
+                    .font(.system(size: 14, weight: .medium))
             }
             Spacer(minLength: 0)
             Image(systemName: "chevron.right")
@@ -30,13 +33,15 @@ struct ReflectionCardView: View {
         .padding(.horizontal, 18)
         .frame(width: Self.size.width, height: Self.size.height)
         .background(.appBackground.opacity(0.95), in: RoundedRectangle(cornerRadius: 20))
+        // Same gold dashed border as the Home cards, so the card stands out against the leaves.
+        .dashedOutline(cornerRadius: 20)
         .shadow(color: .textPrimary.opacity(0.12), radius: 10, y: 3)
     }
 }
 
 #Preview {
     let insight = Insight(reminder: "Keep going", body: "", reflectionPrompt: "", icon: .sparkles)
-    ReflectionCardView(reflection: TreeReflection(id: "1", createdAt: .now, savedInsight: SavedInsight(id: "1", insight: insight), treeSlot: 0))
+    ReflectionCardView(reflection: TreeReflection(id: "1", createdAt: .now, savedInsight: SavedInsight(id: "1", insight: insight), treeSlot: 0, waterPoints: 10))
         .padding()
         .background(.leafGreen)
 }

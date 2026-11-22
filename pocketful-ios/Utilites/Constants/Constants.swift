@@ -9,5 +9,6 @@ enum Constants {
         static let insights = "insights"
         static let onboarding = "onboarding"
         static let reflections = "reflections"
+        static let journalEntries = "journal_entries"
     }
 }

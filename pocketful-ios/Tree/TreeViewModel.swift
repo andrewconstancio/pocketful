@@ -37,21 +37,7 @@ final class TreeViewModel {
 
         do {
             let insights = try await insightsService.fetchInsights(uid: uid)
-            // Asks for every insight's reflections at the same time instead of waiting on each one in turn.
-            var loaded = try await withThrowingTaskGroup(of: [(reflection: Reflection, savedInsight: SavedInsight)].self) { group in
-                for savedInsight in insights {
-                    group.addTask { [reflectionsService] in
-                        let insightReflections = try await reflectionsService.fetchReflections(insightID: savedInsight.id, uid: uid)
-                        return insightReflections.map { (reflection: $0, savedInsight: savedInsight) }
-                    }
-                }
-                var all: [(reflection: Reflection, savedInsight: SavedInsight)] = []
-                for try await insightReflections in group {
-                    all += insightReflections
-                }
-                return all
-            }
-            loaded.sort { $0.reflection.createdAt < $1.reflection.createdAt }
+            let loaded = try await reflectionsService.fetchReflections(for: insights, uid: uid)
 
             // Reflections saved before tree slots existed get one now, oldest first, so they land where they used to be.
             let withoutSlots = loaded.filter { $0.reflection.treeSlot == nil }
@@ -65,7 +51,7 @@ final class TreeViewModel {
 
             reflections = loaded.compactMap { item in
                 guard let slot = item.reflection.treeSlot ?? newSlots[item.reflection.id] else { return nil }
-                return TreeReflection(id: item.reflection.id, createdAt: item.reflection.createdAt, savedInsight: item.savedInsight, treeSlot: slot)
+                return TreeReflection(id: item.reflection.id, createdAt: item.reflection.createdAt, savedInsight: item.savedInsight, treeSlot: slot, waterPoints: item.reflection.waterPoints)
             }
 
             // The saved count only goes up, so deleting a reflection doesn't shrink the tree.

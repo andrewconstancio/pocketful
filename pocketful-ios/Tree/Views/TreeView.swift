@@ -152,7 +152,7 @@ struct TreeView: View {
     private func playZoomHaptic(from oldScale: CGFloat, to newScale: CGFloat) {
         guard oldScale != newScale else { return }
         if newScale == TreeCamera.maxScale || newScale == TreeCamera.minScale {
-            HapticManager.shared.triggerImpact(style: .light)
+            HapticManager.shared.triggerImpact(style: .medium)
         } else if Self.zoomStep(for: oldScale) != Self.zoomStep(for: newScale) {
             HapticManager.shared.triggerSelection()
         }
