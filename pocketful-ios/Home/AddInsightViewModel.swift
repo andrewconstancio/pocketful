@@ -4,9 +4,14 @@ import SwiftUI
 @Observable
 final class AddInsightViewModel {
 
-    var reminder = ""
+    // The reminder and prompt fields wrap onto more lines, so Return would add a line break; these drop it to keep each one a single phrase.
+    var reminder = "" {
+        didSet { if reminder.contains("\n") { reminder.replace("\n", with: "") } }
+    }
     var insightBody = ""
-    var reflectionPrompt = ""
+    var reflectionPrompt = "" {
+        didSet { if reflectionPrompt.contains("\n") { reflectionPrompt.replace("\n", with: "") } }
+    }
     var icon: InsightIcon = .sparkles
 
     /// True while the save is in flight, to block double taps.

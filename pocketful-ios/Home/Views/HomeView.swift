@@ -32,7 +32,8 @@ struct HomeView: View {
 
                 InsightsListView(
                     isLoaded: homeViewModel.hasLoadedInsights,
-                    insights: homeViewModel.insights
+                    insights: homeViewModel.insights,
+                    reflectionActivity: homeViewModel.reflectionActivity
                 ) {
                     HapticManager.shared.triggerImpact()
                     isAddingInsight = true
@@ -64,6 +65,7 @@ struct HomeView: View {
         .onAppear {
             Task {
                 await homeViewModel.loadInsights()
+                await homeViewModel.loadReflectionActivity()
             }
         }
     }

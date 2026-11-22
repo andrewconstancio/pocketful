@@ -6,6 +6,9 @@ struct InsightDetailView: View {
     private let savedInsight: SavedInsight
     private let dependencies: AppDependencies
 
+    /// The reflection tapped on the tree, if this screen was opened from there; it gets highlighted and scrolled to.
+    private let highlightedReflectionID: String?
+
     @State private var reflectionsViewModel: InsightReflectionsViewModel
 
     private var insight: Insight { savedInsight.insight }
@@ -16,21 +19,31 @@ struct InsightDetailView: View {
     /// Whether the reflections list is showing its delete buttons.
     @State private var isEditingReflections = false
 
-    init(savedInsight: SavedInsight, dependencies: AppDependencies) {
+    init(savedInsight: SavedInsight, highlightedReflectionID: String? = nil, dependencies: AppDependencies) {
         self.savedInsight = savedInsight
+        self.highlightedReflectionID = highlightedReflectionID
         self.dependencies = dependencies
         _reflectionsViewModel = State(initialValue: dependencies.makeInsightReflectionsViewModel(insightID: savedInsight.id))
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                header
-                meaningCard
-                reflectionsCard
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    header
+                    meaningCard
+                    reflectionsCard
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            // Waits for the reflections to load, since the highlighted one isn't on screen to scroll to before then.
+            .onChange(of: reflectionsViewModel.hasLoadedReflections) { _, hasLoaded in
+                guard hasLoaded, let highlightedReflectionID else { return }
+                withAnimation {
+                    scrollProxy.scrollTo(highlightedReflectionID, anchor: .center)
+                }
+            }
         }
         .scrollIndicators(.hidden)
         .background(.appBackground)
@@ -83,7 +96,7 @@ struct InsightDetailView: View {
 
     private var reflectionsCard: some View {
         sectionCard("Your reflections", fill: .textOffWhite.opacity(0.7), border: .textPrimary.opacity(0.15)) {
-            InsightReflectionsView(viewModel: reflectionsViewModel, isEditing: isEditingReflections)
+            InsightReflectionsView(viewModel: reflectionsViewModel, isEditing: isEditingReflections, highlightedReflectionID: highlightedReflectionID)
         }
         // Sits in the card's top-right corner, level with the "Your reflections" label.
         .overlay(alignment: .topTrailing) {
@@ -130,7 +143,7 @@ struct InsightDetailView: View {
             reflectionsViewModel.stopPlayback()
             isRecordingReflection = true
         } label: {
-            Text(reflectionsViewModel.hasReflectedToday ? "Reflected today. Come back tomorrow" : "Reflect on this")
+            Text(reflectionsViewModel.hasReflectedToday ? "Reflected today." : "Reflect on this")
         }
         .buttonStyle(AppButtonStyle(
             backgroundColor: canReflect ? .appGreen : .appGreen.opacity(0.4),

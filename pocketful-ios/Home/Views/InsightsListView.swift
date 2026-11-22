@@ -9,6 +9,9 @@ struct InsightsListView: View {
     ///  The List of insights to show.
     let insights: [SavedInsight]
 
+    /// Each insight's reflection count and last date, keyed by insight ID.
+    let reflectionActivity: [String: ReflectionActivity]
+
     /// Called when the user taps the + button.
     let onAddInsight: () -> Void
 
@@ -23,7 +26,7 @@ struct InsightsListView: View {
                         .font(FontManager.CormorantGaramond.regular.font(size: 18))
                 } else {
                     ForEach(insights) { savedInsight in
-                        InsightRow(savedInsight: savedInsight)
+                        InsightRow(savedInsight: savedInsight, activity: reflectionActivity[savedInsight.id])
                     }
                 }
             }
@@ -75,15 +78,37 @@ struct InsightsListView: View {
     }
 }
 
-/// One insight: its icon, title and short reminder.
+/// One insight: its icon, reminder, and how often the user has reflected on it.
 private struct InsightRow: View {
-    
+
     /// App navigation, which holds the onboarding flow's path.
     @Environment(AppRouter.self) private var router
-    
+
     let savedInsight: SavedInsight
 
+    /// Nil while it's still loading, so the row doesn't flash "No reflections yet".
+    let activity: ReflectionActivity?
+
     private var insight: Insight { savedInsight.insight }
+
+    /// Like "3 reflections · 2 days ago", or "No reflections yet".
+    private var activityText: String? {
+        guard let activity else { return nil }
+        guard let lastReflectedAt = activity.lastReflectedAt else { return "No reflections yet" }
+        let countText = activity.count == 1 ? "1 reflection" : "\(activity.count) reflections"
+        return "\(countText) · \(Self.dayText(for: lastReflectedAt))"
+    }
+
+    /// "today", "yesterday" or "3 days ago", counted in calendar days so last night isn't "10 hours ago".
+    private static func dayText(for date: Date) -> String {
+        let calendar = Calendar.current
+        let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: date), to: calendar.startOfDay(for: .now)).day ?? 0
+        switch days {
+        case 0: return "today"
+        case 1: return "yesterday"
+        default: return "\(days) days ago"
+        }
+    }
 
     var body: some View {
         Button {
@@ -95,13 +120,28 @@ private struct InsightRow: View {
                     .frame(width: 35, height: 35)
                     .scaleEffect(insight.icon.lottieScale)
                 
-                Text(insight.reminder)
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.bold.font(size: 20))
-                    .multilineTextAlignment(.leading)
-                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(insight.reminder)
+                        .foregroundStyle(.textPrimary)
+                        .font(FontManager.CormorantGaramond.bold.font(size: 20))
+
+                    if let activityText {
+                        Text(activityText)
+                            .foregroundStyle(.textPrimary.opacity(0.5))
+                            .font(.system(size: 12, weight: .medium))
+                    }
+                }
+                .multilineTextAlignment(.leading)
+
                 Spacer()
-                
+
+                if activity?.reflectedToday == true {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.appGreen)
+                        .accessibilityLabel("Reflected today")
+                }
+
                 Image(systemName: "chevron.right")
                     .font(.system(size: 20))
                     .foregroundStyle(.textPrimary)
@@ -127,7 +167,13 @@ private struct InsightRow: View {
         SavedInsight(id: "1", insight: Insight(reminder: "Slow down", body: "", reflectionPrompt: "", icon: .calm)),
         SavedInsight(id: "2", insight: Insight(reminder: "Be kind to yourself", body: "", reflectionPrompt: "", icon: .heart)),
         SavedInsight(id: "3", insight: Insight(reminder: "Get outside", body: "", reflectionPrompt: "", icon: .leaf))
-    ], onAddInsight: {})
+    ],
+    reflectionActivity: [
+        "1": ReflectionActivity(count: 4, lastReflectedAt: .now),
+        "2": ReflectionActivity(count: 1, lastReflectedAt: .now.addingTimeInterval(-3 * 86_400)),
+        "3": ReflectionActivity(count: 0, lastReflectedAt: nil)
+    ],
+    onAddInsight: {})
     .padding()
     .background(.appBackground)
 }

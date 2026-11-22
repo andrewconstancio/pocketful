@@ -2,5 +2,6 @@ import SwiftUI
 
 /// Tree flow routes.
 enum TreeRoute: Hashable {
-    case insightDetail(SavedInsight)
+    /// Opens the insight with the tapped reflection highlighted.
+    case insightDetail(SavedInsight, highlightedReflectionID: String)
 }

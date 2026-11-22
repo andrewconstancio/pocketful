@@ -13,6 +13,9 @@ final class TreeViewModel {
     /// Total water points earned from reflections.
     private(set) var waterPoints = 0
 
+    /// True while reflections are loading, so the view can blur the tree until it's ready.
+    private(set) var isLoading = false
+
     /// An alert to present to the user.
     var activeAlert: AppAlert?
 
@@ -29,6 +32,8 @@ final class TreeViewModel {
     /// Reflections are saved under each insight, so this gathers them from every insight.
     func loadReflections() async {
         guard let uid = authService.currentUserId else { return }
+        isLoading = true
+        defer { isLoading = false }
 
         do {
             var loaded: [(reflection: Reflection, savedInsight: SavedInsight)] = []

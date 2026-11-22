@@ -64,7 +64,8 @@ final class AppDependencies {
             authService: authService,
             quoteService: quoteService,
             thoughtStorage: thoughtStorage,
-            insightsService: insightsService
+            insightsService: insightsService,
+            reflectionsService: reflectionsService
         )
     }
 

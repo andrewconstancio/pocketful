@@ -55,8 +55,8 @@ struct RootView: View {
                     TreeView(dependencies: dependencies)
                         .navigationDestination(for: TreeRoute.self) { route in
                             switch route {
-                            case .insightDetail(let savedInsight):
-                                InsightDetailView(savedInsight: savedInsight, dependencies: dependencies)
+                            case .insightDetail(let savedInsight, let highlightedReflectionID):
+                                InsightDetailView(savedInsight: savedInsight, highlightedReflectionID: highlightedReflectionID, dependencies: dependencies)
                             }
                         }
                 }

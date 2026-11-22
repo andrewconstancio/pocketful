@@ -26,8 +26,10 @@ struct TreeView: View {
             header
             GeometryReader { proxy in
                 TreeCanvasView(layout: viewModel.layout, camera: camera) { reflection in
-                    router.treePath.append(TreeRoute.insightDetail(reflection.savedInsight))
+                    router.treePath.append(TreeRoute.insightDetail(reflection.savedInsight, highlightedReflectionID: reflection.id))
                 }
+                // Only the tree blurs while loading; the stats and zoom buttons stay sharp.
+                .blur(radius: viewModel.isLoading ? 12 : 0)
                 .contentShape(Rectangle())
                 .gesture(dragGesture(in: proxy.size))
                 .simultaneousGesture(pinchGesture(in: proxy.size))
@@ -60,9 +62,16 @@ struct TreeView: View {
                     .padding(.top, 4)
                 }
             }
+            // Block touches until reflections finish loading, then fade the tree into focus.
+            .allowsHitTesting(!viewModel.isLoading)
+            .animation(.easeOut(duration: 0.4), value: viewModel.isLoading)
             .clipped()
         }
         .background(.appBackground)
+        // Start zoomed out on the whole tree every time the tab is opened or the user comes back from a reflection.
+        .onAppear {
+            camera = TreeCamera()
+        }
         .task {
             await viewModel.loadReflections()
         }

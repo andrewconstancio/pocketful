@@ -15,6 +15,9 @@ final class HomeViewModel {
     /// Reads the user's insights from Firestore.
     private let insightsService: InsightsServicing
 
+    /// Reads each insight's reflections, for the counts on the home rows.
+    private let reflectionsService: ReflectionsServicing
+
     /// The quote shown in the "Today's Thought" card.
     private(set) var todaysThought: Quote?
 
@@ -30,6 +33,9 @@ final class HomeViewModel {
     /// Whether the first insights load has finished, even if it failed or found none.
     private(set) var hasLoadedInsights = false
 
+    /// Each insight's reflection count and last date, keyed by insight ID; an insight is missing until its fetch finishes.
+    private(set) var reflectionActivity: [String: ReflectionActivity] = [:]
+
     /// Shown when the quote can't be fetched, so the card is never blank.
     private static let backupQuote = Quote(
         text: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
@@ -40,12 +46,14 @@ final class HomeViewModel {
         authService: AuthServicing,
         quoteService: QuoteServicing,
         thoughtStorage: ThoughtStorage,
-        insightsService: InsightsServicing
+        insightsService: InsightsServicing,
+        reflectionsService: ReflectionsServicing
     ) {
         self.authService = authService
         self.quoteService = quoteService
         self.thoughtStorage = thoughtStorage
         self.insightsService = insightsService
+        self.reflectionsService = reflectionsService
     }
 
     /// Uses today's saved quote if there is one; otherwise fetches it from the API and saves it.
@@ -78,9 +86,21 @@ final class HomeViewModel {
         }
     }
     
+    /// Reloads every insight's reflection count and last date, so the rows are up to date after the user adds a reflection.
+    func loadReflectionActivity() async {
+        guard let uid = authService.currentUserId else { return }
+        for savedInsight in insights {
+            // A failed fetch only leaves that row without its count, which isn't worth an alert.
+            guard let reflections = try? await reflectionsService.fetchReflections(insightID: savedInsight.id, uid: uid) else { continue }
+            // Reflections come back newest first.
+            reflectionActivity[savedInsight.id] = ReflectionActivity(count: reflections.count, lastReflectedAt: reflections.first?.createdAt)
+        }
+    }
+
     /// Adds an insight the user just saved to the end of the home list.
     func appendInsight(_ savedInsight: SavedInsight) {
         insights.append(savedInsight)
+        reflectionActivity[savedInsight.id] = ReflectionActivity(count: 0, lastReflectedAt: nil)
     }
 
     func signOut() {

@@ -27,7 +27,7 @@ struct AddInsightView: View {
                     }
 
                     field("What it means") {
-                        OnboardingTextBox(placeholder: "Why this matters to you...", text: $viewModel.insightBody, height: 160)
+                        textField("Why this matters to you...", text: $viewModel.insightBody, minimumLines: 5)
                     }
 
                     field("Reflection prompt", hint: "Optional. A question to answer when you reflect.") {
@@ -148,9 +148,10 @@ struct AddInsightView: View {
         }
     }
 
-    /// A single-line text field styled like `OnboardingTextBox`.
-    private func textField(_ placeholder: String, text: Binding<String>) -> some View {
-        TextField(placeholder, text: text)
+    /// A text field styled like `OnboardingTextBox` that starts at `minimumLines` tall and grows as the text wraps.
+    private func textField(_ placeholder: String, text: Binding<String>, minimumLines: Int = 1) -> some View {
+        TextField(placeholder, text: text, axis: .vertical)
+            .lineLimit(minimumLines...)
             .foregroundStyle(.textPrimary)
             .font(.system(size: 17))
             .padding(16)

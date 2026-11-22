@@ -7,6 +7,9 @@ struct InsightReflectionsView: View {
     /// Whether each row shows its delete button.
     let isEditing: Bool
 
+    /// The reflection tapped on the tree, drawn with a green box around it.
+    var highlightedReflectionID: String? = nil
+
     /// The reflection the user tapped delete on, waiting on the confirmation pop-up.
     @State private var reflectionPendingDeletion: Reflection?
 
@@ -60,6 +63,17 @@ struct InsightReflectionsView: View {
                             .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
                 }
+                .background {
+                    if reflection.id == highlightedReflectionID {
+                        // Negative padding draws the box a little outside the row without moving the row's content.
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(.appGreen.opacity(0.1))
+                            .stroke(.appGreen.opacity(0.5), lineWidth: 1.5)
+                            .padding(-8)
+                    }
+                }
+                // Lets the detail screen scroll to this row.
+                .id(reflection.id)
             }
         }
     }

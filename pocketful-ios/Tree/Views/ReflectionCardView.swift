@@ -18,7 +18,7 @@ struct ReflectionCardView: View {
                         .foregroundStyle(.textPrimary)
                         .font(.system(size: 17, weight: .medium))
                 }
-                Label("Reflection added", systemImage: "mic.fill")
+                Text("Reflection added")
                     .foregroundStyle(.appGreen)
                     .font(.system(size: 14, weight: .medium))
             }

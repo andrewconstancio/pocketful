@@ -36,3 +36,16 @@ struct ReflectionLocation {
     let reflectionID: String
     let insightID: String
 }
+
+/// How often the user has reflected on one insight, shown on its home row.
+struct ReflectionActivity: Equatable {
+    let count: Int
+
+    /// Nil when there are no reflections yet.
+    let lastReflectedAt: Date?
+
+    var reflectedToday: Bool {
+        guard let lastReflectedAt else { return false }
+        return Calendar.current.isDateInToday(lastReflectedAt)
+    }
+}
