@@ -36,10 +36,20 @@ final class TreeViewModel {
         defer { isLoading = false }
 
         do {
-            var loaded: [(reflection: Reflection, savedInsight: SavedInsight)] = []
-            for savedInsight in try await insightsService.fetchInsights(uid: uid) {
-                let insightReflections = try await reflectionsService.fetchReflections(insightID: savedInsight.id, uid: uid)
-                loaded += insightReflections.map { (reflection: $0, savedInsight: savedInsight) }
+            let insights = try await insightsService.fetchInsights(uid: uid)
+            // Asks for every insight's reflections at the same time instead of waiting on each one in turn.
+            var loaded = try await withThrowingTaskGroup(of: [(reflection: Reflection, savedInsight: SavedInsight)].self) { group in
+                for savedInsight in insights {
+                    group.addTask { [reflectionsService] in
+                        let insightReflections = try await reflectionsService.fetchReflections(insightID: savedInsight.id, uid: uid)
+                        return insightReflections.map { (reflection: $0, savedInsight: savedInsight) }
+                    }
+                }
+                var all: [(reflection: Reflection, savedInsight: SavedInsight)] = []
+                for try await insightReflections in group {
+                    all += insightReflections
+                }
+                return all
             }
             loaded.sort { $0.reflection.createdAt < $1.reflection.createdAt }
 
