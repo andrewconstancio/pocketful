@@ -93,9 +93,7 @@ struct JournalView: View {
     @ViewBuilder
     private var content: some View {
         if viewModel.isLoading {
-            ProgressView()
-                .frame(maxWidth: .infinity)
-                .padding(.top, 40)
+            JournalSkeletonView()
         } else if !viewModel.hasItems {
             emptyMessage("Your journal is empty. Tap the pencil to write an entry, or reflect on an insight from Home.")
         } else {

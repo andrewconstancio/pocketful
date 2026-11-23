@@ -89,7 +89,7 @@ struct HomeView: View {
             }
             .padding(.bottom, 10)
             
-            VStack {
+            VStack(spacing: 8) {
                 Text(Date.now.formatted(date: .long, time: .omitted))
                     .foregroundStyle(.textPrimary.opacity(0.7))
                     .font(.system(size: 14))

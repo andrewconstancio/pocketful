@@ -110,6 +110,7 @@
 		1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0221 /* JournalItem.swift */; };
 		1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */; };
 		1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */; };
+		1CB0A0013100000100AA0302 /* JournalSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0301 /* JournalSkeletonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -212,6 +213,7 @@
 		1CB0A0013100000100AA0221 /* JournalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryViewModel.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryView.swift; sourceTree = "<group>"; };
+		1CB0A0013100000100AA0301 /* JournalSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalSkeletonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +316,7 @@
 				1C54F61D3098CBAB00BF093F /* JournalView.swift */,
 				1CB0A0013100000100AA0031 /* JournalItemRow.swift */,
 				1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */,
+				1CB0A0013100000100AA0301 /* JournalSkeletonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -719,6 +722,7 @@
 				1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */,
 				1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */,
 				1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */,
+				1CB0A0013100000100AA0302 /* JournalSkeletonView.swift in Sources */,
 				1CB0A0013100000100AA0002 /* JournalViewModel.swift in Sources */,
 				1CB0A0013100000100AA0012 /* JournalDay.swift in Sources */,
 				1CB0A0013100000100AA0022 /* JournalRoute.swift in Sources */,
