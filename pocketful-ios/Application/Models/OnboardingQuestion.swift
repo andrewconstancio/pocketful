@@ -8,7 +8,6 @@ enum OnboardingQuestion: Int, CaseIterable {
     case stressLevel
     case challengingMost
     case helpsTheBest
-    case fulfilledVersion
 
     /// The step number shown in the progress header, starting at 1.
     var step: Int { rawValue + 1 }

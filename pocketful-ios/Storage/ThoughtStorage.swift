@@ -1,28 +1,39 @@
 import Foundation
 
-/// Today's quote saved to disk, along with the day it was fetched.
-private struct SavedQuote: Codable {
-    let quote: Quote
-    let date: Date
+/// Everything about the user's daily thoughts that's kept on the device.
+struct SavedThoughts: Codable {
+    /// The thought picked for `todaysThoughtDate`.
+    var todaysThought: DailyThought?
+    var todaysThoughtDate: Date?
+
+    /// Thoughts already written and waiting for a future day, next one first.
+    var upcomingThoughts: [DailyThought] = []
+
+    /// The text of thoughts shown lately, oldest first, so new ones don't repeat them.
+    var recentThoughtTexts: [String] = []
+
+    /// The user's latest reflections, oldest first, used to personalize new thoughts.
+    var reflectionNotes: [ReflectionNote] = []
 }
 
-/// Keeps today's quote on the device so the API is only called once a day.
+/// Keeps each user's daily thoughts in their own file, so a different account on this device starts fresh.
 final class ThoughtStorage {
 
-    private let fileURL = URL.applicationSupportDirectory.appending(path: "todays-quote.json")
-
-    /// Returns the saved quote only if it was fetched today.
-    func loadTodaysQuote() -> Quote? {
-        guard let data = try? Data(contentsOf: fileURL),
-              let saved = try? JSONDecoder().decode(SavedQuote.self, from: data),
-              Calendar.current.isDateInToday(saved.date) else { return nil }
-        return saved.quote
+    func load(uid: String) -> SavedThoughts {
+        guard let data = try? Data(contentsOf: fileURL(uid: uid)),
+              let saved = try? JSONDecoder().decode(SavedThoughts.self, from: data) else { return SavedThoughts() }
+        return saved
     }
 
-    func save(_ quote: Quote) throws {
-        let data = try JSONEncoder().encode(SavedQuote(quote: quote, date: .now))
+    func save(_ thoughts: SavedThoughts, uid: String) throws {
+        let fileURL = fileURL(uid: uid)
+        let data = try JSONEncoder().encode(thoughts)
         // The Application Support folder isn't created until something is written to it.
         try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
         try data.write(to: fileURL, options: .atomic)
+    }
+
+    private func fileURL(uid: String) -> URL {
+        URL.applicationSupportDirectory.appending(path: "daily-thoughts-\(uid).json")
     }
 }

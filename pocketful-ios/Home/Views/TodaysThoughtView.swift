@@ -8,19 +8,13 @@ struct TodaysThoughtView: View {
         VStack(alignment: .leading, spacing: 8) {
             heading
             
-            Group {
-                if let quote = homeViewModel.todaysThought {
-                    TodaysThoughtTextView(quote: quote, typesOut: homeViewModel.isTodaysThoughtNew)
-                } else if !homeViewModel.hasLoadedTodaysThought {
-                    TodaysThoughtPlaceholderView()
-                }
-            }
-            .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                width * 2 / 3
-            }
-
-            if homeViewModel.todaysThought != nil {
-                zenQuotesCredit
+            if let thought = homeViewModel.todaysThought {
+                thoughtContent(thought)
+            } else if !homeViewModel.hasLoadedTodaysThought {
+                TodaysThoughtPlaceholderView()
+                    .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
+                        width * 2 / 3
+                    }
             }
 
             Spacer().frame(height: 20)
@@ -53,13 +47,36 @@ struct TodaysThoughtView: View {
         }
     }
     
-    /// ZenQuotes' free plan asks apps to credit them with a link.
-    @ViewBuilder
-    private var zenQuotesCredit: some View {
-        if let zenQuotesURL = URL(string: "https://zenquotes.io") {
-            Link("Quotes by ZenQuotes", destination: zenQuotesURL)
-                .font(.system(size: 12))
+    private func thoughtContent(_ thought: DailyThought) -> some View {
+        VStack(alignment: .leading, spacing: 20) {
+            TodaysThoughtTextView(text: thought.thought, typesOut: homeViewModel.isTodaysThoughtNew)
+                // Narrower than the card so the text doesn't run over the flower.
+                .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
+                    width * 2 / 3
+                }
+
+            section(title: "Why this matters to you") {
+                Text(thought.context)
+                    .font(.system(size: 15))
+            }
+
+            section(title: "Reflection prompt") {
+                Text(thought.reflectionPrompt)
+                    .font(FontManager.CormorantGaramond.medium.font(size: 20))
+            }
+        }
+    }
+
+    private func section(title: String, @ViewBuilder content: () -> some View) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.system(size: 13))
+                .fontWeight(.medium)
                 .foregroundStyle(.textPrimary.opacity(0.6))
+
+            content()
+                .foregroundStyle(.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -100,6 +117,6 @@ struct TodaysThoughtView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), quoteService: PreviewQuoteService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), dailyThoughtService: PreviewDailyThoughtService())
     TodaysThoughtView(homeViewModel: dependencies.makeHomeViewModel())
 }

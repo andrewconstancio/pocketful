@@ -1,12 +1,11 @@
 import Foundation
 
-/// The user's onboarding answers, sent to the on-device model.
+/// The user's onboarding answers, sent to the on-device model; only picked options, never free text, so nothing they type reaches the model.
 struct OnboardingAnswers: Codable {
     let lifeGoals: [LifeGoal]
     let stressLevel: StressLevel?
     let challengeAreas: [ChallengeArea]
     let helpsBest: [HelpsBest]
-    let fulfilledVersion: String
 
     /// Snake case to match the other Firestore fields, like `created_at`.
     enum CodingKeys: String, CodingKey {
@@ -14,7 +13,6 @@ struct OnboardingAnswers: Codable {
         case stressLevel = "stress_level"
         case challengeAreas = "challenge_areas"
         case helpsBest = "helps_best"
-        case fulfilledVersion = "fulfilled_version"
     }
 
     /// The answers as plain lines of text for the prompt.
@@ -26,9 +24,6 @@ struct OnboardingAnswers: Codable {
         }
         lines.append("Challenging most: \(challengeAreas.map(\.title).joined(separator: ", "))")
         lines.append("Helps them feel best: \(helpsBest.map(\.title).joined(separator: ", "))")
-        if !fulfilledVersion.isEmpty {
-            lines.append("A more fulfilled version of them: \(fulfilledVersion)")
-        }
         return lines.joined(separator: "\n")
     }
 }
@@ -42,6 +37,5 @@ extension OnboardingAnswers {
         stressLevel = try container.decodeIfPresent(StressLevel.self, forKey: .stressLevel)
         challengeAreas = try container.decode([String].self, forKey: .challengeAreas).compactMap(ChallengeArea.init(rawValue:))
         helpsBest = try container.decode([HelpsBest].self, forKey: .helpsBest)
-        fulfilledVersion = try container.decode(String.self, forKey: .fulfilledVersion)
     }
 }

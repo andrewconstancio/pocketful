@@ -59,13 +59,15 @@ struct HomeView: View {
         .task {
             await session.loadUserName()
         }
-        .task {
+        // Runs once right away for a saved thought, and again when insights finish loading in case a new one has to be written.
+        .task(id: homeViewModel.hasLoadedInsights) {
             await homeViewModel.loadTodaysThought()
         }
         .onAppear {
             Task {
                 await homeViewModel.loadInsights()
                 await homeViewModel.loadReflectionActivity()
+                await homeViewModel.prepareUpcomingThoughts()
             }
         }
     }
@@ -135,7 +137,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService(), quoteService: PreviewQuoteService())
+    let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), insightsService: PreviewInsightsService(), dailyThoughtService: PreviewDailyThoughtService())
     HomeView(dependencies: dependencies)
         .environment(
             SessionStore(

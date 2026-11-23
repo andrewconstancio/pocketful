@@ -4,6 +4,9 @@ import FoundationModels
 struct SavedInsight: Identifiable, Equatable, Hashable {
     let id: String
     let insight: Insight
+
+    /// True when the user typed or edited any of the text, so it must never be sent to the on-device model; defaults to true to stay on the safe side.
+    var isUserWritten = true
 }
 
 /// The insights the model creates from the onboarding answers.

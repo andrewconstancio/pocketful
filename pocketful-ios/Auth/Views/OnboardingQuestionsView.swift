@@ -50,8 +50,6 @@ struct OnboardingQuestionsView: View {
             OnboardingChallengingMostView()
         case .helpsTheBest:
             OnboardingHelpsTheBestView()
-        case .fulfilledVersion:
-            OnboardingFulfilledVersionView()
         }
     }
 
@@ -75,7 +73,7 @@ struct OnboardingQuestionsView: View {
             }
         }
         .buttonStyle(AppButtonStyle(
-            backgroundColor: viewModel.currentQuestion == .fulfilledVersion ? .black : .appGreen,
+            backgroundColor: viewModel.currentQuestion.next == nil ? .black : .appGreen,
             foregroundColor: .textOffWhite,
             borderColor: .textOffWhite,
             borderWidth: 2,

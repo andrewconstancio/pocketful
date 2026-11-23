@@ -70,6 +70,7 @@ final class UserService: UserServicing {
         for (position, insight) in insights.enumerated() {
             var insightData = try encoder.encode(insight)
             insightData["position"] = position
+            insightData[Constants.FirestorePaths.userWrittenField] = false
             insightData["created_at"] = FieldValue.serverTimestamp()
             batch.setData(insightData, forDocument: user.collection(Constants.FirestorePaths.insights).document())
         }
@@ -110,8 +111,7 @@ final class PreviewUserService: UserServicing {
             lifeGoals: [.peace],
             stressLevel: .moderate,
             challengeAreas: [.overthinking],
-            helpsBest: [.timeInNature],
-            fulfilledVersion: ""
+            helpsBest: [.timeInNature]
         )
     }
 }

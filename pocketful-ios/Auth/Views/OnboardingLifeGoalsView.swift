@@ -34,7 +34,7 @@ struct OnboardingLifeGoalsView: View {
     }
 
     private var title: some View {
-        Text("What are you hoping to get more of in your life?")
+        Text("What are you hoping to get more of?")
             .foregroundStyle(.textPrimary)
             .font(FontManager.CormorantGaramond.bold.font(size: 34))
     }

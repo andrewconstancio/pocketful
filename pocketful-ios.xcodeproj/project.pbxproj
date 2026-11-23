@@ -21,8 +21,8 @@
 		1C0125CF308EE8800089119A /* HomeBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125CE308EE8800089119A /* HomeBackgroundView.swift */; };
 		1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D0308EE8800089119A /* AddInsightView.swift */; };
 		1C0125D3308EE8800089119A /* AddInsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D2308EE8800089119A /* AddInsightViewModel.swift */; };
-		1C0125D5308EE8800089119A /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D4308EE8800089119A /* Quote.swift */; };
-		1C0125D7308EE8800089119A /* QuoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D6308EE8800089119A /* QuoteService.swift */; };
+		1C0125D5308EE8800089119A /* DailyThought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D4308EE8800089119A /* DailyThought.swift */; };
+		1C0125D7308EE8800089119A /* DailyThoughtService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0125D6308EE8800089119A /* DailyThoughtService.swift */; };
 		1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60B308F7EBE00BF093F /* InsightsService.swift */; };
 		1C54F60E3090D43F00BF093F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F60D3090D43C00BF093F /* Alerts.swift */; };
 		1C54F6113092B09600BF093F /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6103092B09600BF093F /* TreeView.swift */; };
@@ -72,7 +72,6 @@
 		1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */; };
 		1CAC145530879771005846CF /* HelpsBest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14543087976D005846CF /* HelpsBest.swift */; };
 		1CAC145730879BF2005846CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CAC145630879BF2005846CF /* LaunchScreen.storyboard */; };
-		1CAC14593088E137005846CF /* OnboardingFulfilledVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */; };
 		1CAC145D3088F000005846CF /* OnboardingTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145C3088F000005846CF /* OnboardingTextBox.swift */; };
 		1CAC145F3088F100005846CF /* OnboardingGeneratingInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */; };
 		1CAC1461A1B2C3D4005846CF /* OnboardingNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */; };
@@ -126,8 +125,8 @@
 		1C0125CE308EE8800089119A /* HomeBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBackgroundView.swift; sourceTree = "<group>"; };
 		1C0125D0308EE8800089119A /* AddInsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightView.swift; sourceTree = "<group>"; };
 		1C0125D2308EE8800089119A /* AddInsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightViewModel.swift; sourceTree = "<group>"; };
-		1C0125D4308EE8800089119A /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
-		1C0125D6308EE8800089119A /* QuoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteService.swift; sourceTree = "<group>"; };
+		1C0125D4308EE8800089119A /* DailyThought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyThought.swift; sourceTree = "<group>"; };
+		1C0125D6308EE8800089119A /* DailyThoughtService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyThoughtService.swift; sourceTree = "<group>"; };
 		1C54F60B308F7EBE00BF093F /* InsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsService.swift; sourceTree = "<group>"; };
 		1C54F60D3090D43C00BF093F /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		1C54F6103092B09600BF093F /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
@@ -173,7 +172,6 @@
 		1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingHelpsTheBestView.swift; sourceTree = "<group>"; };
 		1CAC14543087976D005846CF /* HelpsBest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpsBest.swift; sourceTree = "<group>"; };
 		1CAC145630879BF2005846CF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFulfilledVersionView.swift; sourceTree = "<group>"; };
 		1CAC145C3088F000005846CF /* OnboardingTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextBox.swift; sourceTree = "<group>"; };
 		1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGeneratingInsightsView.swift; sourceTree = "<group>"; };
 		1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNameView.swift; sourceTree = "<group>"; };
@@ -278,7 +276,7 @@
 				1CF0A00530B0000100AA0001 /* Reflection.swift */,
 				1CB0A0013100000100AA0201 /* JournalEntry.swift */,
 				1C54F6153093735800BF093F /* Insight.swift */,
-				1C0125D4308EE8800089119A /* Quote.swift */,
+				1C0125D4308EE8800089119A /* DailyThought.swift */,
 				1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */,
 				1CAC14543087976D005846CF /* HelpsBest.swift */,
 				1CAC145030864F9D005846CF /* ChallengeArea.swift */,
@@ -377,7 +375,7 @@
 				1CF0A00130B0000100AA0001 /* ReflectionsService.swift */,
 				1CB0A0013100000100AA0211 /* JournalService.swift */,
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
-				1C0125D6308EE8800089119A /* QuoteService.swift */,
+				1C0125D6308EE8800089119A /* DailyThoughtService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
 				1C0125B9308AC3860089119A /* FoundationModelService.swift */,
 				1CAC14283080A565005846CF /* AuthService.swift */,
@@ -406,7 +404,6 @@
 				1CAC1445308519AA005846CF /* OnboardingStressLevelsView.swift */,
 				1CAC144E30864E9D005846CF /* OnboardingChallengingMostView.swift */,
 				1CAC145230879675005846CF /* OnboardingHelpsTheBestView.swift */,
-				1CAC14583088E137005846CF /* OnboardingFulfilledVersionView.swift */,
 				1CAC1460A1B2C3D4005846CF /* OnboardingNameView.swift */,
 				1CAC145C3088F000005846CF /* OnboardingTextBox.swift */,
 				1CAC145E3088F100005846CF /* OnboardingGeneratingInsightsView.swift */,
@@ -678,7 +675,7 @@
 				1CAC14263080A502005846CF /* OnBoardingViewModel.swift in Sources */,
 				1CAC143F30824E88005846CF /* OnboardingGetToKnowView.swift in Sources */,
 				1C54F60C308F7EC700BF093F /* InsightsService.swift in Sources */,
-				1C0125D7308EE8800089119A /* QuoteService.swift in Sources */,
+				1C0125D7308EE8800089119A /* DailyThoughtService.swift in Sources */,
 				1C54F61B3098C92900BF093F /* TodaysThoughtView.swift in Sources */,
 				1CAC142C3080A775005846CF /* SessionStore.swift in Sources */,
 				1CD0A0023100000000AA0001 /* ToastCenter.swift in Sources */,
@@ -701,7 +698,7 @@
 				1C0125CD308EF18D0089119A /* StartupView.swift in Sources */,
 				1CAC145330879675005846CF /* OnboardingHelpsTheBestView.swift in Sources */,
 				1C54F6163093735900BF093F /* Insight.swift in Sources */,
-				1C0125D5308EE8800089119A /* Quote.swift in Sources */,
+				1C0125D5308EE8800089119A /* DailyThought.swift in Sources */,
 				1CAC144A3086B000005846CF /* OnboardingQuestion.swift in Sources */,
 				1C54F62130996DF000BF093F /* NotificationView.swift in Sources */,
 				1C54F619309444A800BF093F /* ThoughtStorage.swift in Sources */,
@@ -712,7 +709,6 @@
 				1CAC14463083A000005846CF /* OnboardingProgressHeader.swift in Sources */,
 				1CAC14443083A000005846CF /* LifeGoal.swift in Sources */,
 				1CAC144830851A1F005846CF /* StressLevel.swift in Sources */,
-				1CAC14593088E137005846CF /* OnboardingFulfilledVersionView.swift in Sources */,
 				1CAC1461A1B2C3D4005846CF /* OnboardingNameView.swift in Sources */,
 				1CC3761F307D05B700173B34 /* FontManager.swift in Sources */,
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,

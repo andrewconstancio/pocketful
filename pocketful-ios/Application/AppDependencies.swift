@@ -10,8 +10,8 @@ final class AppDependencies {
     let userService: UserServicing
     let insightsService: InsightsServicing
     let reflectionsService: ReflectionsServicing
-    let quoteService: QuoteServicing
     let journalService: JournalServicing
+    let dailyThoughtService: DailyThoughtServicing
     
     // MARK: - Stores
     
@@ -24,32 +24,30 @@ final class AppDependencies {
     /// The toast shown at the top of the app.
     let toastCenter: ToastCenter
     
-    
-    // MARK: - Storage
-    let thoughtStorage: ThoughtStorage
-    
     init(
         authService: AuthServicing = AuthService(),
         foundationModelService: FoundationModelServicing = FoundationModelService(),
         userService: UserServicing = UserService(),
         insightsService: InsightsServicing = InsightsService(),
         reflectionsService: ReflectionsServicing = ReflectionsService(),
-        quoteService: QuoteServicing = QuoteService(),
         journalService: JournalServicing = JournalService(),
-        thoughtStorage: ThoughtStorage = ThoughtStorage()
+        dailyThoughtService: DailyThoughtServicing? = nil
     ) {
         self.authService                = authService
         self.foundationModelService     = foundationModelService
         self.userService                = userService
         self.insightsService            = insightsService
         self.reflectionsService         = reflectionsService
-        self.quoteService               = quoteService
         self.journalService             = journalService
+        // Built here by default because it needs the model service passed in above.
+        self.dailyThoughtService        = dailyThoughtService ?? DailyThoughtService(
+            foundationModelService: foundationModelService,
+            storage: ThoughtStorage()
+        )
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
         self.toastCenter                = ToastCenter()
-        self.thoughtStorage             = thoughtStorage
     }
     
     // MARK: - Feature view models
@@ -65,8 +63,7 @@ final class AppDependencies {
     func makeHomeViewModel() -> HomeViewModel {
         HomeViewModel(
             authService: authService,
-            quoteService: quoteService,
-            thoughtStorage: thoughtStorage,
+            dailyThoughtService: dailyThoughtService,
             insightsService: insightsService,
             reflectionsService: reflectionsService
         )
@@ -121,6 +118,7 @@ final class AppDependencies {
             savedInsight: savedInsight,
             authService: authService,
             reflectionsService: reflectionsService,
+            dailyThoughtService: dailyThoughtService,
             toastCenter: toastCenter
         )
     }

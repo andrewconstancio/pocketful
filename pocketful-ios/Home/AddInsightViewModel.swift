@@ -39,6 +39,17 @@ final class AddInsightViewModel {
     /// Cached after the first fetch so generating again doesn't re-read Firestore.
     private var onboardingAnswers: OnboardingAnswers?
 
+    /// The last insight the AI put in the form, to tell whether the user changed it before saving.
+    private var generatedInsight: Insight?
+
+    /// True unless the form still holds exactly what the AI wrote, since any edit puts the user's own words in it.
+    private var isUserWritten: Bool {
+        guard let generatedInsight else { return true }
+        return trimmed(reminder) != trimmed(generatedInsight.reminder)
+            || trimmed(insightBody) != trimmed(generatedInsight.body)
+            || trimmed(reflectionPrompt) != trimmed(generatedInsight.reflectionPrompt)
+    }
+
     /// Reminder and body are both required.
     var canSave: Bool {
         !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating
@@ -77,7 +88,10 @@ final class AddInsightViewModel {
                 activeAlert = AlertContext.customError("We couldn't find your onboarding answers to base an insight on.")
                 return
             }
-            let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: existingInsights.map(\.insight))
+            // Insights the user wrote are left out, so their own words never reach the model.
+            let modelInsights = existingInsights.filter { !$0.isUserWritten }.map(\.insight)
+            let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: modelInsights)
+            generatedInsight = insight
             reminder = insight.reminder
             insightBody = insight.body
             reflectionPrompt = insight.reflectionPrompt
@@ -108,7 +122,7 @@ final class AddInsightViewModel {
         )
 
         do {
-            let savedInsight = try await insightsService.addInsight(insight, position: existingInsights.count, uid: uid)
+            let savedInsight = try await insightsService.addInsight(insight, position: existingInsights.count, isUserWritten: isUserWritten, uid: uid)
             onInsightSaved(savedInsight)
             HapticManager.shared.triggerNotification(type: .success)
             return true

@@ -6,11 +6,8 @@ final class HomeViewModel {
     /// The auth service for this app.
     private let authService: AuthServicing
 
-    /// Keeps today's quote on the device so it's only fetched once a day.
-    private let thoughtStorage: ThoughtStorage
-
-    /// Fetches the quote of the day from ZenQuotes.
-    private let quoteService: QuoteServicing
+    /// Writes and hands out the user's daily thoughts.
+    private let dailyThoughtService: DailyThoughtServicing
 
     /// Reads the user's insights from Firestore.
     private let insightsService: InsightsServicing
@@ -18,13 +15,13 @@ final class HomeViewModel {
     /// Reads each insight's reflections, for the counts on the home rows.
     private let reflectionsService: ReflectionsServicing
 
-    /// The quote shown in the "Today's Thought" card.
-    private(set) var todaysThought: Quote?
+    /// The thought shown in the "Today's Thought" card.
+    private(set) var todaysThought: DailyThought?
 
-    /// Whether today's quote was just fetched rather than loaded from disk, so it gets typed out.
+    /// Whether today's thought was just written rather than loaded from disk, so it gets typed out.
     private(set) var isTodaysThoughtNew = false
 
-    /// Whether loading today's quote has finished, so the placeholder stops even if it failed.
+    /// Whether loading today's thought has finished, so the placeholder stops even if it failed.
     private(set) var hasLoadedTodaysThought = false
 
     /// The user's insights: the ones made at onboarding plus any they added.
@@ -36,43 +33,59 @@ final class HomeViewModel {
     /// Each insight's reflection count and last date, keyed by insight ID; an insight is missing until its fetch finishes.
     private(set) var reflectionActivity: [String: ReflectionActivity] = [:]
 
-    /// Shown when the quote can't be fetched, so the card is never blank.
-    private static let backupQuote = Quote(
-        text: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
-        author: ""
+    /// Shown when the model can't write a thought, so the card is never blank.
+    private static let backupThought = DailyThought(
+        thought: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
+        context: "You're building new habits one day at a time, and every small step counts.",
+        reflectionPrompt: "What's one small step you took today?",
+        relatedInsightIDs: []
     )
 
     init(
         authService: AuthServicing,
-        quoteService: QuoteServicing,
-        thoughtStorage: ThoughtStorage,
+        dailyThoughtService: DailyThoughtServicing,
         insightsService: InsightsServicing,
         reflectionsService: ReflectionsServicing
     ) {
         self.authService = authService
-        self.quoteService = quoteService
-        self.thoughtStorage = thoughtStorage
+        self.dailyThoughtService = dailyThoughtService
         self.insightsService = insightsService
         self.reflectionsService = reflectionsService
     }
 
-    /// Uses today's saved quote if there is one; otherwise fetches it from the API and saves it.
+    /// Shows today's saved thought right away; otherwise, once insights have loaded, picks a new one and types it out.
     func loadTodaysThought() async {
-        defer { hasLoadedTodaysThought = true }
-        if let saved = thoughtStorage.loadTodaysQuote() {
-            todaysThought = saved
+        guard todaysThought == nil else { return }
+        guard let uid = authService.currentUserId else {
+            showTodaysThought(Self.backupThought)
             return
         }
-        isTodaysThoughtNew = true
-        do {
-            // Usually already in progress, since the fetch starts at app launch.
-            let quote = try await quoteService.fetchTodaysQuote()
-            todaysThought = quote
-            try thoughtStorage.save(quote)
-        } catch {
-            // The backup isn't saved, so the next launch tries the API again.
-            todaysThought = Self.backupQuote
+        if let saved = dailyThoughtService.savedTodaysThought(uid: uid) {
+            showTodaysThought(saved)
+            return
         }
+        // A new thought is written from the insights, so keep the placeholder until they've loaded.
+        guard hasLoadedInsights else { return }
+        do {
+            let thought = try await dailyThoughtService.pickTodaysThought(uid: uid, insights: insights)
+            isTodaysThoughtNew = true
+            showTodaysThought(thought)
+        } catch {
+            // The backup isn't saved, so the next launch tries the model again.
+            showTodaysThought(Self.backupThought)
+        }
+    }
+
+    /// Writes the next few days' thoughts in the background if none are waiting, like after a reflection.
+    func prepareUpcomingThoughts() async {
+        guard let uid = authService.currentUserId else { return }
+        // A failure here is retried the next time Home appears, or when tomorrow's thought is picked.
+        try? await dailyThoughtService.prepareUpcomingThoughts(uid: uid, insights: insights)
+    }
+
+    private func showTodaysThought(_ thought: DailyThought) {
+        todaysThought = thought
+        hasLoadedTodaysThought = true
     }
 
     /// Loads the user's insights once; skips if they're already loaded.

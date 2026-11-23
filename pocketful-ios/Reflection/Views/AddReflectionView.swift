@@ -284,6 +284,7 @@ struct AddReflectionView: View {
         )),
         authService: PreviewAuthService(),
         reflectionsService: PreviewReflectionsService(),
+        dailyThoughtService: PreviewDailyThoughtService(),
         toastCenter: ToastCenter()
     ))
 }

@@ -29,12 +29,20 @@ final class AddReflectionViewModel {
 
     private let authService: AuthServicing
     private let reflectionsService: ReflectionsServicing
+    private let dailyThoughtService: DailyThoughtServicing
     private let toastCenter: ToastCenter
 
-    init(savedInsight: SavedInsight, authService: AuthServicing, reflectionsService: ReflectionsServicing, toastCenter: ToastCenter) {
+    init(
+        savedInsight: SavedInsight,
+        authService: AuthServicing,
+        reflectionsService: ReflectionsServicing,
+        dailyThoughtService: DailyThoughtServicing,
+        toastCenter: ToastCenter
+    ) {
         self.savedInsight = savedInsight
         self.authService = authService
         self.reflectionsService = reflectionsService
+        self.dailyThoughtService = dailyThoughtService
         self.toastCenter = toastCenter
     }
 
@@ -53,6 +61,7 @@ final class AddReflectionViewModel {
             try await reflectionsService.saveVoiceReflection(recording, insightID: savedInsight.id, uid: uid)
             unsavedRecording = nil
             deleteLocalFile(of: recording)
+            dailyThoughtService.recordReflection(on: savedInsight, uid: uid)
             HapticManager.shared.triggerNotification(type: .success)
             showPointsEarnedToast()
             return true
@@ -76,6 +85,7 @@ final class AddReflectionViewModel {
 
         do {
             try await reflectionsService.saveTextReflection(text, insightID: savedInsight.id, uid: uid)
+            dailyThoughtService.recordReflection(on: savedInsight, uid: uid)
             HapticManager.shared.triggerNotification(type: .success)
             showPointsEarnedToast()
             return true

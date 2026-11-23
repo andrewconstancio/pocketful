@@ -25,9 +25,6 @@ final class OnBoardingViewModel {
     /// The name the user wants to be called.
     var nameText = ""
 
-    /// What a more fulfilled version of the user looks like, in their own words.
-    var fulfilledVersionText = ""
-
     /// The question the questions screen is showing.
     private(set) var currentQuestion: OnboardingQuestion = .getToKnow
 
@@ -68,7 +65,6 @@ final class OnBoardingViewModel {
         case .stressLevel: selectedStressLevel != nil
         case .challengingMost: !selectedChallengeArea.isEmpty
         case .helpsTheBest: !selectedHelpsBest.isEmpty
-        case .fulfilledVersion: true
         }
     }
 
@@ -82,14 +78,13 @@ final class OnBoardingViewModel {
         self.userService = userService
     }
 
-    /// Everything the user picked or typed, in the shape the model and Firestore expect.
+    /// Everything the user picked, in the shape the model and Firestore expect.
     private var answers: OnboardingAnswers {
         OnboardingAnswers(
             lifeGoals: Array(selectedLifeGoals),
             stressLevel: selectedStressLevel,
             challengeAreas: Array(selectedChallengeArea),
-            helpsBest: Array(selectedHelpsBest),
-            fulfilledVersion: fulfilledVersionText
+            helpsBest: Array(selectedHelpsBest)
         )
     }
 
