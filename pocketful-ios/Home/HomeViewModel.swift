@@ -36,8 +36,6 @@ final class HomeViewModel {
     /// Shown when the model can't write a thought, so the card is never blank.
     private static let backupThought = DailyThought(
         thought: "Progress doesn't always look like a big leap. Small, consistent actions still move you forward.",
-        context: "You're building new habits one day at a time, and every small step counts.",
-        reflectionPrompt: "What's one small step you took today?",
         relatedInsightIDs: []
     )
 
@@ -76,11 +74,11 @@ final class HomeViewModel {
         }
     }
 
-    /// Writes the next few days' thoughts in the background if none are waiting, like after a reflection.
-    func prepareUpcomingThoughts() async {
+    /// Writes tomorrow's thought in the background if none is waiting, like after a reflection.
+    func prepareNextThought() async {
         guard let uid = authService.currentUserId else { return }
         // A failure here is retried the next time Home appears, or when tomorrow's thought is picked.
-        try? await dailyThoughtService.prepareUpcomingThoughts(uid: uid, insights: insights)
+        try? await dailyThoughtService.prepareNextThought(uid: uid, insights: insights)
     }
 
     private func showTodaysThought(_ thought: DailyThought) {

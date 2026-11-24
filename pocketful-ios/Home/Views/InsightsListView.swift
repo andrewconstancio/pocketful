@@ -67,9 +67,9 @@ struct InsightsListView: View {
 
             Button(action: onAddInsight) {
                 Image(systemName: "plus")
-                    .font(.system(size: 22))
+                    .font(.system(size: 24))
                     .foregroundStyle(.textPrimary)
-                    .frame(width: 36, height: 36)
+                    .frame(width: 40, height: 40)
                     .background(.appGreen.opacity(0.1))
                     .clipShape(Circle())
             }
@@ -117,18 +117,18 @@ private struct InsightRow: View {
         } label: {
             HStack(spacing: 12) {
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
-                    .frame(width: 35, height: 35)
+                    .frame(width: 52, height: 52)
                     .scaleEffect(insight.icon.lottieScale)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(insight.reminder)
                         .foregroundStyle(.textPrimary)
-                        .font(FontManager.CormorantGaramond.bold.font(size: 20))
+                        .font(FontManager.CormorantGaramond.bold.font(size: 24))
 
                     if let activityText {
                         Text(activityText)
                             .foregroundStyle(.textPrimary.opacity(0.5))
-                            .font(.system(size: 12, weight: .medium))
+                            .font(.system(size: 14, weight: .medium))
                     }
                 }
                 .multilineTextAlignment(.leading)
@@ -146,8 +146,7 @@ private struct InsightRow: View {
                     .font(.system(size: 20))
                     .foregroundStyle(.textPrimary)
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal)
+            .padding(24)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
                     .fill(.appGreen.opacity(0.1))

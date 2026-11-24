@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A rounded, multi-line text box with a placeholder, used by the open-ended onboarding questions.
+/// A rounded, multi-line text box with a placeholder, used for journal entries and typed reflections.
 struct OnboardingTextBox: View {
 
     /// Gray hint text shown while the box is empty.

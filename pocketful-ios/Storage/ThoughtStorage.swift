@@ -6,8 +6,8 @@ struct SavedThoughts: Codable {
     var todaysThought: DailyThought?
     var todaysThoughtDate: Date?
 
-    /// Thoughts already written and waiting for a future day, next one first.
-    var upcomingThoughts: [DailyThought] = []
+    /// A thought already written and waiting for the next day.
+    var nextThought: DailyThought?
 
     /// The text of thoughts shown lately, oldest first, so new ones don't repeat them.
     var recentThoughtTexts: [String] = []

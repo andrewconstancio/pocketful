@@ -67,7 +67,7 @@ struct HomeView: View {
             Task {
                 await homeViewModel.loadInsights()
                 await homeViewModel.loadReflectionActivity()
-                await homeViewModel.prepareUpcomingThoughts()
+                await homeViewModel.prepareNextThought()
             }
         }
     }

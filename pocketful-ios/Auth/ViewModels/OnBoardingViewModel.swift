@@ -4,23 +4,23 @@ import SwiftUI
 @Observable
 final class OnBoardingViewModel {
 
-    /// The most answers the user can pick on a multi-select question.
-    static let maxSelections = 2
+    /// The most answers the user can pick on a multi-select question, ranked 1 to this number.
+    static let maxSelections = 3
 
     /// The most times the user can regenerate each insight.
     static let maxRegenerationsPerInsight = 2
 
-    /// What the user hopes to get more of, from the life goals page.
-    private(set) var selectedLifeGoals: Set<LifeGoal> = []
+    /// What the user hopes to get more of, from the life goals page, most important first.
+    private(set) var selectedLifeGoals: [LifeGoal] = []
     
     /// The selected stress level for the user.
     private(set) var selectedStressLevel: StressLevel?
     
-    /// The users selected challenge areas.
-    private(set) var selectedChallengeArea: Set<ChallengeArea> = []
+    /// What's challenging the user, most important first.
+    private(set) var selectedChallengeAreas: [ChallengeArea] = []
 
-    /// What helps the user feel their best.
-    private(set) var selectedHelpsBest: Set<HelpsBest> = []
+    /// What helps the user feel their best, most important first.
+    private(set) var selectedHelpsBest: [HelpsBest] = []
 
     /// The name the user wants to be called.
     var nameText = ""
@@ -63,7 +63,7 @@ final class OnBoardingViewModel {
         case .name: !trimmedName.isEmpty
         case .lifeGoals: !selectedLifeGoals.isEmpty
         case .stressLevel: selectedStressLevel != nil
-        case .challengingMost: !selectedChallengeArea.isEmpty
+        case .challengingMost: !selectedChallengeAreas.isEmpty
         case .helpsTheBest: !selectedHelpsBest.isEmpty
         }
     }
@@ -81,10 +81,10 @@ final class OnBoardingViewModel {
     /// Everything the user picked, in the shape the model and Firestore expect.
     private var answers: OnboardingAnswers {
         OnboardingAnswers(
-            lifeGoals: Array(selectedLifeGoals),
+            lifeGoals: selectedLifeGoals,
             stressLevel: selectedStressLevel,
-            challengeAreas: Array(selectedChallengeArea),
-            helpsBest: Array(selectedHelpsBest)
+            challengeAreas: selectedChallengeAreas,
+            helpsBest: selectedHelpsBest
         )
     }
 
@@ -113,8 +113,8 @@ final class OnBoardingViewModel {
         defer { regeneratingInsightIndex = nil }
 
         do {
-            // Passing every current insight keeps the new one from repeating any of them.
-            let replacement = try await foundationModelService.generateInsight(from: answers, avoiding: currentInsights)
+            // Passing every current insight keeps the new one from repeating any of them; the same focus keeps it in the user's ranked order.
+            let replacement = try await foundationModelService.generateInsight(from: answers, avoiding: currentInsights, focusingOn: index)
             var updatedInsights = currentInsights
             updatedInsights[index] = replacement
             insights = OnboardingInsights(insights: updatedInsights)
@@ -163,50 +163,72 @@ final class OnBoardingViewModel {
         }
     }
 
-    /// Selects the goal, or deselects it if it's already picked.
+    /// Picks the goal as the next most important, or unpicks it if it's already picked.
     func toggleLifeGoal(_ goal: LifeGoal) {
-        if selectedLifeGoals.contains(goal) {
-            selectedLifeGoals.remove(goal)
-        } else if selectedLifeGoals.count < Self.maxSelections {
-            selectedLifeGoals.insert(goal)
-        }
+        Self.toggleRanked(goal, in: &selectedLifeGoals)
+    }
+
+    /// The goal's importance from 1 to 3, or nil if it isn't picked.
+    func rank(of goal: LifeGoal) -> Int? {
+        Self.rank(of: goal, in: selectedLifeGoals)
     }
 
     /// False once the max is reached, except for goals already picked (so they can be unpicked).
     func canSelectLifeGoal(_ goal: LifeGoal) -> Bool {
-        selectedLifeGoals.contains(goal) || selectedLifeGoals.count < Self.maxSelections
+        Self.canSelect(goal, in: selectedLifeGoals)
     }
-    
+
     /// Selects the stress level
     func selectStressLevel(_ level: StressLevel) {
         selectedStressLevel = level
     }
-    
-    /// Selects a challenge area, or deselects it if it's already picked.
+
+    /// Picks the challenge area as the next most important, or unpicks it if it's already picked.
     func toggleChallengeArea(_ area: ChallengeArea) {
-        if selectedChallengeArea.contains(area) {
-            selectedChallengeArea.remove(area)
-        } else if selectedChallengeArea.count < Self.maxSelections {
-            selectedChallengeArea.insert(area)
-        }
+        Self.toggleRanked(area, in: &selectedChallengeAreas)
+    }
+
+    /// The challenge area's importance from 1 to 3, or nil if it isn't picked.
+    func rank(of area: ChallengeArea) -> Int? {
+        Self.rank(of: area, in: selectedChallengeAreas)
     }
 
     /// False once the max is reached, except for areas already picked (so they can be unpicked).
     func canSelectChallengeArea(_ area: ChallengeArea) -> Bool {
-        selectedChallengeArea.contains(area) || selectedChallengeArea.count < Self.maxSelections
+        Self.canSelect(area, in: selectedChallengeAreas)
     }
 
-    /// Selects a helps-best option, or deselects it if it's already picked.
+    /// Picks the helps-best option as the next most important, or unpicks it if it's already picked.
     func toggleHelpsBest(_ item: HelpsBest) {
-        if selectedHelpsBest.contains(item) {
-            selectedHelpsBest.remove(item)
-        } else if selectedHelpsBest.count < Self.maxSelections {
-            selectedHelpsBest.insert(item)
-        }
+        Self.toggleRanked(item, in: &selectedHelpsBest)
+    }
+
+    /// The helps-best option's importance from 1 to 3, or nil if it isn't picked.
+    func rank(of item: HelpsBest) -> Int? {
+        Self.rank(of: item, in: selectedHelpsBest)
     }
 
     /// False once the max is reached, except for options already picked (so they can be unpicked).
     func canSelectHelpsBest(_ item: HelpsBest) -> Bool {
-        selectedHelpsBest.contains(item) || selectedHelpsBest.count < Self.maxSelections
+        Self.canSelect(item, in: selectedHelpsBest)
+    }
+
+    // The three multi-pick questions share these; a list's order is its ranking, so the first pick is number 1.
+
+    /// Adds the option at the end of the ranking, or removes it so the picks after it move up one.
+    private static func toggleRanked<Option: Equatable>(_ option: Option, in picks: inout [Option]) {
+        if let index = picks.firstIndex(of: option) {
+            picks.remove(at: index)
+        } else if picks.count < maxSelections {
+            picks.append(option)
+        }
+    }
+
+    private static func rank<Option: Equatable>(of option: Option, in picks: [Option]) -> Int? {
+        picks.firstIndex(of: option).map { $0 + 1 }
+    }
+
+    private static func canSelect<Option: Equatable>(_ option: Option, in picks: [Option]) -> Bool {
+        picks.contains(option) || picks.count < maxSelections
     }
 }

@@ -3,11 +3,11 @@ import Foundation
 protocol DailyThoughtServicing {
     func savedTodaysThought(uid: String) -> DailyThought?
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought
-    func prepareUpcomingThoughts(uid: String, insights: [SavedInsight]) async throws
+    func prepareNextThought(uid: String, insights: [SavedInsight]) async throws
     func recordReflection(on savedInsight: SavedInsight, uid: String)
 }
 
-/// Writes the user's daily thoughts with the on-device model a few at a time, hands out one per day, and keeps them on the device.
+/// Writes the user's daily thoughts with the on-device model one day ahead, hands out one per day, and keeps them on the device.
 final class DailyThoughtService: DailyThoughtServicing {
 
     private let foundationModelService: FoundationModelServicing
@@ -22,7 +22,7 @@ final class DailyThoughtService: DailyThoughtServicing {
     /// How many of the user's latest reflections to keep and show the model.
     private static let reflectionNoteLimit = 5
 
-    /// The batch being written right now, so Home's two callers share it instead of running the model twice.
+    /// The thought being written right now, so Home's two callers share it instead of running the model twice.
     private var generationTask: Task<Void, Error>?
 
     init(foundationModelService: FoundationModelServicing, storage: ThoughtStorage) {
@@ -39,14 +39,14 @@ final class DailyThoughtService: DailyThoughtServicing {
         return thought
     }
 
-    /// Takes the next waiting thought for today, writing a new batch first if none are waiting.
+    /// Takes the waiting thought for today, writing one first if none is waiting.
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought {
         if let thought = savedTodaysThought(uid: uid) { return thought }
-        try await prepareUpcomingThoughts(uid: uid, insights: insights)
+        try await prepareNextThought(uid: uid, insights: insights)
 
         var saved = storage.load(uid: uid)
-        guard !saved.upcomingThoughts.isEmpty else { throw FoundationModelError.emptyResponse }
-        let thought = saved.upcomingThoughts.removeFirst()
+        guard let thought = saved.nextThought else { throw FoundationModelError.emptyResponse }
+        saved.nextThought = nil
         saved.todaysThought = thought
         saved.todaysThoughtDate = .now
         saved.recentThoughtTexts = Array((saved.recentThoughtTexts + [thought.thought]).suffix(Self.recentThoughtLimit))
@@ -54,46 +54,46 @@ final class DailyThoughtService: DailyThoughtServicing {
         return thought
     }
 
-    /// Writes a new batch if none are waiting, so tomorrow's thought is ready without a wait.
-    func prepareUpcomingThoughts(uid: String, insights: [SavedInsight]) async throws {
+    /// Writes the next thought if none is waiting, so tomorrow's is ready without a wait.
+    func prepareNextThought(uid: String, insights: [SavedInsight]) async throws {
         // Insights the user wrote are left out, so their own words never reach the model.
         let modelInsights = insights.filter { !$0.isUserWritten }
-        guard storage.load(uid: uid).upcomingThoughts.isEmpty, !modelInsights.isEmpty else { return }
+        guard storage.load(uid: uid).nextThought == nil, !modelInsights.isEmpty else { return }
         if let generationTask {
             return try await generationTask.value
         }
-        let task = Task { try await generateBatch(uid: uid, insights: modelInsights) }
+        let task = Task { try await generateNextThought(uid: uid, insights: modelInsights) }
         generationTask = task
         defer { generationTask = nil }
         try await task.value
     }
 
-    /// Notes which insight was reflected on and drops the waiting thoughts, so the next batch is written with it in mind.
+    /// Notes which insight was reflected on and drops the waiting thought, so the next one is written with it in mind.
     func recordReflection(on savedInsight: SavedInsight, uid: String) {
         // A user-written insight's reminder is the user's own words, so it isn't noted for the model.
         guard !savedInsight.isUserWritten else { return }
         var saved = storage.load(uid: uid)
         let note = ReflectionNote(insightReminder: savedInsight.insight.reminder)
         saved.reflectionNotes = Array((saved.reflectionNotes + [note]).suffix(Self.reflectionNoteLimit))
-        saved.upcomingThoughts = []
+        saved.nextThought = nil
         // Losing a note only makes future thoughts a little less personal, so it's not worth an alert.
         try? storage.save(saved, uid: uid)
     }
 
-    private func generateBatch(uid: String, insights: [SavedInsight]) async throws {
+    private func generateNextThought(uid: String, insights: [SavedInsight]) async throws {
         let before = storage.load(uid: uid)
-        let generated = try await foundationModelService.generateDailyThoughts(
+        let thought = try await foundationModelService.generateDailyThought(
             from: insights,
             reflections: before.reflectionNotes,
             avoiding: Array(before.recentThoughtTexts.suffix(Self.recentThoughtsInPrompt))
         )
 
         var saved = storage.load(uid: uid)
-        // A reflection saved while the model was writing makes this batch out of date, so leave the queue empty to write a fresh one.
+        // A reflection saved while the model was writing makes this thought out of date, so leave it unset to write a fresh one.
         guard saved.reflectionNotes == before.reflectionNotes else { return }
-        var seenTexts = Set(saved.recentThoughtTexts.map(Self.normalized))
-        // Drops exact repeats of recent thoughts and of each other, since the model sometimes ignores the prompt.
-        saved.upcomingThoughts = generated.filter { seenTexts.insert(Self.normalized($0.thought)).inserted }
+        // Drops an exact repeat of a recent thought, since the model sometimes ignores the prompt.
+        guard !saved.recentThoughtTexts.map(Self.normalized).contains(Self.normalized(thought.thought)) else { return }
+        saved.nextThought = thought
         try storage.save(saved, uid: uid)
     }
 
@@ -108,7 +108,7 @@ final class DailyThoughtService: DailyThoughtServicing {
 final class PreviewDailyThoughtService: DailyThoughtServicing {
     func savedTodaysThought(uid: String) -> DailyThought? { nil }
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought { .preview }
-    func prepareUpcomingThoughts(uid: String, insights: [SavedInsight]) async throws {}
+    func prepareNextThought(uid: String, insights: [SavedInsight]) async throws {}
     func recordReflection(on savedInsight: SavedInsight, uid: String) {}
 }
 #endif

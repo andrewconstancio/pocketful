@@ -8,13 +8,16 @@ struct TodaysThoughtView: View {
         VStack(alignment: .leading, spacing: 8) {
             heading
             
-            if let thought = homeViewModel.todaysThought {
-                thoughtContent(thought)
-            } else if !homeViewModel.hasLoadedTodaysThought {
-                TodaysThoughtPlaceholderView()
-                    .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                        width * 2 / 3
-                    }
+            Group {
+                if let thought = homeViewModel.todaysThought {
+                    TodaysThoughtTextView(text: thought.thought, typesOut: homeViewModel.isTodaysThoughtNew)
+                } else if !homeViewModel.hasLoadedTodaysThought {
+                    TodaysThoughtPlaceholderView()
+                }
+            }
+            // Narrower than the card so the text doesn't run over the flower.
+            .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
+                width * 2 / 3
             }
 
             Spacer().frame(height: 20)
@@ -47,39 +50,6 @@ struct TodaysThoughtView: View {
         }
     }
     
-    private func thoughtContent(_ thought: DailyThought) -> some View {
-        VStack(alignment: .leading, spacing: 20) {
-            TodaysThoughtTextView(text: thought.thought, typesOut: homeViewModel.isTodaysThoughtNew)
-                // Narrower than the card so the text doesn't run over the flower.
-                .containerRelativeFrame(.horizontal, alignment: .leading) { width, _ in
-                    width * 2 / 3
-                }
-
-            section(title: "Why this matters to you") {
-                Text(thought.context)
-                    .font(.system(size: 15))
-            }
-
-            section(title: "Reflection prompt") {
-                Text(thought.reflectionPrompt)
-                    .font(FontManager.CormorantGaramond.medium.font(size: 20))
-            }
-        }
-    }
-
-    private func section(title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: 13))
-                .fontWeight(.medium)
-                .foregroundStyle(.textPrimary.opacity(0.6))
-
-            content()
-                .foregroundStyle(.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
     private var actionButtons: some View {
         HStack(spacing: 12) {
             // Bookmark button

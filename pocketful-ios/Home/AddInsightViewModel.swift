@@ -39,12 +39,15 @@ final class AddInsightViewModel {
     /// Cached after the first fetch so generating again doesn't re-read Firestore.
     private var onboardingAnswers: OnboardingAnswers?
 
-    /// The last insight the AI put in the form, to tell whether the user changed it before saving.
-    private var generatedInsight: Insight?
+    /// Every insight the AI wrote in this sheet, so tapping generate again gives something new; the last one is what's in the form.
+    private var generatedInsights: [Insight] = []
+
+    /// How many times to ask the model before accepting an insight whose reminder the user already has.
+    private static let maxGenerationAttempts = 3
 
     /// True unless the form still holds exactly what the AI wrote, since any edit puts the user's own words in it.
     private var isUserWritten: Bool {
-        guard let generatedInsight else { return true }
+        guard let generatedInsight = generatedInsights.last else { return true }
         return trimmed(reminder) != trimmed(generatedInsight.reminder)
             || trimmed(insightBody) != trimmed(generatedInsight.body)
             || trimmed(reflectionPrompt) != trimmed(generatedInsight.reflectionPrompt)
@@ -88,10 +91,8 @@ final class AddInsightViewModel {
                 activeAlert = AlertContext.customError("We couldn't find your onboarding answers to base an insight on.")
                 return
             }
-            // Insights the user wrote are left out, so their own words never reach the model.
-            let modelInsights = existingInsights.filter { !$0.isUserWritten }.map(\.insight)
-            let insight = try await foundationModelService.generateInsight(from: onboardingAnswers, avoiding: modelInsights)
-            generatedInsight = insight
+            let insight = try await generateNewInsight(from: onboardingAnswers)
+            generatedInsights.append(insight)
             reminder = insight.reminder
             insightBody = insight.body
             reflectionPrompt = insight.reflectionPrompt
@@ -102,6 +103,22 @@ final class AddInsightViewModel {
         } catch {
             activeAlert = AlertContext.customError("We couldn't write an insight right now. Please try again.")
         }
+    }
+
+    /// Asks the model again when it repeats a reminder the user already has; the check runs on the device, so typed insights still never reach the model.
+    private func generateNewInsight(from answers: OnboardingAnswers) async throws -> Insight {
+        let takenReminders = Set((existingInsights.map(\.insight) + generatedInsights).map { normalized($0.reminder) })
+        // Insights the user wrote are left out, so their own words never reach the model.
+        var avoided = existingInsights.filter { !$0.isUserWritten }.map(\.insight) + generatedInsights
+
+        var insight = try await foundationModelService.generateInsight(from: answers, avoiding: avoided, focusingOn: nil)
+        var attempts = 1
+        while takenReminders.contains(normalized(insight.reminder)), attempts < Self.maxGenerationAttempts {
+            avoided.append(insight)
+            insight = try await foundationModelService.generateInsight(from: answers, avoiding: avoided, focusingOn: nil)
+            attempts += 1
+        }
+        return insight
     }
 
     /// Saves the form to Firestore; returns true if it worked, so the sheet knows to close.
@@ -134,5 +151,10 @@ final class AddInsightViewModel {
 
     private func trimmed(_ text: String) -> String {
         text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    /// Lowercased and trimmed, so "Slow down" and "slow down " count as the same reminder.
+    private func normalized(_ text: String) -> String {
+        trimmed(text).lowercased()
     }
 }

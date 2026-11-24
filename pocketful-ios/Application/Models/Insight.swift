@@ -12,7 +12,10 @@ struct SavedInsight: Identifiable, Equatable, Hashable {
 /// The insights the model creates from the onboarding answers.
 @Generable
 struct OnboardingInsights {
-    @Guide(description: "Positive reminders the user can think about throughout the day.", .count(3))
+    /// How many insights onboarding makes; the `.count(3)` below must match it.
+    static let insightCount = 3
+
+    @Guide(description: "Positive reminders the user can think about throughout the day, in the order of the focuses given.", .count(3))
     let insights: [Insight]
 }
 

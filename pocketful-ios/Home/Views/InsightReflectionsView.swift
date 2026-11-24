@@ -76,6 +76,7 @@ struct InsightReflectionsView: View {
                 .id(reflection.id)
             }
         }
+        .padding(.top, 6)
     }
 
     /// Asks for confirmation before deleting, so a stray tap can't remove a reflection.

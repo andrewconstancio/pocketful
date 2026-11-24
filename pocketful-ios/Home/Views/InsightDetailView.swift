@@ -76,7 +76,7 @@ struct InsightDetailView: View {
     private var header: some View {
         HStack(spacing: 8) {
             LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
-                .frame(width: 50, height: 50)
+                .frame(width: 60, height: 60)
                 .scaleEffect(insight.icon.lottieScale)
 
             Text(insight.reminder)

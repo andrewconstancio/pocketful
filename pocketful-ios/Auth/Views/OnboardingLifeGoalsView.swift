@@ -18,7 +18,7 @@ struct OnboardingLifeGoalsView: View {
                     ForEach(LifeGoal.allCases) { goal in
                         LifeGoalRow(
                             goal: goal,
-                            isSelected: viewModel.selectedLifeGoals.contains(goal),
+                            rank: viewModel.rank(of: goal),
                             isDisabled: !viewModel.canSelectLifeGoal(goal)
                         ) {
                             HapticManager.shared.triggerImpact(style: .light)
@@ -40,18 +40,23 @@ struct OnboardingLifeGoalsView: View {
     }
 
     private var subtitle: some View {
-        Text("Select up to \(OnBoardingViewModel.maxSelections).")
+        Text("Pick up to \(OnBoardingViewModel.maxSelections), most important first.")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }
 }
 
-/// One tappable option with an icon, title, and a checkmark when selected.
+/// One tappable option with an icon, title, and its importance number when picked.
 private struct LifeGoalRow: View {
     let goal: LifeGoal
-    let isSelected: Bool
+
+    /// The option's importance from 1 to 3, or nil if it isn't picked.
+    let rank: Int?
+
     let isDisabled: Bool
     let onTap: () -> Void
+
+    private var isSelected: Bool { rank != nil }
 
     var body: some View {
         Button(action: onTap) {
@@ -69,8 +74,8 @@ private struct LifeGoalRow: View {
 
                 Spacer()
 
-                if isSelected {
-                    checkmark
+                if let rank {
+                    OnboardingRankBadge(rank: rank)
                 }
             }
             .padding(.horizontal, 20)
@@ -88,16 +93,8 @@ private struct LifeGoalRow: View {
         .buttonStyle(.plain)
         .disabled(isDisabled)
         .opacity(isDisabled ? 0.5 : 1)
-        .animation(.easeInOut(duration: 0.15), value: isSelected)
+        .animation(.easeInOut(duration: 0.15), value: rank)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-
-    private var checkmark: some View {
-        Image(systemName: "checkmark")
-            .font(.system(size: 14, weight: .bold))
-            .foregroundStyle(.textOffWhite)
-            .frame(width: 30, height: 30)
-            .background(Circle().fill(.appGreen))
     }
 }
 

@@ -17,7 +17,7 @@ struct OnboardingChallengingMostView: View {
                     ForEach(ChallengeArea.allCases) { area in
                         ChallengeRow(
                             area: area,
-                            isSelected: viewModel.selectedChallengeArea.contains(area),
+                            rank: viewModel.rank(of: area),
                             isDisabled: !viewModel.canSelectChallengeArea(area)
                         ) {
                             HapticManager.shared.triggerImpact(style: .light)
@@ -39,17 +39,23 @@ struct OnboardingChallengingMostView: View {
     }
 
     private var subtitle: some View {
-        Text("Select up to \(OnBoardingViewModel.maxSelections).")
+        Text("Pick up to \(OnBoardingViewModel.maxSelections), most important first.")
             .foregroundStyle(.textPrimary.opacity(0.7))
             .font(FontManager.CormorantGaramond.regular.font(size: 20))
     }
 }
 
+/// One tappable option with a leaf when picked and its importance number.
 private struct ChallengeRow: View {
     let area: ChallengeArea
-    let isSelected: Bool
+
+    /// The option's importance from 1 to 3, or nil if it isn't picked.
+    let rank: Int?
+
     let isDisabled: Bool
     let onTap: () -> Void
+
+    private var isSelected: Bool { rank != nil }
 
     var body: some View {
         Button(action: onTap) {
@@ -70,8 +76,8 @@ private struct ChallengeRow: View {
                 
                 Spacer()
                 
-                if isSelected {
-                    checkmark
+                if let rank {
+                    OnboardingRankBadge(rank: rank)
                 }
             }
             .padding(.horizontal, 20)
@@ -89,15 +95,8 @@ private struct ChallengeRow: View {
         .buttonStyle(.plain)
         .disabled(isDisabled)
         .opacity(isDisabled ? 0.5 : 1)
+        .animation(.easeInOut(duration: 0.15), value: rank)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-    
-    private var checkmark: some View {
-        Image(systemName: "checkmark")
-            .font(.system(size: 14, weight: .bold))
-            .foregroundStyle(.textOffWhite)
-            .frame(width: 30, height: 30)
-            .background(Circle().fill(.appGreen))
     }
     
     private var emptyCircle: some View {

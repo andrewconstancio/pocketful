@@ -15,16 +15,50 @@ struct OnboardingAnswers: Codable {
         case helpsBest = "helps_best"
     }
 
-    /// The answers as plain lines of text for the prompt.
-    var promptText: String {
+    /// The prompt for onboarding's insights: the answers, then one focus per insight in the user's ranked order.
+    var insightsPromptText: String {
+        var lines = [answersText, "", "Focuses, in order:"]
+        for index in 0..<OnboardingInsights.insightCount {
+            lines.append("\(index + 1). \(focusText(forInsightAt: index))")
+        }
+        return lines.joined(separator: "\n")
+    }
+
+    /// The prompt for one insight; with a `focusIndex` it centers on the answers ranked at that position (0 is each list's #1 pick).
+    func promptText(focusingOn focusIndex: Int?) -> String {
+        guard let focusIndex else { return answersText }
+        return answersText + "\n\nFocus: \(focusText(forInsightAt: focusIndex))"
+    }
+
+    /// The answers as plain lines of text; each list is in the order the user ranked it.
+    private var answersText: String {
         var lines: [String] = []
-        lines.append("Life goals: \(lifeGoals.map(\.title).joined(separator: ", "))")
+        lines.append("Life goals, most important first: \(lifeGoals.map(\.title).joined(separator: ", "))")
         if let stressLevel {
             lines.append("Stress level: \(stressLevel.title)")
         }
-        lines.append("Challenging most: \(challengeAreas.map(\.title).joined(separator: ", "))")
-        lines.append("Helps them feel best: \(helpsBest.map(\.title).joined(separator: ", "))")
+        lines.append("Challenging most, most important first: \(challengeAreas.map(\.title).joined(separator: ", "))")
+        lines.append("Helps them feel best, most important first: \(helpsBest.map(\.title).joined(separator: ", "))")
         return lines.joined(separator: "\n")
+    }
+
+    /// What one insight should center on: the answer ranked at `index` in each list, or the top answer when a list is shorter.
+    private func focusText(forInsightAt index: Int) -> String {
+        var parts: [String] = []
+        if let goal = Self.answer(rankedAt: index, in: lifeGoals) {
+            parts.append("life goal \"\(goal.title)\"")
+        }
+        if let area = Self.answer(rankedAt: index, in: challengeAreas) {
+            parts.append("challenge \"\(area.title)\"")
+        }
+        if let item = Self.answer(rankedAt: index, in: helpsBest) {
+            parts.append("what helps \"\(item.title)\"")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private static func answer<Answer>(rankedAt index: Int, in answers: [Answer]) -> Answer? {
+        answers.indices.contains(index) ? answers[index] : answers.first
     }
 }
 

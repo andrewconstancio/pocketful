@@ -12,8 +12,8 @@ enum FoundationModelError: Error {
 protocol FoundationModelServicing {
     var isAvailable: Bool { get }
     func generateInsights(from answers: OnboardingAnswers) async throws -> OnboardingInsights
-    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight
-    func generateDailyThoughts(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> [DailyThought]
+    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight], focusingOn focusIndex: Int?) async throws -> Insight
+    func generateDailyThought(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> DailyThought
 }
 
 final class FoundationModelService: FoundationModelServicing {
@@ -24,8 +24,10 @@ final class FoundationModelService: FoundationModelServicing {
         You are a warm, supportive wellness guide. Using the user's onboarding answers, \
         write thoughtful, in-depth insights about them, each with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
-        Each insight should connect one thing that challenges them, or their stress level, with one of their life goals, \
-        and each insight should use a different pairing. \
+        Write the insights in the order of the numbered focuses, and center each insight on its own focus, \
+        connecting that challenge, or their stress level, with that life goal. \
+        The focuses follow the order the user ranked their answers, so the first insight is about what matters most to them. \
+        If two focuses share an answer, write about a different side of it. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
@@ -36,20 +38,24 @@ final class FoundationModelService: FoundationModelServicing {
         write one thoughtful, in-depth insight about them, with a short reminder they can carry with them \
         throughout the day. Speak to them as "you". \
         Connect one thing that challenges them, or their stress level, with one of their life goals. \
+        If a focus is given, center the insight on it; otherwise connect answers that their existing insights don't already cover. \
         Use fresh, original wording that fits this person rather than common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
         """
     
-    private static let dailyThoughtsInstructions = """
-        You are a warm, supportive wellness guide. Write short daily thoughts for one person, \
+    private static let dailyThoughtInstructions = """
+        You are a warm, supportive wellness guide. Write one short daily thought for one person, \
         based on their numbered insights and the insights they've reflected on lately. Speak to them as "you". \
-        Each thought builds on one insight, and the thoughts should spread across different insights. \
-        When they've reflected on an insight lately, let some thoughts build on that insight. \
+        The thought builds on one insight. \
+        When they've reflected on an insight lately, the thought may build on that insight. \
         Use fresh, original wording that fits this person rather than famous quotes or common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
         Never give medical advice.
         """
+
+    /// How many existing insights to show the model when writing a new one.
+    private static let existingInsightsInPrompt = 8
 
     /// A higher temperature adds randomness, so the same answers don't always produce the same reminders.
     private static let insightsOptions = GenerationOptions(temperature: 0.9)
@@ -60,46 +66,41 @@ final class FoundationModelService: FoundationModelServicing {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
         let session = LanguageModelSession(model: model, instructions: Self.insightsInstructions)
-        let response = try await session.respond(to: answers.promptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
+        let response = try await session.respond(to: answers.insightsPromptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
         return OnboardingInsights(insights: response.content.insights.map(keepingFirstReminderPhrase))
     }
 
-    /// Writes one new insight, steering away from the reminders the user already has so it isn't a repeat.
-    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight {
+    /// Writes one new insight, steering away from the reminders the user already has; `focusIndex` centers it on the answers ranked at that position.
+    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight], focusingOn focusIndex: Int?) async throws -> Insight {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
-        var prompt = answers.promptText
+        var prompt = answers.promptText(focusingOn: focusIndex)
         if !existing.isEmpty {
-            prompt += "\n\nThey already have these reminders:\(existing.map(\.reminder).joined(separator: ", ")). Write about something different."
+            // Bodies are included because they name the answers each insight connects; only the latest few fit in the model's small context.
+            let existingLines = existing.suffix(Self.existingInsightsInPrompt).map { "- \($0.reminder): \($0.body)" }
+            prompt += "\n\nThey already have these insights, so write about something different:\n\(existingLines.joined(separator: "\n"))"
         }
         let session = LanguageModelSession(model: model, instructions: Self.singleInsightInstructions)
         let response = try await session.respond(to: prompt, generating: Insight.self, options: Self.insightsOptions)
         return keepingFirstReminderPhrase(response.content)
     }
 
-    /// Writes a small batch of thoughts from the user's insights and latest reflections, steering away from ones shown lately.
-    func generateDailyThoughts(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> [DailyThought] {
+    /// Writes one thought from the user's insights and latest reflections, steering away from ones shown lately.
+    func generateDailyThought(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> DailyThought {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
-        let session = LanguageModelSession(model: model, instructions: Self.dailyThoughtsInstructions)
-        let prompt = Self.dailyThoughtsPrompt(insights: insights, reflections: reflections, recentThoughts: recentThoughts)
-        let response = try await session.respond(to: prompt, generating: GeneratedThoughts.self, options: Self.insightsOptions)
+        let session = LanguageModelSession(model: model, instructions: Self.dailyThoughtInstructions)
+        let prompt = Self.dailyThoughtPrompt(insights: insights, reflections: reflections, recentThoughts: recentThoughts)
+        let generated = try await session.respond(to: prompt, generating: GeneratedThought.self, options: Self.insightsOptions).content
 
-        return response.content.thoughts.map { generated in
-            // The list in the prompt starts at 1; a number outside it just leaves the thought without a related insight.
-            let index = generated.insightNumber - 1
-            let relatedIDs = insights.indices.contains(index) ? [insights[index].id] : []
-            return DailyThought(
-                thought: generated.thought,
-                context: generated.context,
-                reflectionPrompt: generated.reflectionPrompt,
-                relatedInsightIDs: relatedIDs
-            )
-        }
+        // The list in the prompt starts at 1; a number outside it just leaves the thought without a related insight.
+        let index = generated.insightNumber - 1
+        let relatedIDs = insights.indices.contains(index) ? [insights[index].id] : []
+        return DailyThought(thought: generated.thought, relatedInsightIDs: relatedIDs)
     }
 
     /// Only names which insights were reflected on; what the user typed or recorded is never sent to the model.
-    private static func dailyThoughtsPrompt(insights: [SavedInsight], reflections: [ReflectionNote], recentThoughts: [String]) -> String {
+    private static func dailyThoughtPrompt(insights: [SavedInsight], reflections: [ReflectionNote], recentThoughts: [String]) -> String {
         var lines = ["Insights:"]
         for (index, savedInsight) in insights.enumerated() {
             lines.append("\(index + 1). \(savedInsight.insight.reminder): \(savedInsight.insight.body)")
@@ -108,7 +109,7 @@ final class FoundationModelService: FoundationModelServicing {
             lines.append("\nInsights they've reflected on lately: \(reflections.map(\.insightReminder).joined(separator: ", "))")
         }
         if !recentThoughts.isEmpty {
-            lines.append("\nThey've recently seen these thoughts, so write different ones: \(recentThoughts.joined(separator: " | "))")
+            lines.append("\nThey've recently seen these thoughts, so write a different one: \(recentThoughts.joined(separator: " | "))")
         }
         return lines.joined(separator: "\n")
     }
@@ -160,7 +161,7 @@ final class PreviewFoundationModelService: FoundationModelServicing {
         ])
     }
     
-    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight]) async throws -> Insight {
+    func generateInsight(from answers: OnboardingAnswers, avoiding existing: [Insight], focusingOn focusIndex: Int?) async throws -> Insight {
         if shouldFail { throw FoundationModelError.modelUnavailable }
         return Insight(
             reminder: "One thing at a time",
@@ -170,9 +171,9 @@ final class PreviewFoundationModelService: FoundationModelServicing {
         )
     }
 
-    func generateDailyThoughts(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> [DailyThought] {
+    func generateDailyThought(from insights: [SavedInsight], reflections: [ReflectionNote], avoiding recentThoughts: [String]) async throws -> DailyThought {
         if shouldFail { throw FoundationModelError.modelUnavailable }
-        return [.preview]
+        return .preview
     }
 }
 #endif
