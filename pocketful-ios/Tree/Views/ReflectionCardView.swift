@@ -14,9 +14,11 @@ struct ReflectionCardView: View {
                     Image(systemName: "sun.max")
                         .font(.system(size: 18))
                         .foregroundStyle(.flowerCenter)
-                    Text(reflection.createdAt.formatted(.dateTime.month(.abbreviated).day()))
+                    Text(reflection.createdAt.formatted(.dateTime.month(.abbreviated).day().hour().minute()))
                         .foregroundStyle(.textPrimary)
                         .font(.system(size: 17, weight: .medium))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                 }
                 Text("Reflection added")
                     .foregroundStyle(.appGreen)
