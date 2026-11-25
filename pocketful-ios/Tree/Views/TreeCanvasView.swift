@@ -6,8 +6,6 @@ struct TreeCanvasView: View, Animatable {
     var camera: TreeCamera
     let onOpenReflection: (TreeReflection) -> Void
 
-    /// Below this zoom the cards are hidden, so the whole tree reads cleanly.
-    private static let cardsAppearScale: CGFloat = 1.4
     /// How wide a card is in tree units, about one and a half leaves, so it zooms with the tree like a leaf does.
     private static let cardWidthInTreeUnits: CGFloat = 40
 
@@ -71,8 +69,6 @@ struct TreeCanvasView: View, Animatable {
 
     private func cards(viewport: TreeViewport) -> some View {
         let cardScale = Self.cardWidthInTreeUnits * viewport.pointsPerUnit / ReflectionCardView.size.width
-        // Fades in over the first bit of zooming so cards don't pop in.
-        let opacity = min(1, (camera.scale - Self.cardsAppearScale) / 0.4)
         return ForEach(cardPlacements(viewport: viewport, cardScale: cardScale)) { placement in
             Button {
                 HapticManager.shared.triggerImpact()
@@ -82,7 +78,6 @@ struct TreeCanvasView: View, Animatable {
             }
             .buttonStyle(.plain)
             .scaleEffect(cardScale)
-            .opacity(opacity)
             .position(x: placement.frame.midX, y: placement.frame.midY)
         }
     }
@@ -90,7 +85,6 @@ struct TreeCanvasView: View, Animatable {
     /// One card per reflection on screen, centered on the branch it grew with. Newest reflections are placed first,
     /// and any card that would overlap one already placed is skipped.
     private func cardPlacements(viewport: TreeViewport, cardScale: CGFloat) -> [CardPlacement] {
-        guard camera.scale > Self.cardsAppearScale else { return [] }
         let screen = CGRect(origin: .zero, size: viewport.size)
         let cardSize = CGSize(width: ReflectionCardView.size.width * cardScale, height: ReflectionCardView.size.height * cardScale)
         let edgePadding: CGFloat = 12
