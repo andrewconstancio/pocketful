@@ -1,3 +1,4 @@
+import Foundation
 import FoundationModels
 
 /// An insight that has been saved, plus its Firestore document ID.
@@ -61,6 +62,30 @@ extension Insight: Decodable {
             reflectionPrompt: try container.decodeIfPresent(String.self, forKey: .reflectionPrompt) ?? "",
             icon: InsightIcon(rawValue: iconName) ?? .sparkles
         )
+    }
+}
+
+extension Insight {
+
+    /// Words too common to tell two reminders apart, so "Take a walk" and "Take a breath" don't count as similar.
+    private static let commonWords: Set<String> = [
+        "and", "for", "the", "with", "you", "your", "yourself", "more", "less", "each", "every",
+        "get", "let", "take", "make", "keep", "find", "give", "try", "start", "stay", "allow"
+    ]
+
+    /// True when the reminders match or share a meaningful word, like "Breathe slowly" and "Breathe deeply".
+    func hasSimilarReminder(to other: Insight) -> Bool {
+        // The exact check catches reminders made only of common words, like "Be you", which have no key words.
+        let sameReminder = reminder.lowercased().trimmingCharacters(in: .whitespaces) == other.reminder.lowercased().trimmingCharacters(in: .whitespaces)
+        return sameReminder || !reminderKeyWords.isDisjoint(with: other.reminderKeyWords)
+    }
+
+    /// The reminder's meaningful words, cut to their first four letters so "slow" and "slowly" match.
+    private var reminderKeyWords: Set<String> {
+        let words = reminder.lowercased().split { !$0.isLetter }.map(String.init)
+        return Set(words
+            .filter { $0.count >= 3 && !Self.commonWords.contains($0) }
+            .map { String($0.prefix(4)) })
     }
 }
 

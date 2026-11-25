@@ -117,7 +117,7 @@ private struct InsightRow: View {
         } label: {
             HStack(spacing: 12) {
                 LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
-                    .frame(width: 52, height: 52)
+                    .frame(width: 45, height: 45)
                     .scaleEffect(insight.icon.lottieScale)
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -146,7 +146,7 @@ private struct InsightRow: View {
                     .font(.system(size: 20))
                     .foregroundStyle(.textPrimary)
             }
-            .padding(24)
+            .padding(18)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
                     .fill(.appGreen.opacity(0.1))

@@ -66,7 +66,10 @@ final class FoundationModelService: FoundationModelServicing {
         guard isAvailable else { throw FoundationModelError.modelUnavailable }
 
         let session = LanguageModelSession(model: model, instructions: Self.insightsInstructions)
-        let response = try await session.respond(to: answers.insightsPromptText, generating: OnboardingInsights.self, options: Self.insightsOptions)
+        
+        print("answers.promptAnswersText \(answers.promptAnswersText)")
+        
+        let response = try await session.respond(to: answers.promptAnswersText, generating: OnboardingInsights.self, options: Self.insightsOptions)
         return OnboardingInsights(insights: response.content.insights.map(keepingFirstReminderPhrase))
     }
 
@@ -78,7 +81,7 @@ final class FoundationModelService: FoundationModelServicing {
         if !existing.isEmpty {
             // Bodies are included because they name the answers each insight connects; only the latest few fit in the model's small context.
             let existingLines = existing.suffix(Self.existingInsightsInPrompt).map { "- \($0.reminder): \($0.body)" }
-            prompt += "\n\nThey already have these insights, so write about something different:\n\(existingLines.joined(separator: "\n"))"
+            prompt += "\n\nThey already have these insights, so write about something different, with a reminder that uses none of their reminders' key words:\n\(existingLines.joined(separator: "\n"))"
         }
         let session = LanguageModelSession(model: model, instructions: Self.singleInsightInstructions)
         let response = try await session.respond(to: prompt, generating: Insight.self, options: Self.insightsOptions)

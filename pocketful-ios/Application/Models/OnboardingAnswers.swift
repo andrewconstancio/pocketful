@@ -15,23 +15,14 @@ struct OnboardingAnswers: Codable {
         case helpsBest = "helps_best"
     }
 
-    /// The prompt for onboarding's insights: the answers, then one focus per insight in the user's ranked order.
-    var insightsPromptText: String {
-        var lines = [answersText, "", "Focuses, in order:"]
-        for index in 0..<OnboardingInsights.insightCount {
-            lines.append("\(index + 1). \(focusText(forInsightAt: index))")
-        }
-        return lines.joined(separator: "\n")
-    }
-
     /// The prompt for one insight; with a `focusIndex` it centers on the answers ranked at that position (0 is each list's #1 pick).
     func promptText(focusingOn focusIndex: Int?) -> String {
-        guard let focusIndex else { return answersText }
-        return answersText + "\n\nFocus: \(focusText(forInsightAt: focusIndex))"
+        guard let focusIndex else { return promptAnswersText }
+        return promptAnswersText + "\n\nFocus: \(focusText(forInsightAt: focusIndex))"
     }
 
     /// The answers as plain lines of text; each list is in the order the user ranked it.
-    private var answersText: String {
+   var promptAnswersText: String {
         var lines: [String] = []
         lines.append("Life goals, most important first: \(lifeGoals.map(\.title).joined(separator: ", "))")
         if let stressLevel {
