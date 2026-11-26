@@ -53,9 +53,17 @@ final class AddInsightViewModel {
             || trimmed(reflectionPrompt) != trimmed(generatedInsight.reflectionPrompt)
     }
 
-    /// Reminder and body are both required.
+    /// How many insights the user already has, for the "5 / 8" indicator.
+    var insightCount: Int { existingInsights.count }
+
+    /// True once the user already has the most insights allowed.
+    var hasReachedInsightLimit: Bool {
+        insightCount >= Constants.Limits.maxInsights
+    }
+
+    /// Reminder and body are both required, and the user must have room for another insight.
     var canSave: Bool {
-        !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating
+        !trimmed(reminder).isEmpty && !trimmed(insightBody).isEmpty && !isSaving && !isGenerating && !hasReachedInsightLimit
     }
 
     init(
@@ -127,6 +135,13 @@ final class AddInsightViewModel {
 
     /// Saves the form to Firestore; returns true if it worked, so the sheet knows to close.
     func saveInsight() async -> Bool {
+        guard !hasReachedInsightLimit else {
+            activeAlert = AppAlert(
+                title: "Insight limit reached",
+                message: "You can have up to \(Constants.Limits.maxInsights) insights."
+            )
+            return false
+        }
         guard canSave else { return false }
         guard let uid = authService.currentUserId else {
             activeAlert = AlertContext.unknownError

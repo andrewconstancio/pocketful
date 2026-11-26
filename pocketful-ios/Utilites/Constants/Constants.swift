@@ -12,4 +12,9 @@ enum Constants {
         static let journalEntries = "journal_entries"
         static let userWrittenField = "user_written"
     }
+
+    enum Limits {
+        /// The most insights a user can have, counting the ones made at onboarding.
+        static let maxInsights = 8
+    }
 }

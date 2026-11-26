@@ -18,6 +18,8 @@ struct AddInsightView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
+                    insightLimitIndicator
+
                     generateButton
 
                     iconPicker
@@ -81,7 +83,27 @@ struct AddInsightView: View {
             .background(RoundedRectangle(cornerRadius: 24).fill(.appGreen.opacity(0.1)))
             .overlay(RoundedRectangle(cornerRadius: 24).stroke(.appGreen.opacity(0.4), lineWidth: 1))
         }
-        .disabled(viewModel.isGenerating || viewModel.isSaving)
+        .disabled(viewModel.isGenerating || viewModel.isSaving || viewModel.hasReachedInsightLimit)
+    }
+
+    /// A "5 / 8" pill with a short note; it turns solid green and explains the limit once it's full.
+    private var insightLimitIndicator: some View {
+        HStack(spacing: 12) {
+            Text("\(viewModel.insightCount) / \(Constants.Limits.maxInsights)")
+                .font(FontManager.CormorantGaramond.bold.font(size: 18))
+                .foregroundStyle(viewModel.hasReachedInsightLimit ? Color.textOffWhite : Color.textPrimary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+                .background(Capsule().fill(.appGreen.opacity(viewModel.hasReachedInsightLimit ? 1 : 0.1)))
+
+            Text(viewModel.hasReachedInsightLimit
+                 ? "You've used all \(Constants.Limits.maxInsights) insights."
+                 : "insights used")
+                .foregroundStyle(.textPrimary.opacity(0.6))
+                .font(.system(size: 14))
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(viewModel.insightCount) of \(Constants.Limits.maxInsights) insights used")
     }
 
     /// A row of tappable icons; the chosen one gets a green circle.
