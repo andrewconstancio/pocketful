@@ -109,8 +109,8 @@ struct AddReflectionView: View {
     /// Saving indicator.
     private var savingIndicator: some View {
         VStack(spacing: 4) {
-            LottieView(animationName: "loading-reflection", loopMode: .loop, speed: 0.5)
-                .frame(width: 200, height: 200)
+            LottieView(animationName: "small-leaf", loopMode: .playOnce, speed: 1.0)
+                .frame(width: 70, height: 70)
             Text("Saving your reflection...")
                 .foregroundStyle(.textPrimary.opacity(0.7))
                 .font(.headline)

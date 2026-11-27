@@ -115,11 +115,11 @@ struct InsightDetailView: View {
         }
     }
 
-    /// The insight's icon and reminder.
+    /// The insight's icon beside its reminder, lined up with the first line so long reminders wrap underneath cleanly.
     private var header: some View {
-        HStack(spacing: 8) {
+        HStack(alignment: .top, spacing: 12) {
             LottieView(animationName: insight.icon.lottieName, loopMode: .loop, speed: 0.5, tint: .textPrimary)
-                .frame(width: 60, height: 60)
+                .frame(width: 44, height: 44)
                 .scaleEffect(insight.icon.lottieScale)
 
             Text(insight.reminder)
