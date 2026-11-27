@@ -74,13 +74,6 @@ final class HomeViewModel {
         }
     }
 
-    /// Writes tomorrow's thought in the background if none is waiting, like after a reflection.
-    func prepareNextThought() async {
-        guard let uid = authService.currentUserId else { return }
-        // A failure here is retried the next time Home appears, or when tomorrow's thought is picked.
-        try? await dailyThoughtService.prepareNextThought(uid: uid, insights: insights)
-    }
-
     private func showTodaysThought(_ thought: DailyThought) {
         todaysThought = thought
         hasLoadedTodaysThought = true

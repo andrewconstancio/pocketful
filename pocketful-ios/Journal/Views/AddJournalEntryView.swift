@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 /// A sheet for writing a journal entry about anything, not tied to an insight.
 struct AddJournalEntryView: View {
@@ -81,6 +82,11 @@ struct AddJournalEntryView: View {
             Text("New Entry")
                 .foregroundStyle(.textPrimary)
                 .font(FontManager.CormorantGaramond.bold.font(size: 34))
+                .overlay(alignment: .leading) {
+                    LottieView(animationName: "pencil-writing", loopMode: .loop, speed: 0.5)
+                        .frame(width: 50, height: 50)
+                        .offset(x: -50)
+                }
 
             Text("Write about anything on your mind today.")
                 .foregroundStyle(.textPrimary.opacity(0.7))

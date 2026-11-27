@@ -51,7 +51,7 @@ final class FoundationModelService: FoundationModelServicing {
         When they've reflected on an insight lately, the thought may build on that insight. \
         Use fresh, original wording that fits this person rather than famous quotes or common sayings. \
         Only say positive, encouraging things: never criticize, warn, judge or point out what is wrong. \
-        Never give medical advice.
+        Never give medical advice. Keep this phrase as a short one to two sentences. 
         """
 
     /// How many existing insights to show the model when writing a new one.
