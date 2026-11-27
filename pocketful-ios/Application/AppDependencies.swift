@@ -12,6 +12,7 @@ final class AppDependencies {
     let reflectionsService: ReflectionsServicing
     let journalService: JournalServicing
     let dailyThoughtService: DailyThoughtServicing
+    let savedThoughtsService: SavedThoughtsServicing
     
     // MARK: - Stores
     
@@ -31,7 +32,8 @@ final class AppDependencies {
         insightsService: InsightsServicing = InsightsService(),
         reflectionsService: ReflectionsServicing = ReflectionsService(),
         journalService: JournalServicing = JournalService(),
-        dailyThoughtService: DailyThoughtServicing? = nil
+        dailyThoughtService: DailyThoughtServicing? = nil,
+        savedThoughtsService: SavedThoughtsServicing = SavedThoughtsService()
     ) {
         self.authService                = authService
         self.foundationModelService     = foundationModelService
@@ -44,6 +46,7 @@ final class AppDependencies {
             foundationModelService: foundationModelService,
             storage: ThoughtStorage()
         )
+        self.savedThoughtsService       = savedThoughtsService
         
         self.router                     = AppRouter()
         self.session                    = SessionStore(authService: authService, userService: userService)
@@ -64,8 +67,16 @@ final class AppDependencies {
         HomeViewModel(
             authService: authService,
             dailyThoughtService: dailyThoughtService,
+            savedThoughtsService: savedThoughtsService,
             insightsService: insightsService,
             reflectionsService: reflectionsService
+        )
+    }
+
+    func makeSavedThoughtsViewModel() -> SavedThoughtsViewModel {
+        SavedThoughtsViewModel(
+            authService: authService,
+            savedThoughtsService: savedThoughtsService
         )
     }
 

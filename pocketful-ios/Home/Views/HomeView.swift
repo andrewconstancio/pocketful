@@ -63,8 +63,14 @@ struct HomeView: View {
         .task(id: homeViewModel.hasLoadedInsights) {
             await homeViewModel.loadTodaysThought()
         }
+        // Rechecks the bookmark whenever a different thought shows.
+        .task(id: homeViewModel.todaysThought?.thought) {
+            await homeViewModel.loadTodaysThoughtSavedState()
+        }
         .onAppear {
             Task {
+                // Picks up a thought removed on the saved thoughts screen.
+                await homeViewModel.loadTodaysThoughtSavedState()
                 await homeViewModel.loadInsights()
                 await homeViewModel.loadReflectionActivity()
             }

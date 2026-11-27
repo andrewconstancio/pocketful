@@ -10,6 +10,7 @@ enum Constants {
         static let onboarding = "onboarding"
         static let reflections = "reflections"
         static let journalEntries = "journal_entries"
+        static let savedThoughts = "saved_thoughts"
         static let userWrittenField = "user_written"
     }
 

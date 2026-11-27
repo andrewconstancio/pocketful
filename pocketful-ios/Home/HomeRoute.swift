@@ -4,5 +4,6 @@ import SwiftUI
 enum HomeRoute: Hashable {
     case notifications
     case insightDetail(SavedInsight)
+    case savedThoughts
 }
 

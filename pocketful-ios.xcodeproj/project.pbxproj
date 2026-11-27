@@ -34,6 +34,7 @@
 		1C54F62330996E7300BF093F /* HomeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F62230996E6F00BF093F /* HomeRoute.swift */; };
 		1C54F6263099717700BF093F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C54F6253099717700BF093F /* ProfileView.swift */; };
 		1C67C770309A137200745118 /* InsightDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C76F309A137200745118 /* InsightDetailView.swift */; };
+		1CF0A0FA30B0000100AA0001 /* SavedThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F930B0000100AA0001 /* SavedThoughtsView.swift */; };
 		1C67C772309A200000745118 /* AddReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C771309A200000745118 /* AddReflectionView.swift */; };
 		1C67C773309A1CF900745118 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C772309A1CF500745118 /* Constants.swift */; };
 		1C67C77630A0FA9700745118 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1C67C77530A0FA9700745118 /* Lottie */; };
@@ -42,6 +43,7 @@
 		1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */; };
 		1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */; };
 		1CF0A0F230B0000100AA0001 /* InsightDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */; };
+		1CF0A0F830B0000100AA0001 /* SavedThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F730B0000100AA0001 /* SavedThoughtsViewModel.swift */; };
 		1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00530B0000100AA0001 /* Reflection.swift */; };
 		1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */; };
 		1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00130B0000100AA0001 /* ReflectionsService.swift */; };
@@ -107,7 +109,9 @@
 		1CB0A0013100000100AA0022 /* JournalRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0021 /* JournalRoute.swift */; };
 		1CB0A0013100000100AA0032 /* JournalItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0031 /* JournalItemRow.swift */; };
 		1CB0A0013100000100AA0202 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0201 /* JournalEntry.swift */; };
+		1CF0A0F430B0000100AA0001 /* SavedThought.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F330B0000100AA0001 /* SavedThought.swift */; };
 		1CB0A0013100000100AA0212 /* JournalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0211 /* JournalService.swift */; };
+		1CF0A0F630B0000100AA0001 /* SavedThoughtsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F530B0000100AA0001 /* SavedThoughtsService.swift */; };
 		1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0221 /* JournalItem.swift */; };
 		1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */; };
 		1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */; };
@@ -140,6 +144,7 @@
 		1C54F62230996E6F00BF093F /* HomeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoute.swift; sourceTree = "<group>"; };
 		1C54F6253099717700BF093F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		1C67C76F309A137200745118 /* InsightDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightDetailView.swift; sourceTree = "<group>"; };
+		1CF0A0F930B0000100AA0001 /* SavedThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedThoughtsView.swift; sourceTree = "<group>"; };
 		1C67C771309A200000745118 /* AddReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReflectionView.swift; sourceTree = "<group>"; };
 		1C67C772309A1CF500745118 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1C67C77930A0FAA500745118 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
@@ -147,6 +152,7 @@
 		1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsView.swift; sourceTree = "<group>"; };
 		1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsViewModel.swift; sourceTree = "<group>"; };
 		1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightDetailViewModel.swift; sourceTree = "<group>"; };
+		1CF0A0F730B0000100AA0001 /* SavedThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedThoughtsViewModel.swift; sourceTree = "<group>"; };
 		1CF0A00530B0000100AA0001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
 		1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReflectionViewModel.swift; sourceTree = "<group>"; };
 		1CF0A00130B0000100AA0001 /* ReflectionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionsService.swift; sourceTree = "<group>"; };
@@ -211,7 +217,9 @@
 		1CB0A0013100000100AA0021 /* JournalRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalRoute.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0031 /* JournalItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalItemRow.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0201 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
+		1CF0A0F330B0000100AA0001 /* SavedThought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedThought.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0211 /* JournalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalService.swift; sourceTree = "<group>"; };
+		1CF0A0F530B0000100AA0001 /* SavedThoughtsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedThoughtsService.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0221 /* JournalItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalItem.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0231 /* AddJournalEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryViewModel.swift; sourceTree = "<group>"; };
 		1CB0A0013100000100AA0241 /* AddJournalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalEntryView.swift; sourceTree = "<group>"; };
@@ -243,6 +251,7 @@
 				1C0125CA308EE8BE0089119A /* HomeViewModel.swift */,
 				1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */,
 				1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */,
+				1CF0A0F730B0000100AA0001 /* SavedThoughtsViewModel.swift */,
 				1C0125D2308EE8800089119A /* AddInsightViewModel.swift */,
 			);
 			path = Home;
@@ -270,6 +279,7 @@
 				1C54F61A3098C92900BF093F /* TodaysThoughtView.swift */,
 				1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */,
 				1C67C76F309A137200745118 /* InsightDetailView.swift */,
+				1CF0A0F930B0000100AA0001 /* SavedThoughtsView.swift */,
 				1C0125D0308EE8800089119A /* AddInsightView.swift */,
 			);
 			path = Views;
@@ -280,6 +290,7 @@
 			children = (
 				1CF0A00530B0000100AA0001 /* Reflection.swift */,
 				1CB0A0013100000100AA0201 /* JournalEntry.swift */,
+				1CF0A0F330B0000100AA0001 /* SavedThought.swift */,
 				1C54F6153093735800BF093F /* Insight.swift */,
 				1C0125D4308EE8800089119A /* DailyThought.swift */,
 				1C0125BC308CF9D80089119A /* OnboardingAnswers.swift */,
@@ -379,6 +390,7 @@
 				1C67C77E30A2069800745118 /* MicrophoneService.swift */,
 				1CF0A00130B0000100AA0001 /* ReflectionsService.swift */,
 				1CB0A0013100000100AA0211 /* JournalService.swift */,
+				1CF0A0F530B0000100AA0001 /* SavedThoughtsService.swift */,
 				1C54F60B308F7EBE00BF093F /* InsightsService.swift */,
 				1C0125D6308EE8800089119A /* DailyThoughtService.swift */,
 				1C0125C5308EDB830089119A /* UserService.swift */,
@@ -721,7 +733,9 @@
 				1CC37628307E5AD600173B34 /* Color.swift in Sources */,
 				1C54F61E3098CBAB00BF093F /* JournalView.swift in Sources */,
 				1CB0A0013100000100AA0202 /* JournalEntry.swift in Sources */,
+				1CF0A0F430B0000100AA0001 /* SavedThought.swift in Sources */,
 				1CB0A0013100000100AA0212 /* JournalService.swift in Sources */,
+				1CF0A0F630B0000100AA0001 /* SavedThoughtsService.swift in Sources */,
 				1CB0A0013100000100AA0222 /* JournalItem.swift in Sources */,
 				1CB0A0013100000100AA0232 /* AddJournalEntryViewModel.swift in Sources */,
 				1CB0A0013100000100AA0242 /* AddJournalEntryView.swift in Sources */,
@@ -737,12 +751,14 @@
 				1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */,
 				1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */,
 				1CF0A0F230B0000100AA0001 /* InsightDetailViewModel.swift in Sources */,
+				1CF0A0F830B0000100AA0001 /* SavedThoughtsViewModel.swift in Sources */,
 				1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */,
 				1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */,
 				1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */,
 				1CC37613307AE68900173B34 /* pocketful_iosApp.swift in Sources */,
 				1CAC143B308189DD005846CF /* AppTab.swift in Sources */,
 				1C67C770309A137200745118 /* InsightDetailView.swift in Sources */,
+				1CF0A0FA30B0000100AA0001 /* SavedThoughtsView.swift in Sources */,
 				1C0125D1308EE8800089119A /* AddInsightView.swift in Sources */,
 				1C67C772309A200000745118 /* AddReflectionView.swift in Sources */,
 				1C0125C6308EDB880089119A /* UserService.swift in Sources */,

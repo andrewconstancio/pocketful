@@ -3,6 +3,9 @@ import Lottie
 
 struct TodaysThoughtView: View {
     var homeViewModel: HomeViewModel
+
+    /// App navigation, used to open the saved thoughts screen.
+    @Environment(AppRouter.self) private var router
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -48,18 +51,33 @@ struct TodaysThoughtView: View {
             
             Spacer()
             
+            optionsMenu
+        }
+    }
+
+    /// The "…" menu that opens the saved thoughts screen.
+    private var optionsMenu: some View {
+        Menu {
+            Button("Saved Thoughts", systemImage: "bookmark") {
+                router.homePath.append(HomeRoute.savedThoughts)
+            }
+        } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 18))
+                .foregroundStyle(.textPrimary)
+                .frame(width: 44, height: 44)
+                .contentShape(.rect)
         }
+        .accessibilityLabel("Thought options")
     }
     
     private var actionButtons: some View {
         HStack(spacing: 12) {
-            // Bookmark button
             Button {
-                
+                HapticManager.shared.triggerImpact()
+                Task { await homeViewModel.toggleSaveTodaysThought() }
             } label: {
-                Image(systemName: "bookmark")
+                Image(systemName: homeViewModel.isTodaysThoughtSaved ? "bookmark.fill" : "bookmark")
                     .font(.system(size: 20))
                     .fontWeight(.medium)
                     .foregroundStyle(.black)
@@ -67,6 +85,8 @@ struct TodaysThoughtView: View {
                     .background(.appGreen.opacity(0.1))
                     .clipShape(Circle())
             }
+            .disabled(homeViewModel.todaysThought == nil || homeViewModel.isUpdatingSavedThought || homeViewModel.isWritingNewThought)
+            .accessibilityLabel(homeViewModel.isTodaysThoughtSaved ? "Remove from saved thoughts" : "Save thought")
 
             newThoughtButton
         }
@@ -114,4 +134,5 @@ struct TodaysThoughtView: View {
 #Preview {
     let dependencies = AppDependencies(authService: PreviewAuthService(), userService: PreviewUserService(), dailyThoughtService: PreviewDailyThoughtService())
     TodaysThoughtView(homeViewModel: dependencies.makeHomeViewModel())
+        .environment(dependencies.router)
 }

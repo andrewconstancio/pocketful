@@ -9,6 +9,9 @@ final class HomeViewModel {
     /// Writes and hands out the user's daily thoughts.
     private let dailyThoughtService: DailyThoughtServicing
 
+    /// Saves and removes bookmarked thoughts.
+    private let savedThoughtsService: SavedThoughtsServicing
+
     /// Reads the user's insights from Firestore.
     private let insightsService: InsightsServicing
 
@@ -29,6 +32,12 @@ final class HomeViewModel {
 
     /// How many more new thoughts the user can ask for today, so the button can dim at zero.
     private(set) var newThoughtsLeft = Constants.Limits.newThoughtsPerDay
+
+    /// Whether today's thought is in the user's saved thoughts, so the bookmark shows filled.
+    private(set) var isTodaysThoughtSaved = false
+
+    /// True while saving or removing today's thought, so the bookmark can't be tapped twice.
+    private(set) var isUpdatingSavedThought = false
 
     /// An alert to present to the user.
     var activeAlert: AppAlert?
@@ -51,11 +60,13 @@ final class HomeViewModel {
     init(
         authService: AuthServicing,
         dailyThoughtService: DailyThoughtServicing,
+        savedThoughtsService: SavedThoughtsServicing,
         insightsService: InsightsServicing,
         reflectionsService: ReflectionsServicing
     ) {
         self.authService = authService
         self.dailyThoughtService = dailyThoughtService
+        self.savedThoughtsService = savedThoughtsService
         self.insightsService = insightsService
         self.reflectionsService = reflectionsService
     }
@@ -108,6 +119,37 @@ final class HomeViewModel {
             activeAlert = AlertContext.customError("Turn on Apple Intelligence in Settings to get a new thought.")
         } catch {
             activeAlert = AlertContext.customError("We couldn't write a new thought right now. Please try again.")
+        }
+    }
+
+    /// Checks whether today's thought is saved, so the bookmark is right after a new thought or a removal on the saved screen.
+    func loadTodaysThoughtSavedState() async {
+        guard let thought = todaysThought, let uid = authService.currentUserId else { return }
+        // A failed check only leaves the bookmark empty, which isn't worth an alert.
+        isTodaysThoughtSaved = (try? await savedThoughtsService.isThoughtSaved(thought.thought, uid: uid)) ?? false
+    }
+
+    /// Saves today's thought, or removes it if it's already saved.
+    func toggleSaveTodaysThought() async {
+        guard !isUpdatingSavedThought, let thought = todaysThought else { return }
+        guard let uid = authService.currentUserId else {
+            activeAlert = AlertContext.unknownError
+            return
+        }
+        isUpdatingSavedThought = true
+        defer { isUpdatingSavedThought = false }
+
+        do {
+            if isTodaysThoughtSaved {
+                try await savedThoughtsService.removeThought(thought.thought, uid: uid)
+                isTodaysThoughtSaved = false
+            } else {
+                try await savedThoughtsService.saveThought(thought.thought, uid: uid)
+                isTodaysThoughtSaved = true
+                HapticManager.shared.triggerNotification(type: .success)
+            }
+        } catch {
+            activeAlert = AlertContext.customError("We couldn't update your saved thoughts. Check your connection and try again.")
         }
     }
 

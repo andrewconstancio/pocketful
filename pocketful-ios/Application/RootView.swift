@@ -57,6 +57,9 @@ struct RootView: View {
                                 
                             case .insightDetail(let savedInsight):
                                 InsightDetailView(savedInsight: savedInsight, dependencies: dependencies)
+
+                            case .savedThoughts:
+                                SavedThoughtsView(dependencies: dependencies)
                             }
                         }
                 }
