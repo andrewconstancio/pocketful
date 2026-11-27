@@ -134,14 +134,10 @@ final class ReflectionsService: ReflectionsServicing {
     /// Deletes any audio file first, then the Firestore record and the downloaded copy on this device.
     func deleteReflection(_ reflection: Reflection, insightID: String, uid: String) async throws {
         if case .voice(let clip) = reflection.content {
-            do {
-                try await storage.reference(withPath: clip.audioPath).delete()
-            } catch StorageError.objectNotFound {
-                // The file is already gone, so only the record is left to remove.
-            }
+            try await storage.reference(withPath: clip.audioPath).delete()
         }
         try await reflectionsCollection(insightID: insightID, uid: uid).document(reflection.id).delete()
-        try? FileManager.default.removeItem(at: cachedAudioURL(reflectionID: reflection.id))
+        try FileManager.default.removeItem(at: cachedAudioURL(reflectionID: reflection.id))
     }
 
     /// How many tree slots the user has been given so far, which is how much their tree has grown.

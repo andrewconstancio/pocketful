@@ -59,7 +59,6 @@ struct HomeView: View {
         .task {
             await session.loadUserName()
         }
-        // Runs once right away for a saved thought, and again when insights finish loading in case a new one has to be written.
         .task(id: homeViewModel.hasLoadedInsights) {
             await homeViewModel.loadTodaysThought()
         }
@@ -72,23 +71,10 @@ struct HomeView: View {
     }
     
     private var header: some View {
-        VStack(spacing: 4) {
-            HStack {
-                Text("Pocketful")
-                    .foregroundStyle(.textPrimary)
-                    .font(FontManager.CormorantGaramond.bold.font(size: 32))
-                
-                Spacer()
-                
-                Button(action: {
-                   router.homePath.append(HomeRoute.notifications)
-                }) {
-                    Image(systemName: "bell")
-                        .font(.system(size: 24))
-                        .foregroundStyle(.black)
-                }
-            }
-            .padding(.bottom, 10)
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Pocketful")
+                .foregroundStyle(.textPrimary)
+                .font(FontManager.CormorantGaramond.bold.font(size: 32))
             
             VStack(spacing: 8) {
                 Text(Date.now.formatted(date: .long, time: .omitted))

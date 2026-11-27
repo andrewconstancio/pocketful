@@ -158,7 +158,7 @@ final class AddInsightViewModel {
         )
 
         do {
-            let savedInsight = try await insightsService.addInsight(insight, position: existingInsights.count, isUserWritten: isUserWritten, uid: uid)
+            let savedInsight = try await insightsService.addInsight(insight, isUserWritten: isUserWritten, uid: uid)
             onInsightSaved(savedInsight)
             HapticManager.shared.triggerNotification(type: .success)
             return true

@@ -88,6 +88,15 @@ final class AppDependencies {
         )
     }
 
+    func makeInsightDetailViewModel(savedInsight: SavedInsight) -> InsightDetailViewModel {
+        InsightDetailViewModel(
+            savedInsight: savedInsight,
+            authService: authService,
+            insightsService: insightsService,
+            reflectionsService: reflectionsService
+        )
+    }
+
     func makeTreeViewModel() -> TreeViewModel {
         TreeViewModel(
             authService: authService,

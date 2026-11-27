@@ -11,6 +11,10 @@ struct InsightDetailView: View {
 
     @State private var reflectionsViewModel: InsightReflectionsViewModel
 
+    @State private var detailViewModel: InsightDetailViewModel
+
+    @Environment(\.dismiss) private var dismiss
+
     private var insight: Insight { savedInsight.insight }
 
     /// Whether the voice reflection screen is showing.
@@ -19,11 +23,15 @@ struct InsightDetailView: View {
     /// Whether the reflections list is showing its delete buttons.
     @State private var isEditingReflections = false
 
+    /// Whether the "Delete Insight?" pop-up is showing.
+    @State private var isConfirmingDeletion = false
+
     init(savedInsight: SavedInsight, highlightedReflectionID: String? = nil, dependencies: AppDependencies) {
         self.savedInsight = savedInsight
         self.highlightedReflectionID = highlightedReflectionID
         self.dependencies = dependencies
         _reflectionsViewModel = State(initialValue: dependencies.makeInsightReflectionsViewModel(insightID: savedInsight.id))
+        _detailViewModel = State(initialValue: dependencies.makeInsightDetailViewModel(savedInsight: savedInsight))
     }
 
     var body: some View {
@@ -57,7 +65,21 @@ struct InsightDetailView: View {
         .onDisappear {
             reflectionsViewModel.stopPlayback()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                editMenu
+            }
+        }
+        .alert("Delete Insight?", isPresented: $isConfirmingDeletion) {
+            Button("Delete", role: .destructive) {
+                Task { await deleteInsight() }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Are you sure you want to delete this insight? Its reflections will be deleted too. This can't be undone.")
+        }
         .appAlert(alert: $reflectionsViewModel.activeAlert)
+        .appAlert(alert: $detailViewModel.activeAlert)
         // Reloads when the recorder closes so a new reflection shows up right away.
         .fullScreenCover(isPresented: $isRecordingReflection, onDismiss: {
             Task { await reflectionsViewModel.loadReflections() }
@@ -69,6 +91,27 @@ struct InsightDetailView: View {
             if isEmpty {
                 isEditingReflections = false
             }
+        }
+    }
+
+    /// The top-right menu with the option to delete this insight.
+    private var editMenu: some View {
+        Menu {
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                isConfirmingDeletion = true
+            }
+        } label: {
+            Text("Edit")
+                .foregroundStyle(.appGreen)
+        }
+        .disabled(detailViewModel.isDeleting)
+    }
+
+    /// Deletes the insight and goes back to the previous screen once it's gone.
+    private func deleteInsight() async {
+        reflectionsViewModel.stopPlayback()
+        if await detailViewModel.deleteInsight() {
+            dismiss()
         }
     }
 

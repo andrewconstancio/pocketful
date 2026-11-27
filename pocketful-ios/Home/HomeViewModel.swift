@@ -79,9 +79,9 @@ final class HomeViewModel {
         hasLoadedTodaysThought = true
     }
 
-    /// Loads the user's insights once; skips if they're already loaded.
+    /// Reloads the user's insights, so one deleted on its detail screen drops off the list.
     func loadInsights() async {
-        guard insights.isEmpty, let uid = authService.currentUserId else { return }
+        guard let uid = authService.currentUserId else { return }
         defer { hasLoadedInsights = true }
         do {
             insights = try await insightsService.fetchInsights(uid: uid)

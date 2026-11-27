@@ -67,9 +67,8 @@ final class UserService: UserServicing {
         answersData["created_at"] = FieldValue.serverTimestamp()
         batch.setData(answersData, forDocument: user.collection(Constants.FirestorePaths.onboarding).document("answers"))
 
-        for (position, insight) in insights.enumerated() {
+        for insight in insights {
             var insightData = try encoder.encode(insight)
-            insightData["position"] = position
             insightData[Constants.FirestorePaths.userWrittenField] = false
             insightData["created_at"] = FieldValue.serverTimestamp()
             batch.setData(insightData, forDocument: user.collection(Constants.FirestorePaths.insights).document())

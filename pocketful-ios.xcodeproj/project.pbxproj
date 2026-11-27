@@ -41,6 +41,7 @@
 		1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C67C77E30A2069800745118 /* MicrophoneService.swift */; };
 		1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */; };
 		1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */; };
+		1CF0A0F230B0000100AA0001 /* InsightDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */; };
 		1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00530B0000100AA0001 /* Reflection.swift */; };
 		1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */; };
 		1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF0A00130B0000100AA0001 /* ReflectionsService.swift */; };
@@ -145,6 +146,7 @@
 		1C67C77E30A2069800745118 /* MicrophoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneService.swift; sourceTree = "<group>"; };
 		1CF0A00930B0000100AA0001 /* InsightReflectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsView.swift; sourceTree = "<group>"; };
 		1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightReflectionsViewModel.swift; sourceTree = "<group>"; };
+		1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightDetailViewModel.swift; sourceTree = "<group>"; };
 		1CF0A00530B0000100AA0001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
 		1CF0A00330B0000100AA0001 /* AddReflectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReflectionViewModel.swift; sourceTree = "<group>"; };
 		1CF0A00130B0000100AA0001 /* ReflectionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionsService.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				1C54F62230996E6F00BF093F /* HomeRoute.swift */,
 				1C0125CA308EE8BE0089119A /* HomeViewModel.swift */,
 				1CF0A00730B0000100AA0001 /* InsightReflectionsViewModel.swift */,
+				1CF0A0F130B0000100AA0001 /* InsightDetailViewModel.swift */,
 				1C0125D2308EE8800089119A /* AddInsightViewModel.swift */,
 			);
 			path = Home;
@@ -733,6 +736,7 @@
 				1C67C77F30A2069E00745118 /* MicrophoneService.swift in Sources */,
 				1CF0A00A30B0000100AA0001 /* InsightReflectionsView.swift in Sources */,
 				1CF0A00830B0000100AA0001 /* InsightReflectionsViewModel.swift in Sources */,
+				1CF0A0F230B0000100AA0001 /* InsightDetailViewModel.swift in Sources */,
 				1CF0A00630B0000100AA0001 /* Reflection.swift in Sources */,
 				1CF0A00430B0000100AA0001 /* AddReflectionViewModel.swift in Sources */,
 				1CF0A00230B0000100AA0001 /* ReflectionsService.swift in Sources */,
