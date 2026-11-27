@@ -24,6 +24,15 @@ final class HomeViewModel {
     /// Whether loading today's thought has finished, so the placeholder stops even if it failed.
     private(set) var hasLoadedTodaysThought = false
 
+    /// True while a new thought is being written after the user asked for one.
+    private(set) var isWritingNewThought = false
+
+    /// How many more new thoughts the user can ask for today, so the button can dim at zero.
+    private(set) var newThoughtsLeft = Constants.Limits.newThoughtsPerDay
+
+    /// An alert to present to the user.
+    var activeAlert: AppAlert?
+
     /// The user's insights: the ones made at onboarding plus any they added.
     var insights: [SavedInsight] = []
 
@@ -60,6 +69,7 @@ final class HomeViewModel {
         }
         if let saved = dailyThoughtService.savedTodaysThought(uid: uid) {
             showTodaysThought(saved)
+            newThoughtsLeft = dailyThoughtService.newThoughtsLeftToday(uid: uid)
             return
         }
         // A new thought is written from the insights, so keep the placeholder until they've loaded.
@@ -68,11 +78,43 @@ final class HomeViewModel {
             let thought = try await dailyThoughtService.pickTodaysThought(uid: uid, insights: insights)
             isTodaysThoughtNew = true
             showTodaysThought(thought)
+            newThoughtsLeft = dailyThoughtService.newThoughtsLeftToday(uid: uid)
         } catch {
             // The backup isn't saved, so the next launch tries the model again.
             showTodaysThought(Self.backupThought)
         }
     }
+
+    /// Replaces today's thought with a new one; keeps the current one and shows an alert if that fails.
+    func writeNewThought() async {
+        guard !isWritingNewThought, let uid = authService.currentUserId else { return }
+        // Checked before the placeholder shows, so tapping at the limit doesn't flash the loading bars.
+        guard dailyThoughtService.newThoughtsLeftToday(uid: uid) > 0 else {
+            newThoughtsLeft = 0
+            activeAlert = Self.newThoughtLimitAlert
+            return
+        }
+        isWritingNewThought = true
+        defer {
+            isWritingNewThought = false
+            newThoughtsLeft = dailyThoughtService.newThoughtsLeftToday(uid: uid)
+        }
+
+        do {
+            let thought = try await dailyThoughtService.replaceTodaysThought(uid: uid, insights: insights)
+            isTodaysThoughtNew = true
+            showTodaysThought(thought)
+        } catch FoundationModelError.modelUnavailable {
+            activeAlert = AlertContext.customError("Turn on Apple Intelligence in Settings to get a new thought.")
+        } catch {
+            activeAlert = AlertContext.customError("We couldn't write a new thought right now. Please try again.")
+        }
+    }
+
+    private static let newThoughtLimitAlert = AppAlert(
+        title: "No new thoughts left",
+        message: "You can get up to \(Constants.Limits.newThoughtsPerDay) new thoughts a day. Come back tomorrow for more."
+    )
 
     private func showTodaysThought(_ thought: DailyThought) {
         todaysThought = thought

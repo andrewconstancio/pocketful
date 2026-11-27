@@ -9,7 +9,10 @@ struct TodaysThoughtView: View {
             heading
             
             Group {
-                if let thought = homeViewModel.todaysThought {
+                // The placeholder swaps in while a new thought is written, so the new one types out fresh.
+                if homeViewModel.isWritingNewThought {
+                    TodaysThoughtPlaceholderView()
+                } else if let thought = homeViewModel.todaysThought {
                     TodaysThoughtTextView(text: thought.thought, typesOut: homeViewModel.isTodaysThoughtNew)
                 } else if !homeViewModel.hasLoadedTodaysThought {
                     TodaysThoughtPlaceholderView()
@@ -64,7 +67,29 @@ struct TodaysThoughtView: View {
                     .background(.appGreen.opacity(0.1))
                     .clipShape(Circle())
             }
+
+            newThoughtButton
         }
+    }
+
+    /// Asks the model for a different thought; disabled until today's has loaded and while one is being written, and dimmed once today's limit is used up.
+    private var newThoughtButton: some View {
+        Button {
+            HapticManager.shared.triggerImpact()
+            Task { await homeViewModel.writeNewThought() }
+        } label: {
+            Image(systemName: "arrow.clockwise")
+                .font(.system(size: 20))
+                .fontWeight(.medium)
+                .foregroundStyle(.black)
+                .frame(width: 44, height: 44)
+                .background(.appGreen.opacity(0.1))
+                .clipShape(Circle())
+                // Still tappable at zero, so the user gets the alert explaining why.
+                .opacity(homeViewModel.newThoughtsLeft == 0 ? 0.4 : 1)
+        }
+        .disabled(!homeViewModel.hasLoadedTodaysThought || homeViewModel.isWritingNewThought)
+        .accessibilityLabel("New thought")
     }
     
     /// The main flower image of this view.

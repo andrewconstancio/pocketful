@@ -50,6 +50,7 @@ struct HomeView: View {
                 .ignoresSafeArea()
         }
         .background(.appBackground)
+        .appAlert(alert: $homeViewModel.activeAlert)
         .sheet(isPresented: $isAddingInsight) {
             AddInsightView(viewModel: dependencies.makeAddInsightViewModel(
                 existingInsights: homeViewModel.insights,

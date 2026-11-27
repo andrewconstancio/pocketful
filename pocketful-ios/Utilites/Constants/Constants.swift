@@ -16,5 +16,8 @@ enum Constants {
     enum Limits {
         /// The most insights a user can have, counting the ones made at onboarding.
         static let maxInsights = 8
+
+        /// How many times a day the user can ask for a new thought.
+        static let newThoughtsPerDay = 3
     }
 }

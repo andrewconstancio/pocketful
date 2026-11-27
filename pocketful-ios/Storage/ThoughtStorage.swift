@@ -6,6 +6,9 @@ struct SavedThoughts: Codable {
     var todaysThought: DailyThought?
     var todaysThoughtDate: Date?
 
+    /// How many new thoughts the user asked for on `todaysThoughtDate`; optional so files saved before it existed still load.
+    var newThoughtCount: Int?
+
     /// The text of thoughts shown lately, oldest first, so new ones don't repeat them.
     var recentThoughtTexts: [String] = []
 

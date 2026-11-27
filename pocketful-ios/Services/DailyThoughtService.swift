@@ -1,8 +1,15 @@
 import Foundation
 
+enum DailyThoughtError: Error {
+    /// The user already asked for the most new thoughts allowed today.
+    case newThoughtLimitReached
+}
+
 protocol DailyThoughtServicing {
     func savedTodaysThought(uid: String) -> DailyThought?
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought
+    func replaceTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought
+    func newThoughtsLeftToday(uid: String) -> Int
     func recordReflection(on savedInsight: SavedInsight, uid: String)
 }
 
@@ -38,6 +45,27 @@ final class DailyThoughtService: DailyThoughtServicing {
     /// Returns today's thought, writing a new one with the model if none was picked today.
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought {
         if let thought = savedTodaysThought(uid: uid) { return thought }
+        return try await writeTodaysThought(uid: uid, insights: insights, newThoughtCount: 0)
+    }
+
+    /// Writes a different thought and saves it as today's, for when the user asks for a new one.
+    func replaceTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought {
+        let usedToday = Constants.Limits.newThoughtsPerDay - newThoughtsLeftToday(uid: uid)
+        guard usedToday < Constants.Limits.newThoughtsPerDay else { throw DailyThoughtError.newThoughtLimitReached }
+        return try await writeTodaysThought(uid: uid, insights: insights, newThoughtCount: usedToday + 1)
+    }
+
+    /// How many more new thoughts the user can ask for today; the count starts over each day.
+    func newThoughtsLeftToday(uid: String) -> Int {
+        let saved = storage.load(uid: uid)
+        guard let date = saved.todaysThoughtDate, Calendar.current.isDateInToday(date) else {
+            return Constants.Limits.newThoughtsPerDay
+        }
+        return max(Constants.Limits.newThoughtsPerDay - (saved.newThoughtCount ?? 0), 0)
+    }
+
+    /// Saves the thought as today's along with `newThoughtCount`, how many new ones the user has asked for today.
+    private func writeTodaysThought(uid: String, insights: [SavedInsight], newThoughtCount: Int) async throws -> DailyThought {
         // Insights the user wrote are left out, so their own words never reach the model.
         let modelInsights = insights.filter { !$0.isUserWritten }
         guard !modelInsights.isEmpty else { throw FoundationModelError.emptyResponse }
@@ -56,6 +84,7 @@ final class DailyThoughtService: DailyThoughtServicing {
         saved = storage.load(uid: uid)
         saved.todaysThought = thought
         saved.todaysThoughtDate = .now
+        saved.newThoughtCount = newThoughtCount
         saved.recentThoughtTexts = Array((saved.recentThoughtTexts + [thought.thought]).suffix(Self.recentThoughtLimit))
         try storage.save(saved, uid: uid)
         return thought
@@ -83,6 +112,8 @@ final class DailyThoughtService: DailyThoughtServicing {
 final class PreviewDailyThoughtService: DailyThoughtServicing {
     func savedTodaysThought(uid: String) -> DailyThought? { nil }
     func pickTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought { .preview }
+    func replaceTodaysThought(uid: String, insights: [SavedInsight]) async throws -> DailyThought { .preview }
+    func newThoughtsLeftToday(uid: String) -> Int { Constants.Limits.newThoughtsPerDay }
     func recordReflection(on savedInsight: SavedInsight, uid: String) {}
 }
 #endif
